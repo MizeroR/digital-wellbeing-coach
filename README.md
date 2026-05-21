@@ -14,3 +14,9 @@ The Digital Wellbeing Coach is a full-stack web application that uses supervised
 The system addresses a documented gap: no ML-based digital wellbeing tool has been developed using African behavioural data or evaluated on any African user population. It is the first tool of its kind designed specifically for this context.
 
 **How it works:**
+1. A user fills in a structured self-report form — demographic information, daily app usage patterns, and 10 SAS-SV questions
+2. An XGBoost classifier predicts their addiction risk level (Low/Moderate/High/Severe) with model confidence percentage
+3. TreeSHAP identifies the top 3 behavioural drivers of their score and converts them to plain-language coaching feedback
+4. A rule-based category classifier identifies their dominant addiction pattern (Social Media, Gaming, Streaming, or General)
+5. 5–10 locally relevant Kigali activity recommendations are returned from a curated resource library
+**GitHub Repository:** https://github.com/MizeroR/digital-wellbeing-coach
