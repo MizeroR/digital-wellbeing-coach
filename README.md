@@ -20,3 +20,76 @@ The system addresses a documented gap: no ML-based digital wellbeing tool has be
 4. A rule-based category classifier identifies their dominant addiction pattern (Social Media, Gaming, Streaming, or General)
 5. 5–10 locally relevant Kigali activity recommendations are returned from a curated resource library
 **GitHub Repository:** https://github.com/MizeroR/digital-wellbeing-coach
+
+## Environment Setup
+ 
+### Run the ML notebook
+ 
+**Requirements:**
+- Python 3.10+
+- Jupyter Notebook or Kaggle
+**Install dependencies:**
+ 
+```bash
+pip install scikit-learn xgboost shap imbalanced-learn openpyxl matplotlib seaborn pandas numpy
+```
+ 
+**Run:**
+```bash
+jupyter notebook notebooks/DWC_Model_Notebook.ipynb
+```
+ 
+Place `Raw_Data.xlsx` in the `data/` folder before running.
+
+## Designs
+
+### System Architecture
+The Digital Wellbeing Coach uses a three-tier client-server architecture:
+
+    User Browser
+
+    │
+
+    │ HTTPS
+
+    ▼
+
+    React / Next.js  ──────────────────  Vercel (Frontend)
+
+    │
+
+    │ POST /predict (JSON)
+
+    ▼
+    Python / FastAPI  ─────────────────  Railway (Backend)
+
+    │
+
+    │ SQL
+
+    ▼
+
+PostgreSQL (Supabase)
+
+### Figma Mockups
+Three core screens designed for the web application:
+
+- **Screen 1 — Assessment Form:** Consent screen, demographic questions, app usage inputs, SAS-SV questionnaire
+- **Screen 2 — Results Dashboard:** Risk level display, model confidence percentage, top 3 SHAP coaching sentences, dominant addiction category
+- **Screen 3 — Resource Recommendations:** Curated Kigali activity cards filtered by addiction category
+
+Figma link: *(to be added)*
+
+
+## Deployment Plan
+ 
+**Frontend** — Vercel (React)  
+**Backend** — Railway (Python / FastAPI)  
+**Database** — Supabase (PostgreSQL free tier)  
+ 
+Full deployment instructions will be added when backend and frontend development is complete.
+ 
+## Author
+ 
+**Reine Mizero**  
+BSc Software Engineering — African Leadership University, Kigali, Rwanda  
