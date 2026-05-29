@@ -78,7 +78,7 @@ Three core screens designed for the web application:
 - **Screen 2 — Results Dashboard:** Risk level display, model confidence percentage, top 3 SHAP coaching sentences, dominant addiction category
 - **Screen 3 — Resource Recommendations:** Curated Kigali activity cards filtered by addiction category
 
-Figma link: *(to be added)*
+Figma link: [figma](https://www.figma.com/design/Dce7R22yKo8F3dLhGrn2pM/DWC---Mockup?node-id=12-2&t=myawWubnECRM7qqu-1)
 
 
 ## Deployment Plan
