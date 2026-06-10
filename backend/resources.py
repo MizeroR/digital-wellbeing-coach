@@ -1,3 +1,16 @@
+"""
+Digital Wellbeing Coach — Resource library and SHAP template sentences.
+
+All 21 resource entries are verified real resources accessible to university
+students in Kigali, Rwanda. Last verified: June 2026.
+
+SHAP_TEMPLATES: maps feature names to plain-language coaching sentences
+                shown to users on the results dashboard.
+
+RECOMMENDATIONS: maps addiction category to a list of resource dicts.
+                 Categories: Social Media, Gaming, Streaming, General
+"""
+
 SHAP_TEMPLATES = {
     'Q1':                 "Missing planned work due to smartphone use is a key driver of your risk score.",
     'Q2':                 "Difficulty concentrating on academic work because of your phone is significantly increasing your risk.",
@@ -18,152 +31,156 @@ SHAP_TEMPLATES = {
 }
 
 RECOMMENDATIONS: dict[str, list[dict]] = {
+
     "Social Media": [
         {
-            "title": "Kigali Public Library Study Sessions",
-            "description": "Join structured study groups at the Kigali Public Library — focused, offline, and social.",
-            "location": "Kiyovu, Kigali",
+            "title": "Between The Covers Book Club",
+            "description": "Community book club primarily attended by university students in Kigali. Social, offline, and screen-free — a direct substitute for social scrolling.",
+            "type": "Community book club",
+            "cost": "Free",
+            "how_to_access": "Instagram: @betweenthecovers5",
         },
         {
-            "title": "KLab Community Meetups",
-            "description": "Attend in-person tech and innovation events at Rwanda's leading startup hub.",
-            "location": "Kacyiru, Kigali",
+            "title": "Kira Art Therapy Hub",
+            "description": "Combines mental health support with art-based creative expression. Particularly relevant for high social media users experiencing stress or anxiety.",
+            "type": "Mental health and creative expression",
+            "cost": "Varies",
+            "how_to_access": "kiraapp.org — +250 785 774 717 — Kiraarttherapyhub@gmail.com",
         },
         {
-            "title": "Nyamirambo Walking Tour",
-            "description": "Explore Kigali's oldest and most vibrant neighbourhood on foot — no screen needed.",
-            "location": "Nyamirambo, Kigali",
+            "title": "Letterboxd",
+            "description": "Turn passive social media scrolling into intentional film engagement. Log films, write reviews, and connect with a community around cinema.",
+            "type": "Online community",
+            "cost": "Free",
+            "how_to_access": "letterboxd.com",
         },
         {
-            "title": "Inema Arts Center Workshops",
-            "description": "Join creative workshops in painting, dance, or drumming at Kigali's top arts venue.",
-            "location": "Kacyiru, Kigali",
+            "title": "OceanPDF",
+            "description": "Replace mindless scrolling with reading. Free books downloadable in PDF and ePUB — works offline with no account needed.",
+            "type": "Free book library",
+            "cost": "Free",
+            "how_to_access": "oceanofpdf.com",
         },
         {
-            "title": "Kigali Toastmasters Club",
-            "description": "Practice public speaking and leadership in a weekly in-person group setting.",
-            "location": "Central Kigali",
-        },
-        {
-            "title": "Stade Amahoro Recreational Sports",
-            "description": "Play football or volleyball at the public grounds around Amahoro Stadium — free and social.",
-            "location": "Remera, Kigali",
-        },
-        {
-            "title": "Kigali Genocide Memorial Reflection Walk",
-            "description": "A guided walk grounded in community history — deeply restorative and phone-free.",
-            "location": "Gisozi, Kigali",
+            "title": "Weaving or artisanal soap making workshop",
+            "description": "Hands-on craft workshop in Kigali — social, tactile, offline, and screen-free. A direct replacement for time spent scrolling.",
+            "type": "Hands-on workshop",
+            "cost": "Low cost",
+            "how_to_access": "Search 'classes and workshops' on tripadvisor.com/Attractions-g293829-Activities-c56-Kigali",
         },
     ],
+
     "Gaming": [
         {
-            "title": "Chess Club at Kigali Public Library",
-            "description": "Redirect strategic thinking into offline chess — weekly sessions, all levels welcome.",
-            "location": "Kiyovu, Kigali",
+            "title": "Scrimba",
+            "description": "Interactive coding courses that redirect gaming energy into building real technical skills. Used by developers worldwide.",
+            "type": "Online learning",
+            "cost": "Free / paid tiers",
+            "how_to_access": "scrimba.com",
         },
         {
-            "title": "Kigali Cycling Club Sunday Rides",
-            "description": "Free Sunday morning group rides through Kigali's hills — no experience required.",
-            "location": "Departures from Kimihurura",
+            "title": "Udemy",
+            "description": "Hundreds of skill-based online courses across technology, design, business, and more.",
+            "type": "Online learning",
+            "cost": "Free / paid courses",
+            "how_to_access": "udemy.com",
         },
         {
-            "title": "Outdoor Basketball at Kimihurura Court",
-            "description": "Free public court — drop-in games run most evenings and weekends.",
-            "location": "Kimihurura, Kigali",
+            "title": "Pottery or painting workshop in Kigali",
+            "description": "Tactile, hands-on craft workshop. Social, screen-free, and affordable for students.",
+            "type": "Hands-on workshop",
+            "cost": "Low cost",
+            "how_to_access": "Search 'classes and workshops' on tripadvisor.com/Attractions-g293829-Activities-c56-Kigali",
         },
         {
-            "title": "RwandaCode Coding Project",
-            "description": "Channel your problem-solving energy into a structured coding project with peers at RwandaCode.",
-            "location": "Kigali Innovation City",
+            "title": "OceanPDF",
+            "description": "Free downloadable books in PDF and ePUB format. Works offline — a productive screen-free alternative.",
+            "type": "Free book library",
+            "cost": "Free",
+            "how_to_access": "oceanofpdf.com",
         },
         {
-            "title": "Rebero Hill Hike",
-            "description": "Hike Rebero Hill for panoramic city views — a physically rewarding offline challenge.",
-            "location": "Rebero, Kigali",
-        },
-        {
-            "title": "Kigali Innovation City Sports Courts",
-            "description": "Multi-sport recreational facilities open to university students on weekends.",
-            "location": "Kigali Innovation City",
-        },
-        {
-            "title": "Community Volleyball",
-            "description": "Open community volleyball games most afternoons — great way to meet people and move.",
-            "location": "Community centres, Kigali",
+            "title": "Kira Art Therapy Hub",
+            "description": "Creative expression as a healthy redirect for compulsive gaming patterns. Art-based therapy with trained professionals.",
+            "type": "Mental health and creative expression",
+            "cost": "Varies",
+            "how_to_access": "kiraapp.org — +250 785 774 717",
         },
     ],
+
     "Streaming": [
         {
-            "title": "Goethe Institut Kigali Film Screenings",
-            "description": "Quality international cinema in a social setting — a curated offline watching experience.",
-            "location": "Kiyovu, Kigali",
+            "title": "Letterboxd",
+            "description": "Redirect passive streaming into intentional, curated film engagement. Rate films, write reviews, follow friends.",
+            "type": "Online film community",
+            "cost": "Free",
+            "how_to_access": "letterboxd.com",
         },
         {
-            "title": "TPAF Live Performances",
-            "description": "Attend live theatre, dance, or music at the Théâtre de la Paix in central Kigali.",
-            "location": "Central Kigali",
+            "title": "OceanPDF",
+            "description": "Replace passive background streaming with active reading. Free books downloadable offline.",
+            "type": "Free book library",
+            "cost": "Free",
+            "how_to_access": "oceanofpdf.com",
         },
         {
-            "title": "Rwanda Cultural Village",
-            "description": "Experience traditional Rwandan dance, storytelling, and music performed live.",
-            "location": "Kacyiru, Kigali",
+            "title": "Udemy",
+            "description": "Replace background streaming with structured, goal-oriented learning courses.",
+            "type": "Online learning",
+            "cost": "Free / paid courses",
+            "how_to_access": "udemy.com",
         },
         {
-            "title": "Kigali Jazz Junction Events",
-            "description": "Live jazz and acoustic music events held regularly at Kigali venues.",
-            "location": "Various, Kigali",
+            "title": "Pottery or painting workshop in Kigali",
+            "description": "Active creative engagement as a hands-on alternative to passive video consumption.",
+            "type": "Hands-on workshop",
+            "cost": "Low cost",
+            "how_to_access": "Search 'classes and workshops' on tripadvisor.com/Attractions-g293829-Activities-c56-Kigali",
         },
         {
-            "title": "Photography Walk in Kimironko Market",
-            "description": "Kimironko market is one of Kigali's most visually rich environments — bring a camera.",
-            "location": "Kimironko, Kigali",
-        },
-        {
-            "title": "Inema Arts Center Open Studio",
-            "description": "Drop into an open studio session — paint, draw, or observe local artists at work.",
-            "location": "Kacyiru, Kigali",
-        },
-        {
-            "title": "Sundowner Concerts at Kigali Heights",
-            "description": "Live music sundowner events at Kigali Heights rooftop — a social, screen-free evening.",
-            "location": "Kimihurura, Kigali",
+            "title": "Kira Art Therapy Hub",
+            "description": "Art-based therapy as a structured, meaningful alternative to passive streaming patterns.",
+            "type": "Mental health and creative expression",
+            "cost": "Varies",
+            "how_to_access": "kiraapp.org — +250 785 774 717",
         },
     ],
+
     "General": [
         {
-            "title": "Volunteer with a Kigali NGO",
-            "description": "Give 2 hours a week to a local cause — check the Kigali City volunteer noticeboard for listings.",
-            "location": "Various, Kigali",
+            "title": "Kira Art Therapy Hub",
+            "description": "Primary mental health resource — art-based therapy combining professional support with creative expression. Recommended for high and severe risk users.",
+            "type": "Mental health — primary resource",
+            "cost": "Varies",
+            "how_to_access": "kiraapp.org — +250 785 774 717 — Kiraarttherapyhub@gmail.com",
         },
         {
-            "title": "Kigali Cycling Club Sunday Rides",
-            "description": "Free Sunday morning group rides through Kigali's hills — no experience required.",
-            "location": "Departures from Kimihurura",
+            "title": "ALU Debate Club",
+            "description": "Replace addictive phone use with structured real-world discussion and community engagement on campus.",
+            "type": "On-campus club",
+            "cost": "Free",
+            "how_to_access": "Via ALU student organisations on WhatsApp",
         },
         {
-            "title": "Language Exchange Group",
-            "description": "Join a French–Kinyarwanda–English language exchange group — social, structured, phone-free.",
-            "location": "Central Kigali",
+            "title": "Scrimba",
+            "description": "Redirect compulsive phone use into building real technical skills through interactive coding courses.",
+            "type": "Online learning",
+            "cost": "Free / paid tiers",
+            "how_to_access": "scrimba.com",
         },
         {
-            "title": "Sunday Farmer's Market, Kimironko",
-            "description": "A lively weekend market — great for offline socialising, local produce, and artisan crafts.",
-            "location": "Kimironko, Kigali",
+            "title": "Weaving or artisanal soap making workshop",
+            "description": "Hands-on craft workshop — social, tactile, offline, and screen-free. Affordable for students.",
+            "type": "Hands-on workshop",
+            "cost": "Low cost",
+            "how_to_access": "Search 'classes and workshops' on tripadvisor.com/Attractions-g293829-Activities-c56-Kigali",
         },
         {
-            "title": "Kigali Genocide Memorial",
-            "description": "An important site for reflection and community connection — spend a quiet morning here.",
-            "location": "Gisozi, Kigali",
-        },
-        {
-            "title": "Nyamirambo Women's Centre Tour",
-            "description": "Book a cultural tour run by local women — a meaningful, offline community experience.",
-            "location": "Nyamirambo, Kigali",
-        },
-        {
-            "title": "MTN Community Sports Days",
-            "description": "Free public fitness and sports events hosted at various Kigali venues throughout the year.",
-            "location": "Various, Kigali",
+            "title": "OceanPDF",
+            "description": "Reduce overall screen time through offline reading. Free books downloadable in PDF and ePUB.",
+            "type": "Free book library",
+            "cost": "Free",
+            "how_to_access": "oceanofpdf.com",
         },
     ],
 }

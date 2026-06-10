@@ -22,24 +22,53 @@ The system addresses a documented gap: no ML-based digital wellbeing tool has be
 **GitHub Repository:** https://github.com/MizeroR/digital-wellbeing-coach
 
 ## Environment Setup
- 
-### Run the ML notebook
- 
-**Requirements:**
-- Python 3.10+
-- Jupyter Notebook or Kaggle
-**Install dependencies:**
- 
+
+### 1. Run the ML notebook
+
+**Requirements:** Python 3.10+, Jupyter Notebook or Kaggle
+
 ```bash
 pip install scikit-learn xgboost shap imbalanced-learn openpyxl matplotlib seaborn pandas numpy
-```
- 
-**Run:**
-```bash
 jupyter notebook notebooks/DWC_Model_Notebook.ipynb
 ```
- 
-Place `Raw_Data.xlsx` in the `data/` folder before running.
+
+Place `Raw Data.xlsx` in the `data/` folder before running.
+
+### 2. Run the FastAPI backend
+
+**Requirements:** Python 3.10+
+
+```bash
+# Install dependencies
+pip install -r backend/requirements.txt
+
+# Train the model (generates backend/model.joblib)
+python backend/train_model.py
+
+# Start the API server
+uvicorn backend.main:app --reload
+```
+
+Swagger UI (interactive API docs): [http://localhost:8000/docs](http://localhost:8000/docs)
+
+**Endpoints:**
+
+| Method | Path | Description |
+|--------|------|-------------|
+| `POST` | `/predict` | Returns risk level, confidence, SHAP explanations, and recommendations |
+| `GET`  | `/health`  | Liveness check |
+
+**Example request:**
+```bash
+curl -X POST http://localhost:8000/predict \
+  -H "Content-Type: application/json" \
+  -d '{
+    "gender": "F", "age": 20,
+    "usage_duration": 3, "social_media_usage": 1, "frequent_access": 3,
+    "Q1": 4, "Q2": 3, "Q3": 2, "Q4": 5, "Q5": 4,
+    "Q6": 3, "Q7": 4, "Q8": 5, "Q9": 4, "Q10": 3
+  }'
+```
 
 ## Designs
 

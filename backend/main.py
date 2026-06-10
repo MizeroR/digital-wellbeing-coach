@@ -21,7 +21,10 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
-from resources import RECOMMENDATIONS, SHAP_TEMPLATES
+try:
+    from resources import RECOMMENDATIONS, SHAP_TEMPLATES
+except ModuleNotFoundError:
+    from backend.resources import RECOMMENDATIONS, SHAP_TEMPLATES
 
 MODEL_PATH = Path(__file__).parent / "model.joblib"
 
@@ -50,8 +53,9 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title="Digital Wellbeing Coach API",
     description=(
-        "Predicts smartphone addiction risk for university students and returns "
-        "personalised coaching feedback and locally relevant Kigali activity recommendations."
+        "Predicts smartphone addiction risk for university students in Kigali, Rwanda "
+        "and returns personalised SHAP-based coaching feedback and locally relevant "
+        "activity recommendations."
     ),
     version="1.0.0",
     lifespan=lifespan,
@@ -69,25 +73,25 @@ app.add_middleware(
 
 class PredictRequest(BaseModel):
     gender:             str = Field(..., pattern="^[MF]$",  description="M or F")
-    age:                int = Field(..., ge=11, le=35,       description="Age in years")
-    usage_duration:     int = Field(..., ge=1,  le=4,        description="1=1–3 h/day  2=4–6 h  3=7–9 h  4=9+ h")
-    social_media_usage: int = Field(..., ge=0,  le=1,        description="0=No  1=Yes")
-    frequent_access:    int = Field(..., ge=1,  le=4,        description="1=Messaging  2=Entertainment  3=Social Media  4=Gaming")
-    Q1:  int = Field(..., ge=1, le=6, description="Missing planned work")
-    Q2:  int = Field(..., ge=1, le=6, description="Hard to concentrate")
-    Q3:  int = Field(..., ge=1, le=6, description="Physical pain")
-    Q4:  int = Field(..., ge=1, le=6, description="Cannot stand not having phone")
-    Q5:  int = Field(..., ge=1, le=6, description="Impatient without phone")
-    Q6:  int = Field(..., ge=1, le=6, description="Phone on mind when not using")
-    Q7:  int = Field(..., ge=1, le=6, description="Will never give up phone")
-    Q8:  int = Field(..., ge=1, le=6, description="Constantly checking social media")
-    Q9:  int = Field(..., ge=1, le=6, description="Using longer than intended")
-    Q10: int = Field(..., ge=1, le=6, description="Others say I use too much")
+    age:                int = Field(..., ge=18, le=25,       description="Age in years (18–25, Kigali university students)")
+    usage_duration:     int = Field(..., ge=1,  le=4,        description="1=1–3 hrs/day  2=4–6 hrs/day  3=7–9 hrs/day  4=9+ hrs/day")
+    social_media_usage: int = Field(..., ge=0,  le=1,        description="0=No  1=Yes — do you use social media?")
+    frequent_access:    int = Field(..., ge=1,  le=5,        description="1=Search engine  2=Online games  3=Social media  4=E-commerce  5=Other")
+    Q1:  int = Field(..., ge=1, le=6, description="Missing planned work due to smartphone use")
+    Q2:  int = Field(..., ge=1, le=6, description="Hard to concentrate in class or while working")
+    Q3:  int = Field(..., ge=1, le=6, description="Feeling pain in wrists or neck while using phone")
+    Q4:  int = Field(..., ge=1, le=6, description="Won't be able to stand not having a smartphone")
+    Q5:  int = Field(..., ge=1, le=6, description="Feeling impatient and fretful when not holding phone")
+    Q6:  int = Field(..., ge=1, le=6, description="Having phone on mind even when not using it")
+    Q7:  int = Field(..., ge=1, le=6, description="Will never give up phone even when life is affected")
+    Q8:  int = Field(..., ge=1, le=6, description="Constantly checking social media to not miss conversations")
+    Q9:  int = Field(..., ge=1, le=6, description="Using smartphone longer than intended")
+    Q10: int = Field(..., ge=1, le=6, description="Others say I use my smartphone too much")
 
     model_config = {
         "json_schema_extra": {
             "example": {
-                "gender": "F", "age": 20,
+                "gender": "F", "age": 21,
                 "usage_duration": 3, "social_media_usage": 1, "frequent_access": 3,
                 "Q1": 4, "Q2": 3, "Q3": 2, "Q4": 5, "Q5": 4,
                 "Q6": 3, "Q7": 4, "Q8": 5, "Q9": 4, "Q10": 3,
@@ -108,6 +112,10 @@ class PredictResponse(BaseModel):
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
 def _risk_level(prob: float) -> str:
+    """
+    Map XGBoost probability to four risk levels.
+    Thresholds defined in proposal Section 3.2 (Risk Score to Risk Level Mapping).
+    """
     if prob < 0.35:
         return "Low"
     if prob < 0.55:
@@ -118,12 +126,18 @@ def _risk_level(prob: float) -> str:
 
 
 def _addiction_category(req: PredictRequest) -> str:
-    if req.frequent_access == 4:
-        return "Gaming"
+    """
+    Rule-based dominant addiction category classifier.
+    Uses frequent_access field and Q8 (social media checking) as composite signals.
+    frequent_access values: 1=Search engine  2=Online games  3=Social media
+                            4=E-commerce  5=Other
+    """
     if req.frequent_access == 2:
-        return "Streaming"
+        return "Gaming"
     if req.frequent_access == 3 or (req.social_media_usage == 1 and req.Q8 >= 4):
         return "Social Media"
+    if req.usage_duration >= 3 and req.frequent_access in [1, 5]:
+        return "Streaming"
     return "General"
 
 
