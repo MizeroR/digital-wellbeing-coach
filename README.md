@@ -21,6 +21,10 @@ The system addresses a documented gap: no ML-based digital wellbeing tool has be
 5. 5–10 locally relevant Kigali activity recommendations are returned from a curated resource library
 **GitHub Repository:** https://github.com/MizeroR/digital-wellbeing-coach
 
+## Demo
+
+[Watch the demo video](https://drive.google.com/drive/folders/1JcNuJ-J8w5TfNEE0irXvVJESkuRfjKJ0?usp=sharing)
+
 ## Environment Setup
 
 ### 1. Run the ML notebook
@@ -111,12 +115,22 @@ Figma link: [figma](https://www.figma.com/design/Dce7R22yKo8F3dLhGrn2pM/DWC---Mo
 
 
 ## Deployment Plan
- 
-**Frontend** — Vercel (React)  
-**Backend** — Railway (Python / FastAPI)  
-**Database** — Supabase (PostgreSQL free tier)  
- 
-Full deployment instructions will be added when backend and frontend development is complete.
+
+**Backend** — Railway or Render (Python / FastAPI / Docker)  
+**Frontend** — Vercel (React / Next.js) — planned  
+**Database** — Supabase (PostgreSQL) — planned  
+
+The backend API is containerised via `Dockerfile` and deploys directly from the GitHub repository. Railway and Render both auto-detect the root `Dockerfile`. The `railway.toml` configures the `/health` liveness check and restart policy.
+
+**Live API:** https://digital-wellbeing-coach.onrender.com  
+**Swagger UI:** https://digital-wellbeing-coach.onrender.com/docs  
+**Health check:** https://digital-wellbeing-coach.onrender.com/health
+
+To redeploy:
+1. Connect this GitHub repo on [render.com](https://render.com)
+2. Select **Deploy from Dockerfile** — no additional config needed
+3. Instance type: Free — Render auto-injects `PORT`
+4. Verify: `GET /health` → `{"status":"ok","model_loaded":true}`
  
 ## Author
  
