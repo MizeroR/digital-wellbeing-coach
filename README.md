@@ -4,7 +4,7 @@
  
 [![Python](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-green.svg)](https://fastapi.tiangolo.com)
-[![React](https://img.shields.io/badge/React-Next.js_14-black.svg)](https://nextjs.org)
+[![React](https://img.shields.io/badge/React-Vite-61DAFB.svg)](https://react.dev)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
  
 ## Description
@@ -87,7 +87,7 @@ The Digital Wellbeing Coach uses a three-tier client-server architecture:
 
     ▼
 
-    React / Next.js  ──────────────────  Vercel (Frontend)
+    React / Vite     ──────────────────  Vercel (Frontend)
 
     │
 
@@ -117,11 +117,12 @@ Figma link: [figma](https://www.figma.com/design/Dce7R22yKo8F3dLhGrn2pM/DWC---Mo
 ## Deployment Plan
 
 **Backend** — Railway or Render (Python / FastAPI / Docker)  
-**Frontend** — Vercel (React / Next.js) — planned  
+**Frontend** — Vercel (React / Vite) — **[Live](https://digital-wellbeing-coach-ogkn8i5ao-dwc1.vercel.app/)**  
 **Database** — Supabase (PostgreSQL) — planned  
 
 The backend API is containerised via `Dockerfile` and deploys directly from the GitHub repository. Railway and Render both auto-detect the root `Dockerfile`. The `railway.toml` configures the `/health` liveness check and restart policy.
 
+**Live Frontend:** https://digital-wellbeing-coach-ogkn8i5ao-dwc1.vercel.app/  
 **Live API:** https://digital-wellbeing-coach.onrender.com  
 **Swagger UI:** https://digital-wellbeing-coach.onrender.com/docs  
 **Health check:** https://digital-wellbeing-coach.onrender.com/health
