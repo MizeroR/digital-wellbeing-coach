@@ -44,7 +44,7 @@ export default function SevereModal({ onConfirm }) {
         <p style={{ fontSize: '14px', color: '#374151', lineHeight: '1.65', marginBottom: '24px' }}>
           Please consider reaching out:<br />
           <strong>Rwanda Mental Health Help Line: 116</strong> (free, 24/7)<br />
-          <strong>Caraes Ndera Hospital:</strong> +250 252 586 422
+          <strong>Ndera Hospital:</strong> +250 781 447 928
         </p>
 
         <button
