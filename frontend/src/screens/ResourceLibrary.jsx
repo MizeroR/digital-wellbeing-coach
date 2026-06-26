@@ -16,14 +16,14 @@ export default function ResourceLibrary({ recommendations, onBack }) {
     <div style={s.page}>
       <div style={s.card}>
         {/* ── Header ── */}
-        <div style={{ padding: '24px 24px 0' }}>
+        <div style={{ marginBottom: '4px' }}>
           <button onClick={onBack} style={s.backBtn}>← Back to results</button>
           <h1 style={s.title}>Resource Library</h1>
           <p style={s.subtitle}>Real activities and resources for university students in Kigali</p>
         </div>
 
         {/* ── Emergency banner ── */}
-        <div style={{ padding: '0 24px 16px' }}>
+        <div style={{ marginBottom: '16px' }}>
           <div style={s.emergencyBanner}>
             <span style={{ fontSize: '18px', flexShrink: 0 }}>🆘</span>
             <div style={{ flex: 1 }}>
@@ -39,7 +39,7 @@ export default function ResourceLibrary({ recommendations, onBack }) {
         </div>
 
         {/* ── Filters ── */}
-        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', padding: '0 24px 16px' }}>
+        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '16px' }}>
           {FILTERS.map(f => (
             <button
               key={f}
@@ -78,20 +78,15 @@ export default function ResourceLibrary({ recommendations, onBack }) {
 
 const s = {
   page: {
-    background: '#f5f5f5',
     minHeight: 'calc(100vh - 52px)',
-    padding: '24px 16px 48px',
+    padding: '40px 20px 64px',
     display: 'flex',
     justifyContent: 'center',
   },
   card: {
-    background: '#fff',
-    border: '1px solid #e5e7eb',
-    borderRadius: '8px',
     width: '100%',
-    maxWidth: '700px',
+    maxWidth: '900px',
     height: 'fit-content',
-    overflow: 'hidden',
   },
   backBtn: {
     background: 'none',
@@ -135,8 +130,7 @@ const s = {
   },
   grid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
-    gap: '12px',
-    padding: '0 24px 24px',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
+    gap: '16px',
   },
 }

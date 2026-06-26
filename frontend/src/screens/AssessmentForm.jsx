@@ -365,19 +365,14 @@ function Field({ label, children }) {
 
 const s = {
   page: {
-    background: '#f5f5f5',
     minHeight: 'calc(100vh - 52px)',
-    padding: '24px 16px 48px',
+    padding: '40px 20px 64px',
     display: 'flex',
     justifyContent: 'center',
   },
   card: {
-    background: '#fff',
-    border: '1px dashed #1B6CA8',
-    borderRadius: '6px',
-    padding: '24px',
     width: '100%',
-    maxWidth: '560px',
+    maxWidth: '640px',
     height: 'fit-content',
   },
   title: {
@@ -394,8 +389,8 @@ const s = {
     marginBottom: '4px',
   },
   divider: {
-    borderTop: '1px dashed #1B6CA8',
-    margin: '24px 0 16px',
+    borderTop: '1px solid #e5e7eb',
+    margin: '28px 0 20px',
   },
   sectionLabel: {
     fontSize: '11px',

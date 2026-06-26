@@ -42,25 +42,27 @@ export default function ResultsDashboard({ results, onViewLibrary, onBack }) {
       <div style={s.page}>
         <div style={s.card}>
           {/* ── Risk header ── */}
-          <div style={{ ...s.riskSection, borderLeft: `4px solid ${riskColor}` }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '12px' }}>
-              <div style={{ flex: 1 }}>
-                <RiskBadge level={results.risk_level} />
-                <h1 style={s.headline}>{headline}</h1>
-                <p style={s.subtext}>
-                  This is a starting point for reflection — not a verdict. The three factors below are what is driving your result.
-                </p>
+          <div style={s.riskSection}>
+            <div style={{ borderLeft: `4px solid ${riskColor}`, paddingLeft: '16px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '12px' }}>
+                <div style={{ flex: 1 }}>
+                  <RiskBadge level={results.risk_level} />
+                  <h1 style={s.headline}>{headline}</h1>
+                  <p style={s.subtext}>
+                    This is a starting point for reflection — not a verdict. The three factors below are what is driving your result.
+                  </p>
+                </div>
+                <div style={s.bigPercent}>{Math.round(results.confidence)}%</div>
               </div>
-              <div style={s.bigPercent}>{Math.round(results.confidence)}%</div>
-            </div>
 
-            <div style={{ marginTop: '16px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#6b7280', marginBottom: '5px' }}>
-                <span>Model confidence</span>
-                <span>{Math.round(results.confidence)}%</span>
-              </div>
-              <div style={s.track}>
-                <div style={{ ...s.fill, width: `${results.confidence}%`, background: riskColor }} />
+              <div style={{ marginTop: '16px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#6b7280', marginBottom: '5px' }}>
+                  <span>Model confidence</span>
+                  <span>{Math.round(results.confidence)}%</span>
+                </div>
+                <div style={s.track}>
+                  <div style={{ ...s.fill, width: `${results.confidence}%`, background: riskColor }} />
+                </div>
               </div>
             </div>
           </div>
@@ -103,16 +105,9 @@ export default function ResultsDashboard({ results, onViewLibrary, onBack }) {
             </div>
           )}
 
-          {/* ── Feedback placeholder ── */}
+          {/* ── Feedback ── */}
           <div style={s.section}>
-            <div style={s.feedbackBox}>
-              <p style={{ fontSize: '13px', fontWeight: '600', color: '#2E4057', marginBottom: '6px' }}>
-                Help improve this tool
-              </p>
-              <p style={{ fontSize: '12px', color: '#6b7280' }}>
-                Please rate your experience. This takes 2 minutes and directly improves the tool for future students.
-              </p>
-            </div>
+            <FeedbackWidget riskLevel={results.risk_level} />
           </div>
 
           {/* ── Actions ── */}
@@ -125,7 +120,7 @@ export default function ResultsDashboard({ results, onViewLibrary, onBack }) {
             </button>
           </div>
 
-          <div style={{ textAlign: 'center', padding: '8px 24px 20px' }}>
+          <div style={{ textAlign: 'center', padding: '16px 0 8px' }}>
             <a
               href="mailto:r.mizero@alustudent.com?subject=Data deletion request"
               style={{ fontSize: '12px', color: '#9ca3af', textDecoration: 'underline' }}
@@ -139,25 +134,127 @@ export default function ResultsDashboard({ results, onViewLibrary, onBack }) {
   )
 }
 
+function FeedbackWidget({ riskLevel }) {
+  const [hovered, setHovered] = useState(null)
+  const [selected, setSelected] = useState(null)
+  const [comment, setComment] = useState('')
+  const [submitted, setSubmitted] = useState(false)
+
+  async function handleSubmit() {
+    setSubmitted(true)
+    try {
+      await fetch(`${import.meta.env.VITE_API_URL || 'https://digital-wellbeing-coach.onrender.com'}/feedback`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ rating: selected, comment, riskLevel }),
+      })
+    } catch {}
+  }
+
+  if (submitted) {
+    return (
+      <div style={{ background: '#f0fdf4', border: '1px solid #bbf7d0', borderRadius: '8px', padding: '20px', textAlign: 'center' }}>
+        <p style={{ fontSize: '22px', margin: '0 0 8px' }}>🙏</p>
+        <p style={{ fontSize: '14px', fontWeight: '600', color: '#166534', margin: '0 0 4px' }}>Thank you for your feedback!</p>
+        <p style={{ fontSize: '13px', color: '#4ade80', margin: 0, color: '#16a34a' }}>Your response helps improve this tool for future students.</p>
+      </div>
+    )
+  }
+
+  const LABELS = { 1: 'Poor', 2: 'Fair', 3: 'Good', 4: 'Very good', 5: 'Excellent' }
+  const active = hovered ?? selected
+
+  return (
+    <div style={{ background: '#f8fafc', border: '1px solid #e5e7eb', borderRadius: '8px', padding: '20px' }}>
+      <p style={{ fontSize: '13px', fontWeight: '600', color: '#2E4057', margin: '0 0 4px' }}>
+        Help improve this tool
+      </p>
+      <p style={{ fontSize: '12px', color: '#6b7280', margin: '0 0 16px' }}>
+        How useful did you find your results? This takes under a minute.
+      </p>
+
+      {/* Stars */}
+      <div style={{ display: 'flex', gap: '6px', alignItems: 'center', marginBottom: '8px' }}>
+        {[1, 2, 3, 4, 5].map(n => (
+          <button
+            key={n}
+            type="button"
+            onClick={() => setSelected(n)}
+            onMouseEnter={() => setHovered(n)}
+            onMouseLeave={() => setHovered(null)}
+            style={{
+              background: 'none', border: 'none', cursor: 'pointer', padding: '2px',
+              fontSize: '28px', lineHeight: 1,
+              filter: n <= (active ?? 0) ? 'none' : 'grayscale(1) opacity(0.35)',
+              transform: n <= (active ?? 0) ? 'scale(1.1)' : 'scale(1)',
+              transition: 'transform 0.1s, filter 0.1s',
+            }}
+          >
+            ⭐
+          </button>
+        ))}
+        {active && (
+          <span style={{ fontSize: '12px', color: '#6b7280', marginLeft: '6px' }}>
+            {LABELS[active]}
+          </span>
+        )}
+      </div>
+
+      {/* Comment */}
+      {selected && (
+        <>
+          <textarea
+            style={{
+              width: '100%', boxSizing: 'border-box',
+              padding: '8px 12px', border: '1px solid #e5e7eb', borderRadius: '6px',
+              fontSize: '13px', fontFamily: 'inherit', color: '#374151',
+              resize: 'vertical', minHeight: '72px', marginTop: '8px',
+              background: '#fff',
+            }}
+            placeholder="Any comments? (optional)"
+            value={comment}
+            onChange={e => setComment(e.target.value)}
+          />
+          <button
+            type="button"
+            onClick={handleSubmit}
+            style={{
+              marginTop: '10px',
+              padding: '9px 20px',
+              background: '#2E4057',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '6px',
+              fontSize: '13px',
+              fontWeight: '600',
+              cursor: 'pointer',
+              fontFamily: 'inherit',
+            }}
+          >
+            Submit feedback
+          </button>
+        </>
+      )}
+    </div>
+  )
+}
+
 const s = {
   page: {
-    background: '#f5f5f5',
     minHeight: 'calc(100vh - 52px)',
-    padding: '24px 16px 48px',
+    padding: '40px 20px 64px',
     display: 'flex',
     justifyContent: 'center',
   },
   card: {
-    background: '#fff',
-    border: '1px solid #e5e7eb',
-    borderRadius: '8px',
     width: '100%',
-    maxWidth: '560px',
+    maxWidth: '720px',
     height: 'fit-content',
-    overflow: 'hidden',
   },
   riskSection: {
-    padding: '24px',
+    padding: '0 0 28px',
+    borderBottom: '1px solid #e5e7eb',
+    marginBottom: '0',
   },
   headline: {
     fontSize: '20px',
@@ -191,8 +288,8 @@ const s = {
     transition: 'width 0.9s ease',
   },
   section: {
-    padding: '20px 24px',
-    borderTop: '1px solid #f3f4f6',
+    padding: '24px 0',
+    borderTop: '1px solid #e5e7eb',
   },
   sectionLabel: {
     fontSize: '11px',
@@ -225,7 +322,7 @@ const s = {
     padding: '16px',
   },
   actions: {
-    padding: '4px 24px 4px',
+    padding: '4px 0',
     display: 'flex',
     flexDirection: 'column',
     gap: '8px',
