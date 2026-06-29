@@ -11,6 +11,8 @@ Run locally:
 Swagger UI:
     http://localhost:8000/docs
 """
+import os
+import uuid
 from contextlib import asynccontextmanager
 from pathlib import Path
 
@@ -20,6 +22,7 @@ import shap
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
+from supabase import create_client, Client
 
 try:
     from resources import RECOMMENDATIONS, SHAP_TEMPLATES
@@ -36,17 +39,28 @@ FEATURE_COLS = [
 
 _model     = None
 _explainer = None
+_supabase: Client | None = None
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    global _model, _explainer
+    global _model, _explainer, _supabase
     if not MODEL_PATH.exists():
         raise RuntimeError(
             "model.joblib not found. Run `python backend/train_model.py` first."
         )
     _model     = joblib.load(MODEL_PATH)
     _explainer = shap.TreeExplainer(_model)
+
+    supabase_url = os.environ.get("SUPABASE_URL")
+    supabase_key = os.environ.get("SUPABASE_KEY")
+    if supabase_url and supabase_key:
+        _supabase = create_client(supabase_url, supabase_key)
+        print("Supabase client initialized.")
+    else:
+        _supabase = None
+        print("Supabase credentials not found — running without database storage.")
+
     yield
 
 
@@ -167,7 +181,7 @@ def predict(req: PredictRequest) -> PredictResponse:
     category        = _addiction_category(req)
     recommendations = RECOMMENDATIONS.get(category, RECOMMENDATIONS["General"])
 
-    return PredictResponse(
+    response = PredictResponse(
         risk_level         = risk_level,
         confidence         = round(prob * 100, 1),
         sas_total          = sas_total,
@@ -175,6 +189,31 @@ def predict(req: PredictRequest) -> PredictResponse:
         explanations       = explanations,
         recommendations    = recommendations,
     )
+
+    session_id = str(uuid.uuid4())
+    if _supabase:
+        try:
+            _supabase.table("assessment").insert({
+                "session_id":          session_id,
+                "age":                 req.age,
+                "gender":              req.gender,
+                "usage_duration":      req.usage_duration,
+                "social_media_usage":  req.social_media_usage,
+                "frequent_access":     req.frequent_access,
+                "q1":  req.Q1,  "q2":  req.Q2,  "q3":  req.Q3,
+                "q4":  req.Q4,  "q5":  req.Q5,  "q6":  req.Q6,
+                "q7":  req.Q7,  "q8":  req.Q8,  "q9":  req.Q9,
+                "q10": req.Q10,
+                "sas_total":           sas_total,
+                "risk_level":          risk_level,
+                "confidence":          round(prob * 100, 1),
+                "addiction_category":  category,
+            }).execute()
+            print(f"Assessment saved to database: session {session_id}")
+        except Exception as e:
+            print(f"Database write failed (non-critical): {e}")
+
+    return response
 
 
 @app.get("/health", summary="Health check")
