@@ -117,7 +117,7 @@ Figma link: [figma](https://www.figma.com/design/Dce7R22yKo8F3dLhGrn2pM/DWC---Mo
 ## Deployment Plan
 
 **Backend** — Railway or Render (Python / FastAPI / Docker)  
-**Frontend** — Vercel (React / Vite) — **[Live](https://digital-wellbeing-coach-ogkn8i5ao-dwc1.vercel.app/)**  
+**Frontend** — Vercel (React / Vite) — **[Live](https://digital-wellbeing-coach.vercel.app/)**  
 **Database** — Supabase (PostgreSQL) — planned  
 
 The backend API is containerised via `Dockerfile` and deploys directly from the GitHub repository. Railway and Render both auto-detect the root `Dockerfile`. The `railway.toml` configures the `/health` liveness check and restart policy.
