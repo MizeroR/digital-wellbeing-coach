@@ -15,6 +15,7 @@ import os
 import uuid
 from contextlib import asynccontextmanager
 from pathlib import Path
+from typing import Optional
 
 import joblib
 import numpy as np
@@ -109,6 +110,10 @@ class PredictRequest(BaseModel):
     Q8:  int = Field(..., ge=1, le=6, description="Constantly checking social media to not miss conversations")
     Q9:  int = Field(..., ge=1, le=6, description="Using smartphone longer than intended")
     Q10: int = Field(..., ge=1, le=6, description="Others say I use my smartphone too much")
+
+    unlock_freq: Optional[str] = None
+    late_night:  Optional[str] = None
+    university:  Optional[str] = None
 
     model_config = {
         "json_schema_extra": {
@@ -223,6 +228,9 @@ def predict(req: PredictRequest) -> PredictResponse:
                 "risk_level":          risk_level,
                 "confidence":          round(prob * 100, 1),
                 "addiction_category":  category,
+                "unlock_freq":         req.unlock_freq,
+                "late_night":          req.late_night,
+                "university":          req.university,
             }).execute()
             print(f"Assessment saved to database: session {session_id}")
         except Exception as e:

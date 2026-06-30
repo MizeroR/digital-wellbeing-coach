@@ -51,16 +51,21 @@ function buildPayload(form) {
   const ACCESS_MAP = { socialMedia: 3, gaming: 2, streaming: 5, messaging: 5, other: 5 }
 
   return {
-    gender:            form.gender === 'Male' ? 'M' : 'F',
-    age:               parseInt(form.age),
-    usage_duration:    usageDuration,
+    gender:             form.gender === 'Male' ? 'M' : 'F',
+    age:                parseInt(form.age),
+    usage_duration:     usageDuration,
     social_media_usage: hours.socialMedia >= 1 ? 1 : 0,
-    frequent_access:   ACCESS_MAP[maxKey] || 5,
+    frequent_access:    ACCESS_MAP[maxKey] || 5,
     Q1:  parseInt(form.Q1),  Q2:  parseInt(form.Q2),
     Q3:  parseInt(form.Q3),  Q4:  parseInt(form.Q4),
     Q5:  parseInt(form.Q5),  Q6:  parseInt(form.Q6),
     Q7:  parseInt(form.Q7),  Q8:  parseInt(form.Q8),
     Q9:  parseInt(form.Q9),  Q10: parseInt(form.Q10),
+    unlock_freq: form.unlockFreq || null,
+    late_night:  form.lateNight  || null,
+    university:  form.university === 'Other'
+      ? (form.universityOther.trim() || 'Other')
+      : (form.university || null),
   }
 }
 
@@ -93,7 +98,7 @@ function RadioGroup({ options, value, onChange }) {
 
 export default function AssessmentForm({ onResults }) {
   const [form, setForm] = useState({
-    age: '', gender: '', university: '',
+    age: '', gender: '', university: '', universityOther: '',
     socialMedia: '', gaming: '', streaming: '', messaging: '', other: '',
     unlockFreq: '', lateNight: '',
     Q1: '', Q2: '', Q3: '', Q4: '', Q5: '',
@@ -181,6 +186,17 @@ export default function AssessmentForm({ onResults }) {
               <option value="Other">Other</option>
             </select>
           </Field>
+          {form.university === 'Other' && (
+            <Field label="Please specify your university">
+              <input
+                type="text"
+                placeholder="Enter your university name"
+                value={form.universityOther}
+                onChange={e => set('universityOther', e.target.value)}
+                style={{ ...s.select, padding: '8px 12px' }}
+              />
+            </Field>
+          )}
 
           {/* ── SECTION B ── */}
           <div style={s.divider} />
