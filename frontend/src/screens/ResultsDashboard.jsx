@@ -120,14 +120,6 @@ export default function ResultsDashboard({ results, onViewLibrary, onBack }) {
             </button>
           </div>
 
-          <div style={{ textAlign: 'center', padding: '16px 0 8px' }}>
-            <a
-              href="mailto:r.mizero@alustudent.com?subject=Data deletion request"
-              style={{ fontSize: '12px', color: '#9ca3af', textDecoration: 'underline' }}
-            >
-              Request data deletion
-            </a>
-          </div>
         </div>
       </div>
     </>
