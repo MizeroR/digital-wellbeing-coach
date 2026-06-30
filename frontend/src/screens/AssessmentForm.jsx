@@ -93,7 +93,7 @@ function RadioGroup({ options, value, onChange }) {
 
 export default function AssessmentForm({ onResults }) {
   const [form, setForm] = useState({
-    age: '', gender: '', university: '', enrolled: '',
+    age: '', gender: '', university: '',
     socialMedia: '', gaming: '', streaming: '', messaging: '', other: '',
     unlockFreq: '', lateNight: '',
     Q1: '', Q2: '', Q3: '', Q4: '', Q5: '',
@@ -179,14 +179,6 @@ export default function AssessmentForm({ onResults }) {
               <option value="AUCA">Adventist University of Central Africa (AUCA)</option>
               <option value="UR">University of Rwanda</option>
               <option value="Other">Other</option>
-            </select>
-          </Field>
-
-          <Field label="Are you currently enrolled as a student?">
-            <select style={s.select} value={form.enrolled} onChange={e => set('enrolled', e.target.value)}>
-              <option value="">Select</option>
-              <option>Yes</option>
-              <option>No</option>
             </select>
           </Field>
 

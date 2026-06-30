@@ -2,24 +2,6 @@ import { useState } from 'react'
 
 export default function ConsentScreen({ onConsent, onDecline }) {
   const [participation, setParticipation] = useState('')
-  const [identityDisclosure, setIdentityDisclosure] = useState([])
-  const [recordingPermission, setRecordingPermission] = useState('')
-  const [participantName, setParticipantName] = useState('')
-
-  const now = new Date()
-  const dateStr = now.toLocaleDateString('en-GB', { day: '2-digit', month: 'long', year: 'numeric' })
-  const timeStr = now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })
-
-  function toggleIdentity(val) {
-    if (val === 'None') {
-      setIdentityDisclosure(['None'])
-      return
-    }
-    setIdentityDisclosure(prev => {
-      const without = prev.filter(v => v !== 'None')
-      return without.includes(val) ? without.filter(v => v !== val) : [...without, val]
-    })
-  }
 
   function handleParticipationChoice(choice) {
     setParticipation(choice)
@@ -70,10 +52,9 @@ export default function ConsentScreen({ onConsent, onDecline }) {
             desire for comment prior to finalisation so as to allow your response to be included in any published work.
           </Term>
           <Term>
-            <strong>Privacy:</strong> We would like permission to indicate your name and position/title in any publications
-            where direct quotations or references to information you provide are used. If you do not grant permission, only
-            the name of your department or organisation and a generic position title will be used. Your name and actual
-            position title will remain confidential.
+            <strong>Privacy:</strong> All responses collected through this tool are completely anonymous. No name, email
+            address, student ID, or any other identifying information is stored. Your identity will remain confidential
+            at all stages of the research.
           </Term>
           <Term>
             <strong>Interviews:</strong> In the instance where a one-on-one interview is requested to delve deeper into
@@ -85,75 +66,30 @@ export default function ConsentScreen({ onConsent, onDecline }) {
         <div style={s.divider} />
 
         {/* ── Participation Permission ── */}
-        <Section title="Participation Permission">
-          <RadioRow
-            label="I agree to participate in the study."
-            checked={participation === 'agree'}
-            onChange={() => handleParticipationChoice('agree')}
-          />
-          <RadioRow
-            label="I do not agree to participate."
-            checked={participation === 'decline'}
-            onChange={() => handleParticipationChoice('decline')}
-          />
-        </Section>
-
-        {/* ── Identity Disclosure ── */}
-        <Section title="Identity Disclosure: In the event of publications, I give permission to indicate:">
-          {['My name', 'My position title', 'Phone (mobile) number', 'None'].map(opt => (
-            <CheckRow
-              key={opt}
-              label={opt}
-              checked={identityDisclosure.includes(opt)}
-              onChange={() => toggleIdentity(opt)}
+        <div style={{ marginBottom: '24px' }}>
+          <p style={s.sectionTitle}>Participation Permission</p>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', paddingLeft: '4px' }}>
+            <RadioRow
+              label="I agree to participate in the study."
+              checked={participation === 'agree'}
+              onChange={() => handleParticipationChoice('agree')}
             />
-          ))}
-        </Section>
-
-        {/* ── Recording Permission ── */}
-        <Section title="Interviews — Recording Permission (audio-visual)">
-          <RadioRow
-            label="I give permission to be recorded"
-            checked={recordingPermission === 'yes'}
-            onChange={() => setRecordingPermission('yes')}
-          />
-          <RadioRow
-            label="I do not give permission to be recorded"
-            checked={recordingPermission === 'no'}
-            onChange={() => setRecordingPermission('no')}
-          />
-        </Section>
-
-        <div style={s.divider} />
-
-        {/* ── Signature block ── */}
-        <p style={s.body}>
-          By proceeding, you are indicating that you understand the procedures described above, your questions have been
-          answered to your satisfaction, and that you have seen and approved the information on this form.
-        </p>
-
-        <div style={s.sigGrid}>
-          <Field label="Participant Name (Optional)">
-            <input
-              style={s.input}
-              type="text"
-              placeholder="Enter your name (optional)"
-              value={participantName}
-              onChange={e => setParticipantName(e.target.value)}
+            <RadioRow
+              label="I do not agree to participate."
+              checked={participation === 'decline'}
+              onChange={() => handleParticipationChoice('decline')}
             />
-          </Field>
-          <Field label="Date">
-            <input style={{ ...s.input, background: '#f9fafb', color: '#6b7280' }} readOnly value={dateStr} />
-          </Field>
-          <Field label="Time">
-            <input style={{ ...s.input, background: '#f9fafb', color: '#6b7280' }} readOnly value={timeStr} />
-          </Field>
+          </div>
         </div>
 
         {/* ── Actions ── */}
         <div style={s.actions}>
           <button
-            style={{ ...s.primaryBtn, opacity: participation === 'agree' ? 1 : 0.4, cursor: participation === 'agree' ? 'pointer' : 'not-allowed' }}
+            style={{
+              ...s.primaryBtn,
+              opacity: participation === 'agree' ? 1 : 0.4,
+              cursor: participation === 'agree' ? 'pointer' : 'not-allowed',
+            }}
             disabled={participation !== 'agree'}
             onClick={onConsent}
           >
@@ -178,17 +114,6 @@ function Term({ children }) {
   )
 }
 
-function Section({ title, children }) {
-  return (
-    <div style={{ marginBottom: '24px' }}>
-      <p style={s.sectionTitle}>{title}</p>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', paddingLeft: '4px' }}>
-        {children}
-      </div>
-    </div>
-  )
-}
-
 function RadioRow({ label, checked, onChange }) {
   return (
     <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
@@ -203,34 +128,6 @@ function RadioRow({ label, checked, onChange }) {
       <input type="radio" checked={checked} onChange={onChange} style={{ position: 'absolute', opacity: 0, width: 0 }} />
       <span style={{ fontSize: '14px', color: '#374151' }}>{label}</span>
     </label>
-  )
-}
-
-function CheckRow({ label, checked, onChange }) {
-  return (
-    <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
-      <div style={{
-        width: '18px', height: '18px', borderRadius: '4px', flexShrink: 0,
-        border: `2px solid ${checked ? '#1B6CA8' : '#d1d5db'}`,
-        background: checked ? '#1B6CA8' : '#fff',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-      }}>
-        {checked && <span style={{ color: '#fff', fontSize: '11px', fontWeight: '700', lineHeight: 1 }}>✓</span>}
-      </div>
-      <input type="checkbox" checked={checked} onChange={onChange} style={{ position: 'absolute', opacity: 0, width: 0 }} />
-      <span style={{ fontSize: '14px', color: '#374151' }}>{label}</span>
-    </label>
-  )
-}
-
-function Field({ label, children }) {
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-      <label style={{ fontSize: '12px', fontWeight: '600', color: '#6b7280', textTransform: 'uppercase', letterSpacing: '0.4px' }}>
-        {label}
-      </label>
-      {children}
-    </div>
   )
 }
 
@@ -273,7 +170,6 @@ const s = {
   },
   termsList: {
     margin: '20px 0 0',
-    paddingLeft: '0',
   },
   divider: {
     borderTop: '1px solid #e5e7eb',
@@ -285,24 +181,8 @@ const s = {
     color: '#2E4057',
     margin: '0 0 12px',
   },
-  sigGrid: {
-    display: 'grid',
-    gridTemplateColumns: '1fr 1fr 1fr',
-    gap: '12px',
-    margin: '20px 0 0',
-  },
-  input: {
-    padding: '8px 12px',
-    border: '1px solid #e5e7eb',
-    borderRadius: '6px',
-    fontSize: '14px',
-    color: '#2E4057',
-    fontFamily: 'inherit',
-    width: '100%',
-    boxSizing: 'border-box',
-  },
   actions: {
-    marginTop: '32px',
+    marginTop: '8px',
     paddingTop: '24px',
     borderTop: '1px solid #e5e7eb',
   },
