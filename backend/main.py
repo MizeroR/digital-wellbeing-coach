@@ -122,6 +122,12 @@ class PredictRequest(BaseModel):
     }
 
 
+class FeedbackRequest(BaseModel):
+    rating:    int = Field(..., ge=1, le=5)
+    comment:   str = ""
+    riskLevel: str = ""
+
+
 class PredictResponse(BaseModel):
     risk_level:          str
     confidence:          float
@@ -227,6 +233,20 @@ def predict(req: PredictRequest) -> PredictResponse:
         print("Skipping database write — Supabase client not initialized.")
 
     return response
+
+
+@app.post("/feedback", summary="Submit UX feedback")
+def submit_feedback(req: FeedbackRequest) -> dict:
+    if _supabase:
+        try:
+            _supabase.table("feedback").insert({
+                "rating":    req.rating,
+                "comment":   req.comment,
+                "risk_level": req.riskLevel,
+            }).execute()
+        except Exception as e:
+            print(f"Feedback write failed: {type(e).__name__}: {e}")
+    return {"status": "ok"}
 
 
 @app.get("/health", summary="Health check")
