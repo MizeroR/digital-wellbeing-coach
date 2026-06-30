@@ -54,9 +54,17 @@ async def lifespan(app: FastAPI):
 
     supabase_url = os.environ.get("SUPABASE_URL")
     supabase_key = os.environ.get("SUPABASE_KEY")
+    print(f"SUPABASE_URL present: {bool(supabase_url)}")
+    print(f"SUPABASE_KEY present: {bool(supabase_key)}")
     if supabase_url and supabase_key:
-        _supabase = create_client(supabase_url, supabase_key)
-        print("Supabase client initialized.")
+        try:
+            _supabase = create_client(supabase_url, supabase_key)
+            print("Supabase client initialized successfully.")
+        except Exception as e:
+            import traceback
+            _supabase = None
+            print(f"Supabase client init failed: {type(e).__name__}: {e}")
+            print(traceback.format_exc())
     else:
         _supabase = None
         print("Supabase credentials not found — running without database storage.")
@@ -193,6 +201,7 @@ def predict(req: PredictRequest) -> PredictResponse:
     session_id = str(uuid.uuid4())
     if _supabase:
         try:
+            print(f"Attempting database insert for session {session_id}...")
             _supabase.table("assessment").insert({
                 "session_id":          session_id,
                 "age":                 req.age,
@@ -211,7 +220,11 @@ def predict(req: PredictRequest) -> PredictResponse:
             }).execute()
             print(f"Assessment saved to database: session {session_id}")
         except Exception as e:
-            print(f"Database write failed (non-critical): {e}")
+            import traceback
+            print(f"Database write failed: {type(e).__name__}: {e}")
+            print(traceback.format_exc())
+    else:
+        print("Skipping database write — Supabase client not initialized.")
 
     return response
 
