@@ -248,12 +248,17 @@ def submit_feedback(req: FeedbackRequest) -> dict:
     if _supabase:
         try:
             _supabase.table("feedback").insert({
-                "rating":    req.rating,
-                "comment":   req.comment,
+                "rating":     req.rating,
+                "comment":    req.comment,
                 "risk_level": req.riskLevel,
             }).execute()
+            print(f"Feedback saved: rating={req.rating}")
         except Exception as e:
+            import traceback
             print(f"Feedback write failed: {type(e).__name__}: {e}")
+            print(traceback.format_exc())
+    else:
+        print("Feedback skipped — Supabase not initialized.")
     return {"status": "ok"}
 
 
