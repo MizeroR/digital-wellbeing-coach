@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import RiskBadge from '../components/RiskBadge'
 import ExplanationCard from '../components/ExplanationCard'
 import RecommendationCard from '../components/RecommendationCard'
@@ -28,6 +28,8 @@ const CATEGORY_EMOJI = {
 export default function ResultsDashboard({ results, onViewLibrary, onBack }) {
   const [showModal, setShowModal] = useState(results.risk_level === 'Severe')
   const [confirmed, setConfirmed] = useState(results.risk_level !== 'Severe')
+
+  useEffect(() => { window.scrollTo(0, 0) }, [])
 
   const riskColor = RISK_COLOR[results.risk_level] || '#F4A261'
   const headline  = RISK_HEADLINE[results.risk_level] || 'Your results are ready'

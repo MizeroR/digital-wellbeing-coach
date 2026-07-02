@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { predict } from '../api'
 import ProgressBar from '../components/ProgressBar'
 
@@ -106,6 +106,8 @@ export default function AssessmentForm({ onResults }) {
   })
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+
+  useEffect(() => { window.scrollTo(0, 0) }, [])
 
   const set = (key, val) => setForm(f => ({ ...f, [key]: val }))
 
