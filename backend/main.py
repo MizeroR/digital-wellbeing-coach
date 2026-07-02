@@ -144,16 +144,17 @@ class PredictResponse(BaseModel):
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
-def _risk_level(prob: float) -> str:
+def _risk_level(sas_total: int) -> str:
     """
-    Map XGBoost probability to four risk levels.
-    Thresholds defined in proposal Section 3.2 (Risk Score to Risk Level Mapping).
+    Map SAS-SV total score to four risk levels.
+    Thresholds derived from training data: not-addicted group max=32 (mean=26.8),
+    addicted group 75th percentile=41. Binary ML model confirms addiction status.
     """
-    if prob < 0.35:
+    if sas_total <= 26:
         return "Low"
-    if prob < 0.55:
+    if sas_total <= 32:
         return "Moderate"
-    if prob < 0.78:
+    if sas_total <= 41:
         return "High"
     return "Severe"
 
@@ -190,7 +191,7 @@ def predict(req: PredictRequest) -> PredictResponse:
     X = np.array([features], dtype=float)
 
     prob       = float(_model.predict_proba(X)[0][1])
-    risk_level = _risk_level(prob)
+    risk_level = _risk_level(sas_total)
 
     shap_vals = _explainer.shap_values(X)
     sv        = shap_vals[1][0] if isinstance(shap_vals, list) else shap_vals[0]

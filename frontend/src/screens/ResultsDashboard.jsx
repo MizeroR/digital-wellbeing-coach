@@ -52,16 +52,19 @@ export default function ResultsDashboard({ results, onViewLibrary, onBack }) {
                     This is a starting point for reflection — not a verdict. The three factors below are what is driving your result.
                   </p>
                 </div>
-                <div style={s.bigPercent}>{Math.round(results.confidence)}%</div>
+                <div style={{ textAlign: 'right' }}>
+                  <div style={s.bigPercent}>{results.sas_total}</div>
+                  <div style={{ fontSize: '11px', color: '#9ca3af', marginTop: '2px' }}>out of 60</div>
+                </div>
               </div>
 
               <div style={{ marginTop: '16px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', color: '#6b7280', marginBottom: '5px' }}>
-                  <span>Model confidence</span>
-                  <span>{Math.round(results.confidence)}%</span>
+                  <span>SAS Score</span>
+                  <span>{results.sas_total} / 60</span>
                 </div>
                 <div style={s.track}>
-                  <div style={{ ...s.fill, width: `${results.confidence}%`, background: riskColor }} />
+                  <div style={{ ...s.fill, width: `${(results.sas_total / 60) * 100}%`, background: riskColor }} />
                 </div>
               </div>
             </div>
