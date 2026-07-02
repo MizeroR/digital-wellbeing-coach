@@ -87,15 +87,23 @@ export default function ResultsDashboard({ results, onViewLibrary, onBack }) {
           {/* ── Dominant pattern ── */}
           <div style={s.section}>
             <p style={s.sectionLabel}>Your dominant usage pattern</p>
-            <div style={s.patternBadge}>
-              <span>{emoji}</span>
-              <span style={{ fontWeight: '600', fontSize: '14px' }}>{results.addiction_category}</span>
-            </div>
-            <p style={{ fontSize: '13px', color: '#6b7280', marginTop: '10px', lineHeight: '1.55' }}>
-              Your usage is most concentrated around {results.addiction_category?.toLowerCase()} platforms.
-              The recommendations below are tailored to redirect this pattern toward constructive alternatives
-              that occupy the same motivational space.
-            </p>
+            {results.risk_level === 'Low' ? (
+              <p style={{ fontSize: '13px', color: '#6b7280', lineHeight: '1.55', margin: 0 }}>
+                Your usage pattern does not show a dominant addiction category. This is consistent with your Low risk score.
+              </p>
+            ) : (
+              <>
+                <div style={s.patternBadge}>
+                  <span>{emoji}</span>
+                  <span style={{ fontWeight: '600', fontSize: '14px' }}>{results.addiction_category}</span>
+                </div>
+                <p style={{ fontSize: '13px', color: '#6b7280', marginTop: '10px', lineHeight: '1.55' }}>
+                  Your usage is most concentrated around {results.addiction_category?.toLowerCase()} platforms.
+                  The recommendations below are tailored to redirect this pattern toward constructive alternatives
+                  that occupy the same motivational space.
+                </p>
+              </>
+            )}
           </div>
 
           {/* ── Recommendations ── */}
