@@ -5,3 +5,4 @@ __pycache__/
 *.pyo
 # backend/model.joblib  # committed — 98 KB, needed for Railway cold start
 .env
+.vscode/
