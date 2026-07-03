@@ -33,7 +33,7 @@ The system addresses a documented gap: no ML-based digital wellbeing tool has be
 
 ## Demo
 
-[Watch the 5-minute demo video](https://drive.google.com/drive/folders/1JcNuJ-J8w5TfNEE0irXvVJESkuRfjKJ0?usp=sharing)
+[Watch the 5-minute demo video](https://youtu.be/B7quNMV9C2E)
 
 ---
 
