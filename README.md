@@ -140,6 +140,54 @@ Figma link: [View mockups](https://www.figma.com/design/Dce7R22yKo8F3dLhGrn2pM/D
 
 ---
 
+## Screenshots
+
+### Consent Screen
+![Consent Screen](demo/consent.png)
+
+### Risk Level Results
+| Low (SAS 10/60) | Moderate (SAS 30/60) |
+|---|---|
+| ![Low Risk](demo/low-risk.png) | ![Moderate Risk](demo/moderate-risk-social-media.png) |
+
+| High (SAS 40/60) | Severe (SAS 50/60) |
+|---|---|
+| ![High Risk](demo/high-risk-gaming.png) | ![Severe Risk](demo/severe-risk-gaming.png) |
+
+### Edge Cases
+| Form Validation Error | Mobile View |
+|---|---|
+| ![Validation Error](demo/form-validation-error.png) | ![Mobile View](demo/mobile-view.png) |
+
+---
+
+## Analysis
+
+### What was achieved
+
+All core functionalities defined in the project proposal were successfully implemented and deployed:
+
+- Informed consent screen matching the research ethics document
+- Structured self-report form collecting demographics, app usage patterns, and the validated SAS-SV questionnaire
+- XGBoost classifier producing risk predictions with TreeSHAP explanations
+- Rule-based addiction category classifier (Social Media, Gaming, Streaming, General)
+- Curated resource library of locally relevant Kigali activity recommendations filtered by addiction category
+- Anonymous data storage to Supabase PostgreSQL for research analysis
+- User feedback collection (star ratings and comments)
+- Full deployment: React frontend on Vercel, FastAPI backend on Render, database on Supabase
+
+### What changed from the proposal
+
+**Risk categorisation method:** The original design mapped the ML model's output probability to four risk levels. During testing, the binary XGBoost model consistently produced probabilities near 0% or 100%, making the four-level categorisation meaningless in practice. Analysis of the training data confirmed the model learned a near-perfect binary boundary — SAS scores below ~30 mapped to not addicted, above ~31 to addicted, with almost no overlap. The risk level was re-derived directly from the SAS-SV total score using thresholds grounded in the training data distribution (Low ≤26, Moderate 27–32, High 33–41, Severe ≥42). The ML model still runs on every submission and its probability is stored in the database as a secondary signal.
+
+### Identified limitations
+
+**Training data age mismatch:** The dataset used to train the XGBoost model contains respondents aged 11–16 — school children, not university students aged 18–25 as targeted by this tool. While smartphone addiction behavioural patterns may generalise across age groups, this is a limitation that affects the strict validity of the model for the target population. Future work should collect and train on data from Rwandan university students directly.
+
+**Addiction category default:** When a user reports equal usage across all app types, the rule-based classifier defaults to Social Media because it appears first in the evaluation order. This was identified during testing and addressed by suppressing the category label entirely for Low risk results, where assigning a dominant pattern to a minimal user is misleading.
+
+---
+
 ## Testing
 
 ### Risk level test cases
