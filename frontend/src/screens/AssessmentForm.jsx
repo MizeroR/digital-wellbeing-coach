@@ -1,14 +1,21 @@
 import { useState, useMemo, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { predict } from '../api'
 import ProgressBar from '../components/ProgressBar'
 
+const LOADING_MESSAGES = [
+  'Analysing your responses...',
+  'Running the prediction model...',
+  'Preparing your personalised report...',
+]
+
 const HOURS_OPTIONS = [
-  { value: '',      label: 'Select...' },
-  { value: '0-1hr', label: 'Rarely — I barely use it' },
-  { value: '1-2hrs',label: 'A little — maybe 1–2 hours' },
-  { value: '2-4hrs',label: 'Quite a bit — several hours a day' },
-  { value: '4-6hrs',label: 'A lot — most of my free time' },
-  { value: '6+hrs', label: 'Almost constantly' },
+  { value: '',       label: 'Select...' },
+  { value: '0-1hr',  label: 'Rarely — I barely use it' },
+  { value: '1-2hrs', label: 'A little — maybe 1–2 hours' },
+  { value: '2-4hrs', label: 'Quite a bit — several hours a day' },
+  { value: '4-6hrs', label: 'A lot — most of my free time' },
+  { value: '6+hrs',  label: 'Almost constantly' },
 ]
 
 const HOUR_VALUES = {
@@ -36,6 +43,8 @@ const SAS_QUESTIONS = [
   { id: 'Q10', text: 'The people around me tell me that I use my smartphone too much' },
 ]
 
+const SECTION_LABELS = { 2: 'Section A of 3 — Demographics', 3: 'Section B of 3 — Usage Patterns', 4: 'Section C of 3 — SAS Questionnaire' }
+
 function buildPayload(form) {
   const hours = {
     socialMedia: HOUR_VALUES[form.socialMedia] || 0,
@@ -46,7 +55,6 @@ function buildPayload(form) {
   }
   const total = Object.values(hours).reduce((s, h) => s + h, 0)
   const usageDuration = total <= 3 ? 1 : total <= 6 ? 2 : total <= 9 ? 3 : 4
-
   const maxKey = Object.entries(hours).reduce((a, b) => b[1] > a[1] ? b : a)[0]
   const ACCESS_MAP = { socialMedia: 3, gaming: 2, streaming: 5, messaging: 5, other: 5 }
 
@@ -69,14 +77,16 @@ function buildPayload(form) {
   }
 }
 
-function RadioGroup({ options, value, onChange }) {
+function RadioGroup({ options, value, onChange, disabled }) {
   return (
     <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginTop: '8px' }}>
       {options.map(opt => (
         <button
           key={opt.value}
           type="button"
+          disabled={disabled}
           onClick={() => onChange(opt.value)}
+          aria-label={opt.label}
           style={{
             padding: '6px 14px',
             borderRadius: '20px',
@@ -84,9 +94,10 @@ function RadioGroup({ options, value, onChange }) {
             background: value === opt.value ? '#1B6CA8' : '#fff',
             color: value === opt.value ? '#fff' : '#6b7280',
             fontSize: '13px',
-            cursor: 'pointer',
+            cursor: disabled ? 'not-allowed' : 'pointer',
             fontFamily: 'inherit',
             fontWeight: value === opt.value ? '500' : '400',
+            opacity: disabled ? 0.6 : 1,
           }}
         >
           {opt.label}
@@ -96,7 +107,8 @@ function RadioGroup({ options, value, onChange }) {
   )
 }
 
-export default function AssessmentForm({ onResults }) {
+export default function AssessmentForm() {
+  const navigate = useNavigate()
   const [form, setForm] = useState({
     age: '', gender: '', university: '', universityOther: '',
     socialMedia: '', gaming: '', streaming: '', messaging: '', other: '',
@@ -105,9 +117,16 @@ export default function AssessmentForm({ onResults }) {
     Q6: '', Q7: '', Q8: '', Q9: '', Q10: '',
   })
   const [loading, setLoading] = useState(false)
+  const [loadingMsgIdx, setLoadingMsgIdx] = useState(0)
   const [error, setError] = useState('')
 
   useEffect(() => { window.scrollTo(0, 0) }, [])
+
+  useEffect(() => {
+    if (!loading) { setLoadingMsgIdx(0); return }
+    const id = setInterval(() => setLoadingMsgIdx(i => (i + 1) % LOADING_MESSAGES.length), 1500)
+    return () => clearInterval(id)
+  }, [loading])
 
   const set = (key, val) => setForm(f => ({ ...f, [key]: val }))
 
@@ -135,16 +154,26 @@ export default function AssessmentForm({ onResults }) {
     setLoading(true)
     try {
       const data = await predict(buildPayload(form))
-      onResults(data)
+      navigate('/results', { state: { results: data } })
     } catch (err) {
       setError(err.message || 'Something went wrong. Please try again.')
-    } finally {
       setLoading(false)
     }
   }
 
+  if (loading) {
+    return (
+      <div style={s.loadingScreen} className="fade-in">
+        <div style={s.spinnerWrap}>
+          <div className="spinner" />
+          <p style={s.loadingMsg}>{LOADING_MESSAGES[loadingMsgIdx]}</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <div style={s.page}>
+    <div style={s.page} className="fade-in">
       <div style={s.card}>
         <ProgressBar currentStep={currentStep} />
 
@@ -161,7 +190,12 @@ export default function AssessmentForm({ onResults }) {
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
             <Field label="Age *">
-              <select style={s.select} value={form.age} onChange={e => set('age', e.target.value)}>
+              <select
+                style={s.select}
+                value={form.age}
+                onChange={e => set('age', e.target.value)}
+                aria-label="Select your age"
+              >
                 <option value="">Select age</option>
                 {Array.from({ length: 8 }, (_, i) => 18 + i).map(a => (
                   <option key={a} value={a}>{a}</option>
@@ -169,7 +203,12 @@ export default function AssessmentForm({ onResults }) {
               </select>
             </Field>
             <Field label="Gender *">
-              <select style={s.select} value={form.gender} onChange={e => set('gender', e.target.value)}>
+              <select
+                style={s.select}
+                value={form.gender}
+                onChange={e => set('gender', e.target.value)}
+                aria-label="Select your gender"
+              >
                 <option value="">Select</option>
                 <option>Male</option>
                 <option>Female</option>
@@ -178,7 +217,12 @@ export default function AssessmentForm({ onResults }) {
           </div>
 
           <Field label="University">
-            <select style={s.select} value={form.university} onChange={e => set('university', e.target.value)}>
+            <select
+              style={s.select}
+              value={form.university}
+              onChange={e => set('university', e.target.value)}
+              aria-label="Select your university"
+            >
               <option value="">Select university</option>
               <option value="ALU">African Leadership University (ALU)</option>
               <option value="AUCA">Adventist University of Central Africa (AUCA)</option>
@@ -194,6 +238,7 @@ export default function AssessmentForm({ onResults }) {
                 value={form.universityOther}
                 onChange={e => set('universityOther', e.target.value)}
                 style={{ ...s.select, padding: '8px 12px' }}
+                aria-label="Enter your university name"
               />
             </Field>
           )}
@@ -204,9 +249,8 @@ export default function AssessmentForm({ onResults }) {
           <p style={s.helper}>
             Over the past two weeks, how many hours per day do you spend on each type of app?
           </p>
-
           <p style={{ fontSize: '12px', color: '#9ca3af', lineHeight: '1.55', marginBottom: '16px' }}>
-            Think about yesterday specifically — not an average day. A typical lecture is 1.5 hours. A typical meal is 30 minutes. Use those as reference points when estimating your usage below.
+            Think about yesterday specifically — not an average day. A typical lecture is 1.5 hours. A typical meal is 30 minutes.
           </p>
 
           {APP_ROWS.map(app => (
@@ -214,9 +258,7 @@ export default function AssessmentForm({ onResults }) {
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flex: 1 }}>
                 <span style={s.appIcon}>{app.icon}</span>
                 <div>
-                  <div style={{ fontSize: '14px', fontWeight: '500', color: '#2E4057' }}>
-                    {app.name} *
-                  </div>
+                  <div style={{ fontSize: '14px', fontWeight: '500', color: '#2E4057' }}>{app.name} *</div>
                   <div style={{ fontSize: '12px', color: '#9ca3af' }}>{app.sub}</div>
                 </div>
               </div>
@@ -224,6 +266,7 @@ export default function AssessmentForm({ onResults }) {
                 style={{ ...s.select, width: 'auto', minWidth: '108px' }}
                 value={form[app.key]}
                 onChange={e => set(app.key, e.target.value)}
+                aria-label={`${app.name} usage hours`}
               >
                 {HOURS_OPTIONS.map(o => (
                   <option key={o.value} value={o.value}>{o.label}</option>
@@ -288,15 +331,9 @@ export default function AssessmentForm({ onResults }) {
               }}>
                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', flex: 1, minWidth: 0 }}>
                   <span style={{
-                    fontSize: '10px',
-                    fontWeight: '700',
-                    color: '#6b7280',
-                    background: '#f3f4f6',
-                    padding: '2px 5px',
-                    borderRadius: '3px',
-                    flexShrink: 0,
-                    marginTop: '2px',
-                    letterSpacing: '0.3px',
+                    fontSize: '10px', fontWeight: '700', color: '#6b7280',
+                    background: '#f3f4f6', padding: '2px 5px', borderRadius: '3px',
+                    flexShrink: 0, marginTop: '2px', letterSpacing: '0.3px',
                   }}>
                     {q.id}
                   </span>
@@ -304,7 +341,7 @@ export default function AssessmentForm({ onResults }) {
                 </div>
                 <div style={{ display: 'flex', gap: '4px', flexShrink: 0 }}>
                   {[1, 2, 3, 4, 5, 6].map(n => (
-                    <label key={n} style={{ cursor: 'pointer' }}>
+                    <label key={n} style={{ cursor: 'pointer' }} aria-label={`${q.id} score ${n}`}>
                       <input
                         type="radio"
                         name={q.id}
@@ -314,17 +351,12 @@ export default function AssessmentForm({ onResults }) {
                         style={{ position: 'absolute', opacity: 0, width: 0, height: 0 }}
                       />
                       <div style={{
-                        width: '28px',
-                        height: '28px',
-                        borderRadius: '50%',
+                        width: '28px', height: '28px', borderRadius: '50%',
                         border: `2px solid ${form[q.id] === String(n) ? '#1B6CA8' : '#d1d5db'}`,
                         background: form[q.id] === String(n) ? '#1B6CA8' : '#fff',
                         color: form[q.id] === String(n) ? '#fff' : '#9ca3af',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '11px',
-                        fontWeight: '600',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        fontSize: '11px', fontWeight: '600',
                       }}>
                         {n}
                       </div>
@@ -337,13 +369,9 @@ export default function AssessmentForm({ onResults }) {
 
           {error && (
             <div style={{
-              marginTop: '16px',
-              padding: '12px',
-              background: '#fee2e2',
-              border: '1px solid #fca5a5',
-              borderRadius: '6px',
-              color: '#991b1b',
-              fontSize: '13px',
+              marginTop: '16px', padding: '12px',
+              background: '#fee2e2', border: '1px solid #fca5a5',
+              borderRadius: '6px', color: '#991b1b', fontSize: '13px',
             }}>
               {error}
             </div>
@@ -353,10 +381,20 @@ export default function AssessmentForm({ onResults }) {
             By submitting you confirm you have read the consent information and agreed to share your answers anonymously.
           </p>
 
-          <button type="submit" disabled={loading} style={{ ...s.submitBtn, opacity: loading ? 0.7 : 1 }}>
-            {loading ? 'Analysing your results…' : 'Get my results →'}
+          <button
+            type="submit"
+            disabled={loading}
+            aria-label="Submit assessment and get results"
+            style={{ ...s.submitBtn, opacity: loading ? 0.7 : 1, cursor: loading ? 'not-allowed' : 'pointer' }}
+          >
+            Get my results →
           </button>
         </form>
+      </div>
+
+      {/* Sticky mobile section bar */}
+      <div className="sticky-section-bar">
+        <span>{SECTION_LABELS[currentStep] || 'Section A of 3 — Demographics'}</span>
       </div>
     </div>
   )
@@ -374,51 +412,56 @@ function Field({ label, children }) {
 const s = {
   page: {
     minHeight: 'calc(100vh - 52px)',
-    padding: '40px 20px 64px',
+    padding: '40px 20px 80px',
     display: 'flex',
     justifyContent: 'center',
+    position: 'relative',
   },
   card: {
     width: '100%',
     maxWidth: '640px',
     height: 'fit-content',
   },
+  loadingScreen: {
+    minHeight: 'calc(100vh - 52px)',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  spinnerWrap: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    gap: '20px',
+  },
+  loadingMsg: {
+    fontSize: '15px',
+    color: '#6b7280',
+    fontWeight: '500',
+    textAlign: 'center',
+  },
   title: {
-    fontSize: '22px',
-    fontWeight: '700',
-    color: '#2E4057',
-    marginBottom: '8px',
-    lineHeight: '1.3',
+    fontSize: '22px', fontWeight: '700', color: '#2E4057',
+    marginBottom: '8px', lineHeight: '1.3',
   },
   subtitle: {
-    fontSize: '13px',
-    color: '#6b7280',
-    lineHeight: '1.55',
-    marginBottom: '4px',
+    fontSize: '13px', color: '#6b7280',
+    lineHeight: '1.55', marginBottom: '4px',
   },
   divider: {
     borderTop: '1px solid #e5e7eb',
     margin: '28px 0 20px',
   },
   sectionLabel: {
-    fontSize: '11px',
-    fontWeight: '700',
-    color: '#1B6CA8',
-    letterSpacing: '0.6px',
-    textTransform: 'uppercase',
-    marginBottom: '16px',
+    fontSize: '11px', fontWeight: '700', color: '#1B6CA8',
+    letterSpacing: '0.6px', textTransform: 'uppercase', marginBottom: '16px',
   },
   helper: {
-    fontSize: '13px',
-    color: '#6b7280',
-    lineHeight: '1.55',
-    marginBottom: '16px',
+    fontSize: '13px', color: '#6b7280',
+    lineHeight: '1.55', marginBottom: '16px',
   },
   fieldLabel: {
-    fontSize: '13px',
-    fontWeight: '500',
-    color: '#374151',
-    marginBottom: '0',
+    fontSize: '13px', fontWeight: '500', color: '#374151', marginBottom: '0',
   },
   select: {
     width: '100%',
@@ -426,42 +469,20 @@ const s = {
     border: '1px solid #e5e7eb',
     borderRadius: '6px',
     background: `#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 10px center`,
-    fontSize: '14px',
-    color: '#2E4057',
-    appearance: 'none',
-    cursor: 'pointer',
+    fontSize: '14px', color: '#2E4057', appearance: 'none', cursor: 'pointer',
   },
   appRow: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: '12px',
-    padding: '10px 0',
-    borderBottom: '1px solid #f3f4f6',
+    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+    gap: '12px', padding: '10px 0', borderBottom: '1px solid #f3f4f6',
   },
   appIcon: {
-    width: '34px',
-    height: '34px',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    background: '#eff6ff',
-    borderRadius: '7px',
-    fontSize: '17px',
-    flexShrink: 0,
+    width: '34px', height: '34px', display: 'flex', alignItems: 'center',
+    justifyContent: 'center', background: '#eff6ff', borderRadius: '7px',
+    fontSize: '17px', flexShrink: 0,
   },
   submitBtn: {
-    width: '100%',
-    padding: '13px',
-    background: '#2E4057',
-    color: '#fff',
-    border: 'none',
-    borderRadius: '8px',
-    fontSize: '15px',
-    fontWeight: '600',
-    cursor: 'pointer',
-    marginTop: '8px',
-    fontFamily: 'inherit',
-    letterSpacing: '0.2px',
+    width: '100%', padding: '13px', background: '#2E4057', color: '#fff',
+    border: 'none', borderRadius: '8px', fontSize: '15px', fontWeight: '600',
+    cursor: 'pointer', marginTop: '8px', fontFamily: 'inherit', letterSpacing: '0.2px',
   },
 }
