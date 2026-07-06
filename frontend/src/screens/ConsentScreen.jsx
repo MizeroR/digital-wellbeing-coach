@@ -1,133 +1,168 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
-export default function ConsentScreen({ onConsent, onDecline }) {
-  const [participation, setParticipation] = useState('')
+const SLIDES = [
+  {
+    title: 'What is this?',
+    content: [
+      'This tool was built by Reine Mizero, a final-year Software Engineering student at African Leadership University (ALU), as a capstone research project.',
+      'It assesses your smartphone usage patterns using a validated clinical questionnaire (SAS-SV) and gives you a personalised risk report.',
+      'The study has been approved by the ALU Research Ethics Committee.',
+    ],
+  },
+  {
+    title: 'Your privacy',
+    content: [
+      'This assessment is completely anonymous. No name, email, student ID, or phone number is collected at any point.',
+      'Your responses are stored securely on an encrypted database and used only for this research.',
+      'Your anonymous data may appear in academic publications in aggregated form only.',
+      'Participation is voluntary. You can stop at any time.',
+    ],
+  },
+  {
+    title: 'What you get',
+    content: [
+      'Your SAS-SV score out of 60 and risk level (Low / Moderate / High / Severe).',
+      'A plain-language explanation of which specific behaviours are driving your score.',
+      'Personalised activity recommendations relevant to students in Kigali.',
+      'The assessment takes approximately 10 minutes.',
+    ],
+  },
+]
 
-  function handleParticipationChoice(choice) {
-    setParticipation(choice)
-    if (choice === 'decline') {
-      onDecline()
-    }
+export default function ConsentScreen() {
+  const navigate = useNavigate()
+  const [slide, setSlide] = useState(0)
+  const [agreed, setAgreed] = useState(false)
+  const [declined, setDeclined] = useState(false)
+
+  const isLast = slide === SLIDES.length - 1
+
+  if (declined) {
+    return (
+      <div style={s.page} className="fade-in">
+        <div style={s.container}>
+          <div style={{ textAlign: 'center', padding: '48px 0' }}>
+            <p style={{ fontSize: '40px', marginBottom: '16px' }}>🙏</p>
+            <h2 style={{ fontSize: '20px', fontWeight: '700', color: '#2E4057', marginBottom: '10px' }}>
+              Thank you for your time
+            </h2>
+            <p style={{ fontSize: '14px', color: '#6b7280', lineHeight: '1.6', marginBottom: '24px' }}>
+              Your decision not to participate is completely respected.
+              You may close this tab at any time.
+            </p>
+            <button
+              style={{ fontSize: '13px', color: '#1B6CA8', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', fontFamily: 'inherit' }}
+              onClick={() => setDeclined(false)}
+            >
+              Go back to consent
+            </button>
+          </div>
+        </div>
+      </div>
+    )
   }
 
+  const current = SLIDES[slide]
+
   return (
-    <div style={s.page}>
+    <div style={s.page} className="fade-in">
       <div style={s.container}>
 
-        {/* ── Title ── */}
-        <div style={s.titleBlock}>
-          <p style={s.label}>CONSENT FOR PARTICIPATION</p>
-          <h1 style={s.topic}>
-            Smartphone Addiction Risk Prediction and Digital Wellbeing Among University Students in Kigali
-          </h1>
+        {/* Dot indicator */}
+        <div style={s.dots}>
+          {SLIDES.map((_, i) => (
+            <div key={i} style={{ ...s.dot, background: i === slide ? '#2E4057' : '#d1d5db' }} />
+          ))}
         </div>
 
-        {/* ── Intro ── */}
-        <p style={s.body}>
-          You are invited to participate in a research study conducted by <strong>Reine Mizero</strong>, a student researcher
-          from the African Leadership University. This study is part of research pertaining to her final year Capstone
-          Project/Research. Miss Reine will be interviewing and observing people who are impacted or work in the area of
-          students aged 18–25 in Kigali about their smartphone usage patterns and experiences with a web-based digital
-          wellbeing tool.
-        </p>
-        <p style={s.body}>
-          You are being asked to participate in the project because you are a currently enrolled university student in Kigali
-          who owns a smartphone. Please read the information below and ask questions about anything you do not understand
-          before deciding to participate in the study:
-        </p>
+        {/* Title block */}
+        <div style={s.titleBlock}>
+          <p style={s.label}>CONSENT FOR PARTICIPATION — {slide + 1} of {SLIDES.length}</p>
+          <h1 style={s.topic}>{current.title}</h1>
+        </div>
 
-        {/* ── Terms ── */}
-        <div style={s.termsList}>
-          <Term>
-            <strong>Participation is voluntary:</strong> You have the right to withdraw from this project at any stage and
-            are under no obligation to take part. You have the right to refuse to answer any questions.
-          </Term>
-          <Term>
-            <strong>Compensation:</strong> You understand you will not be compensated for participation unless you need to
-            be refunded for expenditure incurred in the process of participating in the study.
-          </Term>
-          <Term>
-            <strong>Academic research and publications:</strong> Your responses will be used solely for education and
-            research purposes, which may be used in academic publications. This report will be available to you if you
-            desire for comment prior to finalisation so as to allow your response to be included in any published work.
-          </Term>
-          <Term>
-            <strong>Privacy:</strong> All responses collected through this tool are completely anonymous. No name, email
-            address, student ID, or any other identifying information is stored. Your identity will remain confidential
-            at all stages of the research.
-          </Term>
-          <Term>
-            <strong>Interviews:</strong> In the instance where a one-on-one interview is requested to delve deeper into
-            your perspective, you understand that you do not have to participate. If you do agree, you can decide whether
-            or not to have the interview recorded (audio and/or visual).
-          </Term>
+        {/* Content */}
+        <div style={s.contentList}>
+          {current.content.map((text, i) => (
+            <div key={i} style={{ display: 'flex', gap: '10px', paddingBottom: '14px' }}>
+              <span style={{ color: '#1B6CA8', fontWeight: '700', flexShrink: 0, marginTop: '2px' }}>—</span>
+              <p style={{ fontSize: '14px', color: '#374151', lineHeight: '1.7', margin: 0 }}>{text}</p>
+            </div>
+          ))}
         </div>
 
         <div style={s.divider} />
 
-        {/* ── Participation Permission ── */}
-        <div style={{ marginBottom: '24px' }}>
-          <p style={s.sectionTitle}>Participation Permission</p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', paddingLeft: '4px' }}>
-            <RadioRow
-              label="I agree to participate in the study."
-              checked={participation === 'agree'}
-              onChange={() => handleParticipationChoice('agree')}
-            />
-            <RadioRow
-              label="I do not agree to participate."
-              checked={participation === 'decline'}
-              onChange={() => handleParticipationChoice('decline')}
-            />
-          </div>
-        </div>
+        {/* Checkbox on last slide */}
+        {isLast && (
+          <label style={s.checkRow} aria-label="I understand and agree to participate voluntarily">
+            <div
+              style={{
+                ...s.checkbox,
+                background: agreed ? '#2E4057' : '#fff',
+                borderColor: agreed ? '#2E4057' : '#d1d5db',
+              }}
+              onClick={() => setAgreed(a => !a)}
+            >
+              {agreed && <span style={{ color: '#fff', fontSize: '12px', fontWeight: '700' }}>✓</span>}
+            </div>
+            <span
+              style={{ fontSize: '14px', color: '#374151', cursor: 'pointer', lineHeight: '1.5' }}
+              onClick={() => setAgreed(a => !a)}
+            >
+              I understand and agree to participate voluntarily
+            </span>
+          </label>
+        )}
 
-        {/* ── Actions ── */}
+        {/* Navigation */}
         <div style={s.actions}>
-          <button
-            style={{
-              ...s.primaryBtn,
-              opacity: participation === 'agree' ? 1 : 0.4,
-              cursor: participation === 'agree' ? 'pointer' : 'not-allowed',
-            }}
-            disabled={participation !== 'agree'}
-            onClick={onConsent}
-          >
-            Proceed to assessment →
-          </button>
-          {participation !== 'agree' && (
-            <p style={s.hint}>Select "I agree to participate" above to proceed.</p>
+          {isLast ? (
+            <>
+              <button
+                style={{
+                  ...s.primaryBtn,
+                  opacity: agreed ? 1 : 0.4,
+                  cursor: agreed ? 'pointer' : 'not-allowed',
+                }}
+                disabled={!agreed}
+                onClick={() => navigate('/assessment')}
+                aria-label="I agree, start assessment"
+              >
+                I agree, start assessment →
+              </button>
+              <button
+                style={s.declineBtn}
+                onClick={() => setDeclined(true)}
+                aria-label="Decline participation"
+              >
+                I do not wish to participate
+              </button>
+            </>
+          ) : (
+            <button
+              style={s.primaryBtn}
+              onClick={() => setSlide(sl => sl + 1)}
+              aria-label="Next slide"
+            >
+              Next →
+            </button>
+          )}
+
+          {slide > 0 && (
+            <button
+              style={s.backBtn}
+              onClick={() => setSlide(sl => sl - 1)}
+              aria-label="Go back to previous slide"
+            >
+              ← Back
+            </button>
           )}
         </div>
 
       </div>
     </div>
-  )
-}
-
-function Term({ children }) {
-  return (
-    <div style={{ display: 'flex', gap: '10px', paddingBottom: '12px' }}>
-      <span style={{ color: '#1B6CA8', fontWeight: '700', flexShrink: 0, marginTop: '2px' }}>—</span>
-      <p style={{ fontSize: '14px', color: '#374151', lineHeight: '1.65', margin: 0 }}>{children}</p>
-    </div>
-  )
-}
-
-function RadioRow({ label, checked, onChange }) {
-  return (
-    <label style={{ display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer' }}>
-      <div style={{
-        width: '18px', height: '18px', borderRadius: '50%', flexShrink: 0,
-        border: `2px solid ${checked ? '#1B6CA8' : '#d1d5db'}`,
-        background: checked ? '#1B6CA8' : '#fff',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-      }}>
-        {checked && <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#fff' }} />}
-      </div>
-      <input type="radio" checked={checked} onChange={onChange} style={{ position: 'absolute', opacity: 0, width: 0 }} />
-      <span style={{ fontSize: '14px', color: '#374151' }}>{label}</span>
-    </label>
   )
 }
 
@@ -142,9 +177,20 @@ const s = {
     width: '100%',
     maxWidth: '680px',
   },
-  titleBlock: {
+  dots: {
+    display: 'flex',
+    gap: '6px',
     marginBottom: '28px',
-    paddingBottom: '24px',
+  },
+  dot: {
+    width: '8px',
+    height: '8px',
+    borderRadius: '50%',
+    transition: 'background 0.2s',
+  },
+  titleBlock: {
+    marginBottom: '24px',
+    paddingBottom: '20px',
     borderBottom: '2px solid #2E4057',
   },
   label: {
@@ -156,35 +202,43 @@ const s = {
     margin: '0 0 10px',
   },
   topic: {
-    fontSize: '22px',
+    fontSize: '26px',
     fontWeight: '700',
     color: '#2E4057',
-    lineHeight: '1.35',
+    lineHeight: '1.3',
     margin: 0,
   },
-  body: {
-    fontSize: '14px',
-    color: '#374151',
-    lineHeight: '1.7',
-    margin: '0 0 16px',
-  },
-  termsList: {
+  contentList: {
     margin: '20px 0 0',
   },
   divider: {
     borderTop: '1px solid #e5e7eb',
-    margin: '28px 0',
+    margin: '24px 0',
   },
-  sectionTitle: {
-    fontSize: '13px',
-    fontWeight: '600',
-    color: '#2E4057',
-    margin: '0 0 12px',
+  checkRow: {
+    display: 'flex',
+    alignItems: 'flex-start',
+    gap: '12px',
+    marginBottom: '20px',
+    cursor: 'pointer',
+  },
+  checkbox: {
+    width: '20px',
+    height: '20px',
+    borderRadius: '4px',
+    border: '2px solid #d1d5db',
+    flexShrink: 0,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    transition: 'all 0.15s',
+    cursor: 'pointer',
+    marginTop: '2px',
   },
   actions: {
-    marginTop: '8px',
-    paddingTop: '24px',
-    borderTop: '1px solid #e5e7eb',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '8px',
   },
   primaryBtn: {
     width: '100%',
@@ -198,10 +252,25 @@ const s = {
     cursor: 'pointer',
     fontFamily: 'inherit',
   },
-  hint: {
-    textAlign: 'center',
-    fontSize: '12px',
+  declineBtn: {
+    width: '100%',
+    padding: '11px',
+    background: '#fff',
     color: '#9ca3af',
-    margin: '10px 0 0',
+    border: '1px solid #e5e7eb',
+    borderRadius: '8px',
+    fontSize: '13px',
+    cursor: 'pointer',
+    fontFamily: 'inherit',
+  },
+  backBtn: {
+    background: 'none',
+    border: 'none',
+    color: '#9ca3af',
+    fontSize: '13px',
+    cursor: 'pointer',
+    fontFamily: 'inherit',
+    padding: '4px 0',
+    alignSelf: 'flex-start',
   },
 }
