@@ -1,23 +1,44 @@
 import { useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import RecommendationCard from '../components/RecommendationCard'
 
-const FILTERS = ['All', 'Social Media', 'Gaming', 'Streaming', 'General', 'Free only']
+const FILTERS = ['All', 'Educational', 'Creative', 'Physical', 'Mental Health', 'Social', 'Digital Tools']
 
-export default function ResourceLibrary({ recommendations, onBack }) {
+const RESOURCE_CATEGORY = {
+  'Scrimba':                                  'Educational',
+  'Udemy':                                    'Educational',
+  'Letterboxd':                               'Digital Tools',
+  'OceanPDF':                                 'Digital Tools',
+  'Between The Covers Book Club':             'Social',
+  'ALU Debate Club':                          'Social',
+  'Kira Art Therapy Hub':                     'Mental Health',
+  'Weaving or artisanal soap making workshop': 'Creative',
+  'Pottery or painting workshop in Kigali':   'Creative',
+}
+
+export default function ResourceLibrary() {
+  const { state }       = useLocation()
+  const navigate        = useNavigate()
+  const recommendations = state?.recommendations || []
   const [activeFilter, setActiveFilter] = useState('All')
 
-  const filtered = (recommendations || []).filter(rec => {
+  const filtered = recommendations.filter(rec => {
     if (activeFilter === 'All') return true
-    if (activeFilter === 'Free only') return rec.cost === 'Free'
-    return rec.type === activeFilter
+    return RESOURCE_CATEGORY[rec.title] === activeFilter
   })
 
   return (
-    <div style={s.page}>
+    <div style={s.page} className="fade-in">
       <div style={s.card}>
         {/* ── Header ── */}
         <div style={{ marginBottom: '4px' }}>
-          <button onClick={onBack} style={s.backBtn}>← Back to results</button>
+          <button
+            onClick={() => navigate(-1)}
+            style={s.backBtn}
+            aria-label="Go back to results"
+          >
+            ← Back to results
+          </button>
           <h1 style={s.title}>Resource Library</h1>
           <p style={s.subtitle}>Real activities and resources for university students in Kigali</p>
         </div>
@@ -38,22 +59,25 @@ export default function ResourceLibrary({ recommendations, onBack }) {
           </div>
         </div>
 
-        {/* ── Filters ── */}
-        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginBottom: '16px' }}>
+        {/* ── Filters (horizontal scroll) ── */}
+        <div style={s.filterRow}>
           {FILTERS.map(f => (
             <button
               key={f}
               onClick={() => setActiveFilter(f)}
+              aria-label={`Filter by ${f}`}
               style={{
-                padding: '5px 13px',
+                padding: '6px 14px',
                 borderRadius: '20px',
-                border: `1px solid ${activeFilter === f ? '#2E4057' : '#e5e7eb'}`,
+                border: `1.5px solid ${activeFilter === f ? '#2E4057' : '#e5e7eb'}`,
                 background: activeFilter === f ? '#2E4057' : '#fff',
                 color: activeFilter === f ? '#fff' : '#6b7280',
                 fontSize: '12px',
                 cursor: 'pointer',
                 fontFamily: 'inherit',
-                fontWeight: '500',
+                fontWeight: activeFilter === f ? '600' : '400',
+                whiteSpace: 'nowrap',
+                flexShrink: 0,
               }}
             >
               {f}
@@ -89,44 +113,34 @@ const s = {
     height: 'fit-content',
   },
   backBtn: {
-    background: 'none',
-    border: 'none',
-    color: '#6b7280',
-    fontSize: '13px',
-    cursor: 'pointer',
-    padding: '0',
-    marginBottom: '12px',
-    fontFamily: 'inherit',
+    background: 'none', border: 'none', color: '#6b7280',
+    fontSize: '13px', cursor: 'pointer', padding: '0',
+    marginBottom: '12px', fontFamily: 'inherit',
   },
   title: {
-    fontSize: '24px',
-    fontWeight: '700',
-    color: '#2E4057',
-    marginBottom: '6px',
+    fontSize: '24px', fontWeight: '700', color: '#2E4057', marginBottom: '6px',
   },
   subtitle: {
-    fontSize: '13px',
-    color: '#6b7280',
-    marginBottom: '20px',
+    fontSize: '13px', color: '#6b7280', marginBottom: '20px',
   },
   emergencyBanner: {
-    padding: '12px 16px',
-    background: '#fee2e2',
-    border: '1px solid #fca5a5',
-    borderRadius: '8px',
-    display: 'flex',
-    alignItems: 'center',
-    gap: '12px',
+    padding: '12px 16px', background: '#fee2e2',
+    border: '1px solid #fca5a5', borderRadius: '8px',
+    display: 'flex', alignItems: 'center', gap: '12px',
   },
   callBtn: {
-    padding: '6px 14px',
-    background: '#C0392B',
-    color: '#fff',
-    borderRadius: '20px',
-    fontSize: '12px',
-    fontWeight: '600',
-    textDecoration: 'none',
-    flexShrink: 0,
+    padding: '6px 14px', background: '#C0392B', color: '#fff',
+    borderRadius: '20px', fontSize: '12px', fontWeight: '600',
+    textDecoration: 'none', flexShrink: 0,
+  },
+  filterRow: {
+    display: 'flex',
+    gap: '6px',
+    overflowX: 'auto',
+    marginBottom: '16px',
+    paddingBottom: '4px',
+    WebkitOverflowScrolling: 'touch',
+    scrollbarWidth: 'none',
   },
   grid: {
     display: 'grid',
