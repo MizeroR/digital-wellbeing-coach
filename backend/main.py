@@ -198,14 +198,18 @@ def predict(req: PredictRequest) -> PredictResponse:
     top3_idx  = np.argsort(np.abs(sv))[::-1][:3]
     explanations = [SHAP_TEMPLATES[FEATURE_COLS[i]] for i in top3_idx]
 
-    category        = _addiction_category(req)
-    recommendations = RECOMMENDATIONS.get(category, RECOMMENDATIONS["General"])
+    raw_category    = _addiction_category(req)
+    recommendations = RECOMMENDATIONS.get(raw_category, RECOMMENDATIONS["General"])
+
+    # For Low risk, the model output is not meaningful enough to surface to users
+    # or store as a real finding — use a clear label instead of the raw category.
+    display_category = "No dominant pattern" if risk_level == "Low" else raw_category
 
     response = PredictResponse(
         risk_level         = risk_level,
         confidence         = round(prob * 100, 1),
         sas_total          = sas_total,
-        addiction_category = category,
+        addiction_category = display_category,
         explanations       = explanations,
         recommendations    = recommendations,
     )
@@ -228,7 +232,7 @@ def predict(req: PredictRequest) -> PredictResponse:
                 "sas_total":           sas_total,
                 "risk_level":          risk_level,
                 "confidence":          round(prob * 100, 1),
-                "addiction_category":  category,
+                "addiction_category":  display_category,
                 "unlock_freq":         req.unlock_freq,
                 "late_night":          req.late_night,
                 "university":          req.university,
