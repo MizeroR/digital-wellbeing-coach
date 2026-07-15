@@ -12,11 +12,11 @@ export default function LandingPage() {
           <span style={s.logoText}>Digital<span style={{ fontWeight: '400', color: '#1B6CA8' }}>WellbeingCoach</span></span>
         </div>
 
-        <h1 style={s.headline}>Understand your<br />smartphone habits</h1>
+        <h1 style={s.headline}>Is your phone use<br />affecting your life?</h1>
 
         <p style={s.subtitle}>
-          A free, anonymous 10-minute assessment for university students in Kigali.
-          Get a personalised risk report instantly.
+          Answer 10 simple questions and find out.
+          Free, anonymous, and takes about 10 minutes.
         </p>
 
         <div style={s.pills}>

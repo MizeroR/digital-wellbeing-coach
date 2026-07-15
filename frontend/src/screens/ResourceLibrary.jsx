@@ -1,100 +1,97 @@
-import { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import RecommendationCard from '../components/RecommendationCard'
 
-const FILTERS = ['All', 'Educational', 'Creative', 'Physical', 'Mental Health', 'Social', 'Digital Tools']
-
-const RESOURCE_CATEGORY = {
-  'Scrimba':                                  'Educational',
-  'Udemy':                                    'Educational',
-  'Letterboxd':                               'Digital Tools',
-  'OceanPDF':                                 'Digital Tools',
-  'Between The Covers Book Club':             'Social',
-  'ALU Debate Club':                          'Social',
-  'Kira Art Therapy Hub':                     'Mental Health',
-  'Weaving or artisanal soap making workshop': 'Creative',
-  'Pottery or painting workshop in Kigali':   'Creative',
-}
+const GUIDE_TABS = [
+  { label: '📚 Learn', path: '/interventions/education' },
+  { label: '🎨 Create', path: '/interventions/creative' },
+  { label: '🧘 Relax', path: '/interventions/relaxation' },
+  { label: '👥 Connect', path: '/interventions/social' },
+]
 
 export default function ResourceLibrary() {
-  const { state }       = useLocation()
-  const navigate        = useNavigate()
+  const { state } = useLocation()
+  const navigate  = useNavigate()
   const recommendations = state?.recommendations || []
-  const [activeFilter, setActiveFilter] = useState('All')
-
-  const filtered = recommendations.filter(rec => {
-    if (activeFilter === 'All') return true
-    return RESOURCE_CATEGORY[rec.title] === activeFilter
-  })
 
   return (
     <div style={s.page} className="fade-in">
       <div style={s.card}>
-        {/* ── Header ── */}
-        <div style={{ marginBottom: '4px' }}>
-          <button
-            onClick={() => navigate(-1)}
-            style={s.backBtn}
-            aria-label="Go back to results"
-          >
-            ← Back to results
-          </button>
-          <h1 style={s.title}>Resource Library</h1>
-          <p style={s.subtitle}>Real activities and resources for university students in Kigali</p>
-        </div>
 
-        {/* ── Emergency banner ── */}
-        <div style={{ marginBottom: '16px' }}>
-          <div style={s.emergencyBanner}>
-            <span style={{ fontSize: '18px', flexShrink: 0 }}>🆘</span>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontWeight: '600', fontSize: '13px', color: '#7f1d1d' }}>
-                If you need immediate support
-              </div>
-              <div style={{ fontSize: '12px', color: '#991b1b', marginTop: '2px' }}>
-                Rwanda Mental Health Help Line: <strong>116</strong> (free, 24/7)
-              </div>
+        {/* Header */}
+        <button onClick={() => navigate(-1)} style={s.backBtn} aria-label="Go back">
+          ← Back to results
+        </button>
+        <h1 style={s.title}>Activity guides</h1>
+        <p style={s.subtitle}>
+          Choose a category to explore activities and resources for university students in Kigali.
+        </p>
+
+        {/* Emergency banner */}
+        <div style={s.emergencyBanner}>
+          <span style={{ fontSize: '18px', flexShrink: 0 }}>🆘</span>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontWeight: '600', fontSize: '13px', color: '#7f1d1d' }}>
+              If you need immediate support
             </div>
-            <a href="tel:116" style={s.callBtn}>Call 116</a>
+            <div style={{ fontSize: '12px', color: '#991b1b', marginTop: '2px' }}>
+              Rwanda Mental Health Help Line: <strong>116</strong> (free, 24/7)
+            </div>
           </div>
+          <a href="tel:116" style={s.callBtn}>Call 116</a>
         </div>
 
-        {/* ── Filters (horizontal scroll) ── */}
-        <div style={s.filterRow}>
-          {FILTERS.map(f => (
+        {/* Guide category cards */}
+        <div style={s.guideGrid}>
+          {GUIDE_TABS.map(tab => (
             <button
-              key={f}
-              onClick={() => setActiveFilter(f)}
-              aria-label={`Filter by ${f}`}
-              style={{
-                padding: '6px 14px',
-                borderRadius: '20px',
-                border: `1.5px solid ${activeFilter === f ? '#2E4057' : '#e5e7eb'}`,
-                background: activeFilter === f ? '#2E4057' : '#fff',
-                color: activeFilter === f ? '#fff' : '#6b7280',
-                fontSize: '12px',
-                cursor: 'pointer',
-                fontFamily: 'inherit',
-                fontWeight: activeFilter === f ? '600' : '400',
-                whiteSpace: 'nowrap',
-                flexShrink: 0,
-              }}
+              key={tab.path}
+              onClick={() => navigate(tab.path, { state })}
+              style={s.guideCard}
+              aria-label={tab.label}
             >
-              {f}
+              <span style={{ fontSize: '22px' }}>{tab.label.split(' ')[0]}</span>
+              <span style={{ fontSize: '14px', fontWeight: '600', color: '#2E4057' }}>
+                {tab.label.split(' ').slice(1).join(' ')}
+              </span>
+              <span style={{ fontSize: '12px', color: '#1B6CA8', marginTop: 'auto' }}>Explore →</span>
             </button>
           ))}
         </div>
 
-        {/* ── Grid ── */}
-        <div style={s.grid}>
-          {filtered.length > 0 ? (
-            filtered.map((rec, i) => <RecommendationCard key={i} rec={rec} />)
-          ) : (
-            <p style={{ gridColumn: '1/-1', textAlign: 'center', color: '#9ca3af', padding: '32px 0', fontSize: '14px' }}>
-              No resources match this filter.
-            </p>
-          )}
-        </div>
+        {/* Flat resource list (if recommendations passed via state) */}
+        {recommendations.length > 0 && (
+          <div style={{ marginTop: '32px' }}>
+            <p style={s.sectionLabel}>All resources from your assessment</p>
+            <div style={s.grid}>
+              {recommendations.map((rec, i) => (
+                <SimpleCard key={i} rec={rec} />
+              ))}
+            </div>
+          </div>
+        )}
+
+      </div>
+    </div>
+  )
+}
+
+function SimpleCard({ rec }) {
+  return (
+    <div style={{
+      border: '1px solid #E8EAF0', borderRadius: '12px', padding: '14px',
+      background: '#fff', display: 'flex', flexDirection: 'column', gap: '6px',
+    }}>
+      <div style={{ fontWeight: '700', fontSize: '14px', color: '#2E4057' }}>{rec.title}</div>
+      <p style={{
+        fontSize: '13px', color: '#6b7280', lineHeight: '1.5', margin: 0,
+        display: '-webkit-box', WebkitLineClamp: 2,
+        WebkitBoxOrient: 'vertical', overflow: 'hidden',
+      }}>
+        {rec.description}
+      </p>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '2px' }}>
+        <span style={{ padding: '2px 8px', borderRadius: '10px', background: '#f3f4f6', color: '#6b7280', fontSize: '11px' }}>
+          {rec.type}
+        </span>
       </div>
     </div>
   )
@@ -103,48 +100,47 @@ export default function ResourceLibrary() {
 const s = {
   page: {
     minHeight: 'calc(100vh - 52px)',
-    padding: '40px 20px 64px',
+    padding: '40px 16px 64px',
     display: 'flex',
     justifyContent: 'center',
   },
-  card: {
-    width: '100%',
-    maxWidth: '900px',
-    height: 'fit-content',
-  },
+  card: { width: '100%', maxWidth: '720px', height: 'fit-content' },
   backBtn: {
-    background: 'none', border: 'none', color: '#6b7280',
+    background: 'none', border: 'none', color: '#9ca3af',
     fontSize: '13px', cursor: 'pointer', padding: '0',
-    marginBottom: '12px', fontFamily: 'inherit',
+    marginBottom: '12px', fontFamily: 'inherit', display: 'block',
   },
-  title: {
-    fontSize: '24px', fontWeight: '700', color: '#2E4057', marginBottom: '6px',
-  },
-  subtitle: {
-    fontSize: '13px', color: '#6b7280', marginBottom: '20px',
-  },
+  title: { fontSize: '24px', fontWeight: '700', color: '#2E4057', marginBottom: '6px' },
+  subtitle: { fontSize: '13px', color: '#6b7280', marginBottom: '20px' },
   emergencyBanner: {
     padding: '12px 16px', background: '#fee2e2',
     border: '1px solid #fca5a5', borderRadius: '8px',
-    display: 'flex', alignItems: 'center', gap: '12px',
+    display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px',
   },
   callBtn: {
     padding: '6px 14px', background: '#C0392B', color: '#fff',
     borderRadius: '20px', fontSize: '12px', fontWeight: '600',
     textDecoration: 'none', flexShrink: 0,
   },
-  filterRow: {
-    display: 'flex',
-    gap: '6px',
-    overflowX: 'auto',
-    marginBottom: '16px',
-    paddingBottom: '4px',
-    WebkitOverflowScrolling: 'touch',
-    scrollbarWidth: 'none',
+  guideGrid: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))',
+    gap: '12px',
+  },
+  guideCard: {
+    border: '1px solid #E8EAF0', borderRadius: '12px', padding: '20px 16px',
+    background: '#fff', display: 'flex', flexDirection: 'column',
+    alignItems: 'flex-start', gap: '6px', cursor: 'pointer',
+    fontFamily: 'inherit', textAlign: 'left', minHeight: '110px',
+    transition: 'box-shadow 0.15s', boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
+  },
+  sectionLabel: {
+    fontSize: '12px', fontWeight: '700', color: '#9ca3af',
+    textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '12px',
   },
   grid: {
     display: 'grid',
-    gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))',
-    gap: '16px',
+    gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
+    gap: '12px',
   },
 }
