@@ -43,7 +43,7 @@ const SAS_QUESTIONS = [
   { id: 'Q10', text: 'The people around me tell me that I use my smartphone too much' },
 ]
 
-const SECTION_LABELS = { 2: 'Section A of 3 — Demographics', 3: 'Section B of 3 — Usage Patterns', 4: 'Section C of 3 — SAS Questionnaire' }
+const SECTION_LABELS = { 2: 'Step 1 of 3 — About you', 3: 'Step 2 of 3 — Your daily habits', 4: 'Step 3 of 3 — Your habits questionnaire' }
 
 function buildPayload(form) {
   const hours = {
@@ -186,7 +186,7 @@ export default function AssessmentForm() {
         <form onSubmit={handleSubmit}>
           {/* ── SECTION A ── */}
           <div style={s.divider} />
-          <p style={s.sectionLabel}>Section A — Demographics</p>
+          <p style={s.sectionLabel}>About you</p>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
             <Field label="Age *">
@@ -245,7 +245,7 @@ export default function AssessmentForm() {
 
           {/* ── SECTION B ── */}
           <div style={s.divider} />
-          <p style={s.sectionLabel}>Section B — Daily Smartphone Usage</p>
+          <p style={s.sectionLabel}>Your daily habits</p>
           <p style={s.helper}>
             Over the past two weeks, how many hours per day do you spend on each type of app?
           </p>
@@ -307,10 +307,12 @@ export default function AssessmentForm() {
 
           {/* ── SECTION C ── */}
           <div style={s.divider} />
-          <p style={s.sectionLabel}>Section C — Smartphone Addiction Scale (SAS-SV)</p>
+          <p style={s.sectionLabel}>A few questions about your habits</p>
           <p style={s.helper}>
-            For each statement below, select the number that best describes how much you agree.{' '}
-            <strong>1 = Strongly disagree, 6 = Strongly agree</strong>
+            There are no right or wrong answers. Answer honestly based on the past two weeks.
+          </p>
+          <p style={{ fontSize: '12px', color: '#9ca3af', lineHeight: '1.55', marginBottom: '12px' }}>
+            Rate each statement from <strong>1</strong> (strongly disagree) to <strong>6</strong> (strongly agree).
           </p>
 
           <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#9ca3af', marginBottom: '6px' }}>

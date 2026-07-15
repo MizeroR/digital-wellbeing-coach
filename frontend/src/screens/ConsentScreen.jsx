@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom'
 
 const SLIDES = [
   {
-    title: 'What is this?',
+    title: 'Before you start',
     content: [
       'This tool was built by Reine Mizero, a final-year Software Engineering student at African Leadership University (ALU), as a capstone research project.',
-      'It assesses your smartphone usage patterns using a validated clinical questionnaire (SAS-SV) and gives you a personalised risk report.',
+      'It assesses your smartphone usage patterns using a research-backed questionnaire about smartphone habits and gives you a personalised report.',
       'The study has been approved by the ALU Research Ethics Committee.',
     ],
   },
@@ -22,7 +22,7 @@ const SLIDES = [
   {
     title: 'What you get',
     content: [
-      'Your SAS-SV score out of 60 and risk level (Low / Moderate / High / Severe).',
+      'Your usage score out of 60 and what it means (All good / Worth watching / Time to act / Get support).',
       'A plain-language explanation of which specific behaviours are driving your score.',
       'Personalised activity recommendations relevant to students in Kigali.',
       'The assessment takes approximately 10 minutes.',

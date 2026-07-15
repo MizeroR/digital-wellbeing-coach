@@ -20,7 +20,7 @@ export default function NavBar() {
         padding: '3px 10px', borderRadius: '20px', border: '1px solid #e5e7eb',
         whiteSpace: 'nowrap',
       }}>
-        Not a medical diagnosis
+        This is not a medical tool
       </div>
     </nav>
   )
