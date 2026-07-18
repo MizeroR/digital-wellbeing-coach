@@ -64,6 +64,7 @@ function buildPayload(form) {
     usage_duration:     usageDuration,
     social_media_usage: hours.socialMedia >= 1 ? 1 : 0,
     frequent_access:    ACCESS_MAP[maxKey] || 5,
+    max_app_hours:      Math.max(...Object.values(hours)),
     Q1:  parseInt(form.Q1),  Q2:  parseInt(form.Q2),
     Q3:  parseInt(form.Q3),  Q4:  parseInt(form.Q4),
     Q5:  parseInt(form.Q5),  Q6:  parseInt(form.Q6),

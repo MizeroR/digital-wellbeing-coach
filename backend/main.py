@@ -111,9 +111,10 @@ class PredictRequest(BaseModel):
     Q9:  int = Field(..., ge=1, le=6, description="Using smartphone longer than intended")
     Q10: int = Field(..., ge=1, le=6, description="Others say I use my smartphone too much")
 
-    unlock_freq: Optional[str] = None
-    late_night:  Optional[str] = None
-    university:  Optional[str] = None
+    unlock_freq:   Optional[str]   = None
+    late_night:    Optional[str]   = None
+    university:    Optional[str]   = None
+    max_app_hours: Optional[float] = None
 
     model_config = {
         "json_schema_extra": {
@@ -162,10 +163,11 @@ def _risk_level(sas_total: int) -> str:
 def _addiction_category(req: PredictRequest) -> str:
     """
     Rule-based dominant addiction category classifier.
-    Uses frequent_access field and Q8 (social media checking) as composite signals.
-    frequent_access values: 1=Search engine  2=Online games  3=Social media
-                            4=E-commerce  5=Other
+    Returns "None" when the user's highest reported app usage is in the
+    lowest bracket (0–1 hr / 'Rarely'), meaning no dominant pattern applies.
     """
+    if req.max_app_hours is not None and req.max_app_hours <= 0.5:
+        return "None"
     if req.frequent_access == 2:
         return "Gaming"
     if req.frequent_access == 3 or (req.social_media_usage == 1 and req.Q8 >= 4):
@@ -199,11 +201,21 @@ def predict(req: PredictRequest) -> PredictResponse:
     explanations = [SHAP_TEMPLATES[FEATURE_COLS[i]] for i in top3_idx]
 
     raw_category    = _addiction_category(req)
-    recommendations = RECOMMENDATIONS.get(raw_category, RECOMMENDATIONS["General"])
+    recommendations = RECOMMENDATIONS.get(
+        raw_category if raw_category != "None" else "General",
+        RECOMMENDATIONS["General"],
+    )
 
-    # For Low risk, the model output is not meaningful enough to surface to users
-    # or store as a real finding — use a clear label instead of the raw category.
-    display_category = "No dominant pattern" if risk_level == "Low" else raw_category
+    # Determine what to store and return:
+    # "None"              — all app usage in the lowest bracket (no pattern applies)
+    # "No dominant pattern" — Low risk but some measurable usage exists
+    # actual category     — Moderate / High / Severe with real usage signal
+    if raw_category == "None":
+        display_category = "None"
+    elif risk_level == "Low":
+        display_category = "No dominant pattern"
+    else:
+        display_category = raw_category
 
     response = PredictResponse(
         risk_level         = risk_level,

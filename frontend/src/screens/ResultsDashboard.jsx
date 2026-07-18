@@ -342,7 +342,11 @@ export default memo(function ResultsDashboard() {
 
             {/* Category */}
             <div style={{ marginBottom: '16px' }}>
-              {results.risk_level === 'Low' ? (
+              {results.addiction_category === 'None' ? (
+                <p style={{ fontSize: '13px', color: '#6b7280', lineHeight: '1.6', margin: 0 }}>
+                  Your usage across all app types is low. No dominant pattern was identified — this is consistent with your low overall score.
+                </p>
+              ) : results.risk_level === 'Low' ? (
                 <p style={{ fontSize: '13px', color: '#6b7280', lineHeight: '1.6', margin: 0 }}>
                   Your usage does not show a dominant problematic pattern at this time.
                 </p>
