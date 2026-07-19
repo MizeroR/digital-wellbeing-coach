@@ -7,6 +7,8 @@ export default function ProgressBar({ currentStep }) {
         const step = i + 1
         const isActive = step === currentStep
         const isDone = step < currentStep
+        const labelColor = isActive ? '#1B6CA8' : isDone ? '#2E4057' : '#9ca3af'
+        const labelWeight = isActive ? '600' : '400'
         return (
           <div key={step} style={{ display: 'flex', alignItems: 'center', flex: 1, minWidth: 0 }}>
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px', flex: 1 }}>
@@ -25,16 +27,32 @@ export default function ProgressBar({ currentStep }) {
               }}>
                 {isDone ? '✓' : step}
               </div>
-              <span style={{
-                fontSize: '10px',
-                color: isActive ? '#1B6CA8' : isDone ? '#2E4057' : '#9ca3af',
-                fontWeight: isActive ? '600' : '400',
-                textAlign: 'center',
-                whiteSpace: 'nowrap',
-                maxWidth: '64px',
-                lineHeight: '1.2',
-              }}>
+              <span
+                className="step-label-full"
+                style={{
+                  fontSize: '10px',
+                  color: labelColor,
+                  fontWeight: labelWeight,
+                  textAlign: 'center',
+                  whiteSpace: 'nowrap',
+                  maxWidth: '64px',
+                  lineHeight: '1.2',
+                }}
+              >
                 {label}
+              </span>
+              <span
+                className="step-label-short"
+                style={{
+                  fontSize: '10px',
+                  color: labelColor,
+                  fontWeight: labelWeight,
+                  textAlign: 'center',
+                  lineHeight: '1.2',
+                  padding: '3px 8px',
+                }}
+              >
+                {step}
               </span>
             </div>
             {i < STEPS.length - 1 && (

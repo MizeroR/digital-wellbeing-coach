@@ -187,7 +187,7 @@ export default function AssessmentForm() {
         <form onSubmit={handleSubmit}>
           {/* ── SECTION A ── */}
           <div style={s.divider} />
-          <p style={s.sectionLabel}>About you</p>
+          <p style={s.sectionLabel} className="form-section-heading">About you</p>
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px' }}>
             <Field label="Age *">
@@ -246,7 +246,7 @@ export default function AssessmentForm() {
 
           {/* ── SECTION B ── */}
           <div style={s.divider} />
-          <p style={s.sectionLabel}>Your daily habits</p>
+          <p style={s.sectionLabel} className="form-section-heading">Your daily habits</p>
           <p style={s.helper}>
             Over the past two weeks, how many hours per day do you spend on each type of app?
           </p>
@@ -308,7 +308,7 @@ export default function AssessmentForm() {
 
           {/* ── SECTION C ── */}
           <div style={s.divider} />
-          <p style={s.sectionLabel}>A few questions about your habits</p>
+          <p style={s.sectionLabel} className="form-section-heading">A few questions about your habits</p>
           <p style={s.helper}>
             There are no right or wrong answers. Answer honestly based on the past two weeks.
           </p>

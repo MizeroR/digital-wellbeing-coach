@@ -58,6 +58,11 @@ p {
   animation: spin 0.75s linear infinite;
 }
 
+/* ── Progress bar responsive labels ── */
+.step-label-short {
+  display: none;
+}
+
 /* ── Sticky mobile section bar ── */
 .sticky-section-bar {
   display: none;
@@ -85,6 +90,23 @@ p {
   /* Hide the navbar badge on small screens */
   .nav-badge {
     display: none;
+  }
+
+  /* Progress bar: hide full labels, show step numbers */
+  .step-label-full {
+    display: none;
+  }
+
+  .step-label-short {
+    display: block;
+  }
+
+  /* Form section headings */
+  .form-section-heading {
+    font-size: 14px !important;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    padding: 0 8px;
   }
 
   /* Hide scrollbar on filter row */

@@ -14,16 +14,10 @@ const RESOURCES = [
     access: 'udemy.com',
   },
   {
-    title: 'OceanPDF',
-    description: 'Download books for free in PDF or ePUB format. Works offline — no account needed.',
-    cost: 'Free',
-    access: 'oceanofpdf.com',
-  },
-  {
-    title: 'ALU Claude Club',
-    description: 'An on-campus group at ALU exploring technology and AI together. Meet people who are building things.',
-    cost: 'Free',
-    access: 'Via ALU student WhatsApp groups',
+    title: 'Kigali Public Library',
+    description: 'Government-funded public library open to all Kigali residents. Hosts workshops, study spaces, and learning programs. 40,000+ books and digital resources available.',
+    cost: 'Low cost (10,000 RWF/year membership)',
+    access: 'kplonline.org — +250 788 500 777',
   },
 ]
 

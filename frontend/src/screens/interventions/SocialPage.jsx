@@ -2,12 +2,6 @@ import InterventionLayout, { ResCard } from './InterventionLayout'
 
 const RESOURCES = [
   {
-    title: 'ALU Debate Club',
-    description: 'Structured discussions on real topics. A good substitute for the stimulation of social media — but with actual people in the room.',
-    cost: 'Free',
-    access: 'Via ALU student WhatsApp groups',
-  },
-  {
     title: 'Between The Covers Book Club',
     description: 'A book club run by and for university students in Kigali. Social, offline, and a great way to meet people outside your degree.',
     cost: 'Free',
@@ -24,6 +18,12 @@ const RESOURCES = [
     description: 'Pottery, art, craft — activities where you are in a room with other people doing something together. Often the best conversations happen here.',
     cost: 'Low cost',
     access: 'tripadvisor.com/Attractions-g293829-Activities-c56-Kigali',
+  },
+  {
+    title: 'Kigali Public Library — Book Clubs',
+    description: 'The library hosts book clubs and reading programs open to all members. A structured social alternative to passive social media scrolling.',
+    cost: 'Low cost (10,000 RWF/year membership)',
+    access: 'kplonline.org — +250 788 500 777',
   },
 ]
 

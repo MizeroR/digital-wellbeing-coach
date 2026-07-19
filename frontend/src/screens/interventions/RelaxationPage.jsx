@@ -15,6 +15,15 @@ const SUPPORT_RESOURCES = [
   },
 ]
 
+const READING_RESOURCES = [
+  {
+    title: 'OceanPDF',
+    description: 'Download books in PDF and ePUB format for free. Reading before bed is a proven wind-down alternative to late-night scrolling.',
+    cost: 'Free',
+    access: 'oceanofpdf.com',
+  },
+]
+
 const SCREEN_TIME_RESOURCES = [
   {
     title: 'iPhone — Screen Time',
@@ -45,6 +54,12 @@ export default function RelaxationPage() {
       {/* Support resources */}
       <div style={grid}>
         {SUPPORT_RESOURCES.map((r, i) => <ResCard key={i} {...r} />)}
+      </div>
+
+      {/* Offline reading */}
+      <p style={sectionLabel}>Offline reading</p>
+      <div style={grid}>
+        {READING_RESOURCES.map((r, i) => <ResCard key={i} {...r} />)}
       </div>
 
       {/* Screen time tools */}
