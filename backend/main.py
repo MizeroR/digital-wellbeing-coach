@@ -95,21 +95,21 @@ app.add_middleware(
 # ── Request / Response schemas ────────────────────────────────────────────────
 
 class PredictRequest(BaseModel):
-    gender:             str = Field(..., pattern="^[MF]$",  description="M or F")
-    age:                int = Field(..., ge=18, le=25,       description="Age in years (18–25, Kigali university students)")
-    usage_duration:     int = Field(..., ge=1,  le=4,        description="1=1–3 hrs/day  2=4–6 hrs/day  3=7–9 hrs/day  4=9+ hrs/day")
-    social_media_usage: int = Field(..., ge=0,  le=1,        description="0=No  1=Yes — do you use social media?")
-    frequent_access:    int = Field(..., ge=1,  le=5,        description="1=Search engine  2=Online games  3=Social media  4=E-commerce  5=Other")
-    Q1:  int = Field(..., ge=1, le=6, description="Missing planned work due to smartphone use")
-    Q2:  int = Field(..., ge=1, le=6, description="Hard to concentrate in class or while working")
-    Q3:  int = Field(..., ge=1, le=6, description="Feeling pain in wrists or neck while using phone")
-    Q4:  int = Field(..., ge=1, le=6, description="Won't be able to stand not having a smartphone")
-    Q5:  int = Field(..., ge=1, le=6, description="Feeling impatient and fretful when not holding phone")
-    Q6:  int = Field(..., ge=1, le=6, description="Having phone on mind even when not using it")
-    Q7:  int = Field(..., ge=1, le=6, description="Will never give up phone even when life is affected")
-    Q8:  int = Field(..., ge=1, le=6, description="Constantly checking social media to not miss conversations")
-    Q9:  int = Field(..., ge=1, le=6, description="Using smartphone longer than intended")
-    Q10: int = Field(..., ge=1, le=6, description="Others say I use my smartphone too much")
+    gender:             str = Field(..., pattern="^[MF]$",  description="M = Male, F = Female")
+    age:                int = Field(..., ge=18, le=25,       description="Age in years. Must be between 18 and 25 (Kigali university student target population)")
+    usage_duration:     int = Field(..., ge=1,  le=4,        description="Total daily smartphone hours: 1 = 1-3 hrs/day, 2 = 4-6 hrs/day, 3 = 7-9 hrs/day, 4 = 9+ hrs/day")
+    social_media_usage: int = Field(..., ge=0,  le=1,        description="Do you use social media? 0 = No, 1 = Yes")
+    frequent_access:    int = Field(..., ge=1,  le=5,        description="What do you access most online? 1 = Search engine (e.g. Google), 2 = Online games, 3 = Social media (TikTok/Instagram), 4 = E-commerce, 5 = Other")
+    Q1:  int = Field(..., ge=1, le=6, description="Missing planned work due to smartphone use (1=Strongly Disagree, 6=Strongly Agree)")
+    Q2:  int = Field(..., ge=1, le=6, description="Hard to concentrate in class or while working due to smartphone use (1=Strongly Disagree, 6=Strongly Agree)")
+    Q3:  int = Field(..., ge=1, le=6, description="Feeling pain in wrists or neck while using smartphone (1=Strongly Disagree, 6=Strongly Agree)")
+    Q4:  int = Field(..., ge=1, le=6, description="Cannot stand not having a smartphone (1=Strongly Disagree, 6=Strongly Agree)")
+    Q5:  int = Field(..., ge=1, le=6, description="Feeling impatient and fretful when not holding my smartphone (1=Strongly Disagree, 6=Strongly Agree)")
+    Q6:  int = Field(..., ge=1, le=6, description="Having my smartphone on my mind even when not using it (1=Strongly Disagree, 6=Strongly Agree)")
+    Q7:  int = Field(..., ge=1, le=6, description="Would never give up smartphone even when daily life is greatly affected (1=Strongly Disagree, 6=Strongly Agree)")
+    Q8:  int = Field(..., ge=1, le=6, description="Constantly checking social media so as not to miss conversations (1=Strongly Disagree, 6=Strongly Agree)")
+    Q9:  int = Field(..., ge=1, le=6, description="Using smartphone longer than intended (1=Strongly Disagree, 6=Strongly Agree)")
+    Q10: int = Field(..., ge=1, le=6, description="Others tell me I use my smartphone too much (1=Strongly Disagree, 6=Strongly Agree)")
 
     unlock_freq:   Optional[str]   = None
     late_night:    Optional[str]   = None
@@ -121,8 +121,8 @@ class PredictRequest(BaseModel):
             "example": {
                 "gender": "F", "age": 21,
                 "usage_duration": 3, "social_media_usage": 1, "frequent_access": 3,
-                "Q1": 4, "Q2": 3, "Q3": 2, "Q4": 5, "Q5": 4,
-                "Q6": 3, "Q7": 4, "Q8": 5, "Q9": 4, "Q10": 3,
+                "Q1": 4, "Q2": 4, "Q3": 3, "Q4": 5, "Q5": 4,
+                "Q6": 4, "Q7": 3, "Q8": 5, "Q9": 5, "Q10": 4,
             }
         }
     }

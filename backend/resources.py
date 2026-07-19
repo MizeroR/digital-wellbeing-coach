@@ -155,13 +155,6 @@ RECOMMENDATIONS: dict[str, list[dict]] = {
             "how_to_access": "kiraapp.org — +250 785 774 717 — Kiraarttherapyhub@gmail.com",
         },
         {
-            "title": "ALU Debate Club",
-            "description": "Replace addictive phone use with structured real-world discussion and community engagement on campus.",
-            "type": "On-campus club",
-            "cost": "Free",
-            "how_to_access": "Via ALU student organisations on WhatsApp",
-        },
-        {
             "title": "Scrimba",
             "description": "Redirect compulsive phone use into building real technical skills through interactive coding courses.",
             "type": "Online learning",
