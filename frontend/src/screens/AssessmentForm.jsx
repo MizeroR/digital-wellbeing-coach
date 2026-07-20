@@ -91,9 +91,9 @@ function RadioGroup({ options, value, onChange, disabled }) {
           style={{
             padding: '6px 14px',
             borderRadius: '20px',
-            border: `1.5px solid ${value === opt.value ? '#1B6CA8' : '#d1d5db'}`,
-            background: value === opt.value ? '#1B6CA8' : '#fff',
-            color: value === opt.value ? '#fff' : '#6b7280',
+            border: `1.5px solid ${value === opt.value ? '#2563EB' : '#CBD5E1'}`,
+            background: value === opt.value ? '#2563EB' : '#FFFFFF',
+            color: value === opt.value ? '#FFFFFF' : '#475569',
             fontSize: '13px',
             cursor: disabled ? 'not-allowed' : 'pointer',
             fontFamily: 'inherit',
@@ -250,7 +250,7 @@ export default function AssessmentForm() {
           <p style={s.helper}>
             Over the past two weeks, how many hours per day do you spend on each type of app?
           </p>
-          <p style={{ fontSize: '12px', color: '#9ca3af', lineHeight: '1.55', marginBottom: '16px' }}>
+          <p style={{ fontSize: '12px', color: '#94A3B8', lineHeight: '1.55', marginBottom: '16px' }}>
             Think about yesterday specifically — not an average day. A typical lecture is 1.5 hours. A typical meal is 30 minutes.
           </p>
 
@@ -259,8 +259,8 @@ export default function AssessmentForm() {
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flex: 1 }}>
                 <span style={s.appIcon}>{app.icon}</span>
                 <div>
-                  <div style={{ fontSize: '14px', fontWeight: '500', color: '#2E4057' }}>{app.name} *</div>
-                  <div style={{ fontSize: '12px', color: '#9ca3af' }}>{app.sub}</div>
+                  <div style={{ fontSize: '14px', fontWeight: '500', color: '#1E293B' }}>{app.name} *</div>
+                  <div style={{ fontSize: '12px', color: '#94A3B8' }}>{app.sub}</div>
                 </div>
               </div>
               <select
@@ -278,7 +278,7 @@ export default function AssessmentForm() {
 
           <div style={{ marginTop: '20px' }}>
             <p style={s.fieldLabel}>How often do you check your phone?</p>
-            <p style={{ fontSize: '12px', color: '#9ca3af', lineHeight: '1.55', marginTop: '4px', marginBottom: '0' }}>
+            <p style={{ fontSize: '12px', color: '#94A3B8', lineHeight: '1.55', marginTop: '4px', marginBottom: '0' }}>
               Include times you pick it up just to look, even without a specific reason.
             </p>
             <RadioGroup
@@ -312,11 +312,11 @@ export default function AssessmentForm() {
           <p style={s.helper}>
             There are no right or wrong answers. Answer honestly based on the past two weeks.
           </p>
-          <p style={{ fontSize: '12px', color: '#9ca3af', lineHeight: '1.55', marginBottom: '12px' }}>
+          <p style={{ fontSize: '12px', color: '#94A3B8', lineHeight: '1.55', marginBottom: '12px' }}>
             Rate each statement from <strong>1</strong> (strongly disagree) to <strong>6</strong> (strongly agree).
           </p>
 
-          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#9ca3af', marginBottom: '6px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#94A3B8', marginBottom: '6px' }}>
             <span>Strongly disagree</span>
             <span>Strongly agree</span>
           </div>
@@ -330,17 +330,17 @@ export default function AssessmentForm() {
                 gap: '12px',
                 padding: '9px 8px',
                 borderRadius: '4px',
-                background: i % 2 === 0 ? '#fafafa' : '#fff',
+                background: i % 2 === 0 ? '#F7F9FC' : '#FFFFFF',
               }}>
                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', flex: 1, minWidth: 0 }}>
                   <span style={{
-                    fontSize: '10px', fontWeight: '700', color: '#6b7280',
-                    background: '#f3f4f6', padding: '2px 5px', borderRadius: '3px',
+                    fontSize: '10px', fontWeight: '700', color: '#475569',
+                    background: '#F1F5F9', padding: '2px 5px', borderRadius: '3px',
                     flexShrink: 0, marginTop: '2px', letterSpacing: '0.3px',
                   }}>
                     {q.id}
                   </span>
-                  <span style={{ fontSize: '13px', color: '#374151', lineHeight: '1.4' }}>{q.text}</span>
+                  <span style={{ fontSize: '13px', color: '#1E293B', lineHeight: '1.4' }}>{q.text}</span>
                 </div>
                 <div style={{ display: 'flex', gap: '4px', flexShrink: 0 }}>
                   {[1, 2, 3, 4, 5, 6].map(n => (
@@ -355,9 +355,9 @@ export default function AssessmentForm() {
                       />
                       <div style={{
                         width: '28px', height: '28px', borderRadius: '50%',
-                        border: `2px solid ${form[q.id] === String(n) ? '#1B6CA8' : '#d1d5db'}`,
-                        background: form[q.id] === String(n) ? '#1B6CA8' : '#fff',
-                        color: form[q.id] === String(n) ? '#fff' : '#9ca3af',
+                        border: `2px solid ${form[q.id] === String(n) ? '#2563EB' : '#CBD5E1'}`,
+                        background: form[q.id] === String(n) ? '#2563EB' : '#FFFFFF',
+                        color: form[q.id] === String(n) ? '#FFFFFF' : '#94A3B8',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                         fontSize: '11px', fontWeight: '600',
                       }}>
@@ -373,14 +373,14 @@ export default function AssessmentForm() {
           {error && (
             <div style={{
               marginTop: '16px', padding: '12px',
-              background: '#fee2e2', border: '1px solid #fca5a5',
-              borderRadius: '6px', color: '#991b1b', fontSize: '13px',
+              background: '#FEF2F2', border: '1px solid #FCA5A5',
+              borderRadius: '6px', color: '#B91C1C', fontSize: '13px',
             }}>
               {error}
             </div>
           )}
 
-          <p style={{ fontSize: '12px', color: '#9ca3af', marginTop: '20px', textAlign: 'center', lineHeight: '1.5' }}>
+          <p style={{ fontSize: '12px', color: '#94A3B8', marginTop: '20px', textAlign: 'center', lineHeight: '1.5' }}>
             By submitting you confirm you have read the consent information and agreed to share your answers anonymously.
           </p>
 
@@ -406,7 +406,7 @@ export default function AssessmentForm() {
 function Field({ label, children }) {
   return (
     <div style={{ marginBottom: '12px', display: 'flex', flexDirection: 'column', gap: '6px' }}>
-      <label style={{ fontSize: '13px', fontWeight: '500', color: '#374151' }}>{label}</label>
+      <label style={{ fontSize: '13px', fontWeight: '500', color: '#1E293B' }}>{label}</label>
       {children}
     </div>
   )
@@ -439,52 +439,52 @@ const s = {
   },
   loadingMsg: {
     fontSize: '15px',
-    color: '#6b7280',
+    color: '#475569',
     fontWeight: '500',
     textAlign: 'center',
   },
   title: {
-    fontSize: '22px', fontWeight: '700', color: '#2E4057',
+    fontSize: '22px', fontWeight: '700', color: '#1E293B',
     marginBottom: '8px', lineHeight: '1.3',
   },
   subtitle: {
-    fontSize: '13px', color: '#6b7280',
+    fontSize: '13px', color: '#475569',
     lineHeight: '1.55', marginBottom: '4px',
   },
   divider: {
-    borderTop: '1px solid #e5e7eb',
+    borderTop: '1px solid #E2E8F0',
     margin: '28px 0 20px',
   },
   sectionLabel: {
-    fontSize: '11px', fontWeight: '700', color: '#1B6CA8',
+    fontSize: '11px', fontWeight: '700', color: '#2563EB',
     letterSpacing: '0.6px', textTransform: 'uppercase', marginBottom: '16px',
   },
   helper: {
-    fontSize: '13px', color: '#6b7280',
+    fontSize: '13px', color: '#475569',
     lineHeight: '1.55', marginBottom: '16px',
   },
   fieldLabel: {
-    fontSize: '13px', fontWeight: '500', color: '#374151', marginBottom: '0',
+    fontSize: '13px', fontWeight: '500', color: '#1E293B', marginBottom: '0',
   },
   select: {
     width: '100%',
     padding: '8px 30px 8px 12px',
-    border: '1px solid #e5e7eb',
+    border: '1px solid #E2E8F0',
     borderRadius: '6px',
-    background: `#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b7280' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 10px center`,
-    fontSize: '14px', color: '#2E4057', appearance: 'none', cursor: 'pointer',
+    background: `#FFFFFF url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394A3B8' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 10px center`,
+    fontSize: '14px', color: '#1E293B', appearance: 'none', cursor: 'pointer',
   },
   appRow: {
     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-    gap: '12px', padding: '10px 0', borderBottom: '1px solid #f3f4f6',
+    gap: '12px', padding: '10px 0', borderBottom: '1px solid #F1F5F9',
   },
   appIcon: {
     width: '34px', height: '34px', display: 'flex', alignItems: 'center',
-    justifyContent: 'center', background: '#eff6ff', borderRadius: '7px',
+    justifyContent: 'center', background: '#EFF6FF', borderRadius: '7px',
     fontSize: '17px', flexShrink: 0,
   },
   submitBtn: {
-    width: '100%', padding: '13px', background: '#2E4057', color: '#fff',
+    width: '100%', padding: '13px', background: '#2563EB', color: '#FFFFFF',
     border: 'none', borderRadius: '8px', fontSize: '15px', fontWeight: '600',
     cursor: 'pointer', marginTop: '8px', fontFamily: 'inherit', letterSpacing: '0.2px',
   },

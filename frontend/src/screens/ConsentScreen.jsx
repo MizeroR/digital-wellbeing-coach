@@ -44,15 +44,15 @@ export default function ConsentScreen() {
         <div style={s.container}>
           <div style={{ textAlign: 'center', padding: '48px 0' }}>
             <p style={{ fontSize: '40px', marginBottom: '16px' }}>🙏</p>
-            <h2 style={{ fontSize: '20px', fontWeight: '700', color: '#2E4057', marginBottom: '10px' }}>
+            <h2 style={{ fontSize: '20px', fontWeight: '700', color: '#1E293B', marginBottom: '10px' }}>
               Thank you for your time
             </h2>
-            <p style={{ fontSize: '14px', color: '#6b7280', lineHeight: '1.6', marginBottom: '24px' }}>
+            <p style={{ fontSize: '14px', color: '#475569', lineHeight: '1.6', marginBottom: '24px' }}>
               Your decision not to participate is completely respected.
               You may close this tab at any time.
             </p>
             <button
-              style={{ fontSize: '13px', color: '#1B6CA8', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', fontFamily: 'inherit' }}
+              style={{ fontSize: '13px', color: '#2563EB', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline', fontFamily: 'inherit' }}
               onClick={() => setDeclined(false)}
             >
               Go back to consent
@@ -72,7 +72,7 @@ export default function ConsentScreen() {
         {/* Dot indicator */}
         <div style={s.dots}>
           {SLIDES.map((_, i) => (
-            <div key={i} style={{ ...s.dot, background: i === slide ? '#2E4057' : '#d1d5db' }} />
+            <div key={i} style={{ ...s.dot, background: i === slide ? '#2563EB' : '#CBD5E1' }} />
           ))}
         </div>
 
@@ -86,8 +86,8 @@ export default function ConsentScreen() {
         <div style={s.contentList}>
           {current.content.map((text, i) => (
             <div key={i} style={{ display: 'flex', gap: '10px', paddingBottom: '14px' }}>
-              <span style={{ color: '#1B6CA8', fontWeight: '700', flexShrink: 0, marginTop: '2px' }}>—</span>
-              <p style={{ fontSize: '14px', color: '#374151', lineHeight: '1.7', margin: 0 }}>{text}</p>
+              <span style={{ color: '#2563EB', fontWeight: '700', flexShrink: 0, marginTop: '2px' }}>—</span>
+              <p style={{ fontSize: '14px', color: '#1E293B', lineHeight: '1.7', margin: 0 }}>{text}</p>
             </div>
           ))}
         </div>
@@ -100,15 +100,15 @@ export default function ConsentScreen() {
             <div
               style={{
                 ...s.checkbox,
-                background: agreed ? '#2E4057' : '#fff',
-                borderColor: agreed ? '#2E4057' : '#d1d5db',
+                background: agreed ? '#2563EB' : '#FFFFFF',
+                borderColor: agreed ? '#2563EB' : '#CBD5E1',
               }}
               onClick={() => setAgreed(a => !a)}
             >
               {agreed && <span style={{ color: '#fff', fontSize: '12px', fontWeight: '700' }}>✓</span>}
             </div>
             <span
-              style={{ fontSize: '14px', color: '#374151', cursor: 'pointer', lineHeight: '1.5' }}
+              style={{ fontSize: '14px', color: '#1E293B', cursor: 'pointer', lineHeight: '1.5' }}
               onClick={() => setAgreed(a => !a)}
             >
               I understand and agree to participate voluntarily
@@ -191,12 +191,12 @@ const s = {
   titleBlock: {
     marginBottom: '24px',
     paddingBottom: '20px',
-    borderBottom: '2px solid #2E4057',
+    borderBottom: '2px solid #E2E8F0',
   },
   label: {
     fontSize: '11px',
     fontWeight: '700',
-    color: '#1B6CA8',
+    color: '#2563EB',
     letterSpacing: '1px',
     textTransform: 'uppercase',
     margin: '0 0 10px',
@@ -204,7 +204,7 @@ const s = {
   topic: {
     fontSize: '26px',
     fontWeight: '700',
-    color: '#2E4057',
+    color: '#1E293B',
     lineHeight: '1.3',
     margin: 0,
   },
@@ -212,7 +212,7 @@ const s = {
     margin: '20px 0 0',
   },
   divider: {
-    borderTop: '1px solid #e5e7eb',
+    borderTop: '1px solid #E2E8F0',
     margin: '24px 0',
   },
   checkRow: {
@@ -226,7 +226,7 @@ const s = {
     width: '20px',
     height: '20px',
     borderRadius: '4px',
-    border: '2px solid #d1d5db',
+    border: '2px solid #CBD5E1',
     flexShrink: 0,
     display: 'flex',
     alignItems: 'center',
@@ -243,8 +243,8 @@ const s = {
   primaryBtn: {
     width: '100%',
     padding: '14px',
-    background: '#2E4057',
-    color: '#fff',
+    background: '#2563EB',
+    color: '#FFFFFF',
     border: 'none',
     borderRadius: '8px',
     fontSize: '15px',
@@ -255,9 +255,9 @@ const s = {
   declineBtn: {
     width: '100%',
     padding: '11px',
-    background: '#fff',
-    color: '#9ca3af',
-    border: '1px solid #e5e7eb',
+    background: '#FFFFFF',
+    color: '#94A3B8',
+    border: '1px solid #E2E8F0',
     borderRadius: '8px',
     fontSize: '13px',
     cursor: 'pointer',
@@ -266,7 +266,7 @@ const s = {
   backBtn: {
     background: 'none',
     border: 'none',
-    color: '#9ca3af',
+    color: '#94A3B8',
     fontSize: '13px',
     cursor: 'pointer',
     fontFamily: 'inherit',

@@ -9,7 +9,7 @@ export default function LandingPage() {
 
         <div style={s.logoMark}>
           <span style={s.logoIcon}>📱</span>
-          <span style={s.logoText}>Digital<span style={{ fontWeight: '400', color: '#1B6CA8' }}>WellbeingCoach</span></span>
+          <span style={s.logoText}>Digital<span style={{ fontWeight: '400', color: '#2563EB' }}>WellbeingCoach</span></span>
         </div>
 
         <h1 style={s.headline}>Is your phone use<br />affecting your life?</h1>
@@ -49,7 +49,7 @@ const s = {
     alignItems: 'center',
     justifyContent: 'center',
     padding: '48px 20px',
-    background: '#fff',
+    background: '#FFFFFF',
   },
   hero: {
     width: '100%',
@@ -72,20 +72,20 @@ const s = {
   logoText: {
     fontSize: '16px',
     fontWeight: '700',
-    color: '#2E4057',
+    color: '#1E293B',
     letterSpacing: '-0.3px',
   },
   headline: {
     fontSize: '40px',
     fontWeight: '800',
-    color: '#2E4057',
+    color: '#1E293B',
     lineHeight: '1.2',
     marginBottom: '16px',
     letterSpacing: '-0.5px',
   },
   subtitle: {
     fontSize: '16px',
-    color: '#6b7280',
+    color: '#475569',
     lineHeight: '1.65',
     marginBottom: '28px',
     maxWidth: '420px',
@@ -100,9 +100,9 @@ const s = {
   pill: {
     fontSize: '13px',
     fontWeight: '500',
-    color: '#1B6CA8',
-    background: '#eff6ff',
-    border: '1px solid #bfdbfe',
+    color: '#2563EB',
+    background: '#EFF6FF',
+    border: '1px solid #BFDBFE',
     borderRadius: '20px',
     padding: '6px 14px',
   },
@@ -110,8 +110,8 @@ const s = {
     width: '100%',
     maxWidth: '320px',
     padding: '16px',
-    background: '#2E4057',
-    color: '#fff',
+    background: '#2563EB',
+    color: '#FFFFFF',
     border: 'none',
     borderRadius: '10px',
     fontSize: '16px',
@@ -124,7 +124,7 @@ const s = {
   },
   disclaimer: {
     fontSize: '12px',
-    color: '#9ca3af',
+    color: '#94A3B8',
     lineHeight: '1.55',
     maxWidth: '340px',
   },
