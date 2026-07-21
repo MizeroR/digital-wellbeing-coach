@@ -1,14 +1,14 @@
 const COST_STYLE = {
-  Free:       { bg: '#d1fae5', text: '#065f46' },
-  Varies:     { bg: '#fff7ed', text: '#92400e' },
-  'Low cost': { bg: '#f3f4f6', text: '#374151' },
+  Free:       { bg: '#D1FAE5', text: '#065F46' },
+  Varies:     { bg: '#FFF7ED', text: '#92400E' },
+  'Low cost': { bg: '#F1F5F9', text: '#1E293B' },
 }
 
 function AccessLink({ value }) {
   if (!value) return null
   if (value.startsWith('@')) {
     return (
-      <span style={{ fontSize: '12px', color: '#6b7280' }}>{value}</span>
+      <span style={{ fontSize: '12px', color: '#475569' }}>{value}</span>
     )
   }
   const href = value.startsWith('http') ? value : `https://${value}`
@@ -18,7 +18,7 @@ function AccessLink({ value }) {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      style={{ fontSize: '12px', color: '#1B6CA8', textDecoration: 'none' }}
+      style={{ fontSize: '12px', color: '#2563EB', textDecoration: 'none' }}
     >
       → {display}
     </a>
@@ -29,8 +29,8 @@ export default function RecommendationCard({ rec }) {
   const costStyle = COST_STYLE[rec.cost] || COST_STYLE['Low cost']
   return (
     <div style={{
-      background: '#fff',
-      border: '1px solid #e5e7eb',
+      background: '#FFFFFF',
+      border: '1px solid #E2E8F0',
       borderRadius: '10px',
       padding: '16px',
       display: 'flex',
@@ -38,7 +38,7 @@ export default function RecommendationCard({ rec }) {
       gap: '8px',
     }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '8px' }}>
-        <div style={{ fontSize: '13px', fontWeight: '600', color: '#2E4057', lineHeight: '1.4' }}>
+        <div style={{ fontSize: '13px', fontWeight: '600', color: '#1E293B', lineHeight: '1.4' }}>
           {rec.title}
         </div>
         <span style={{
@@ -54,7 +54,7 @@ export default function RecommendationCard({ rec }) {
         </span>
       </div>
 
-      <p style={{ margin: 0, fontSize: '12px', color: '#6b7280', lineHeight: '1.5' }}>
+      <p style={{ margin: 0, fontSize: '12px', color: '#475569', lineHeight: '1.5' }}>
         {rec.description}
       </p>
 
@@ -62,8 +62,8 @@ export default function RecommendationCard({ rec }) {
         {rec.type && (
           <span style={{
             fontSize: '11px',
-            background: '#eff6ff',
-            color: '#1e40af',
+            background: '#EFF6FF',
+            color: '#2563EB',
             padding: '2px 8px',
             borderRadius: '20px',
           }}>

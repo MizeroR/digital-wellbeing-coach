@@ -4,16 +4,16 @@ export default function ExplanationCard({ number, text }) {
       display: 'flex',
       gap: '12px',
       padding: '14px',
-      background: '#f8fafc',
+      background: '#F8FAFC',
       borderRadius: '8px',
-      border: '1px solid #e5e7eb',
+      border: '1px solid #E2E8F0',
     }}>
       <div style={{
         width: '24px',
         height: '24px',
         borderRadius: '50%',
-        background: '#1B6CA8',
-        color: '#fff',
+        background: '#EFF6FF',
+        color: '#2563EB',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -23,7 +23,7 @@ export default function ExplanationCard({ number, text }) {
       }}>
         {number}
       </div>
-      <p style={{ margin: 0, fontSize: '14px', color: '#374151', lineHeight: '1.55' }}>{text}</p>
+      <p style={{ margin: 0, fontSize: '14px', color: '#1E293B', lineHeight: '1.55' }}>{text}</p>
     </div>
   )
 }

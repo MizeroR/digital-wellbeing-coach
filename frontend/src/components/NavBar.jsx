@@ -1,8 +1,8 @@
 export default function NavBar() {
   return (
     <nav style={{
-      background: '#fff',
-      borderBottom: '1px solid #e5e7eb',
+      background: '#FFFFFF',
+      borderBottom: '1px solid #E2E8F0',
       padding: '0 20px',
       height: '52px',
       display: 'flex',
@@ -12,12 +12,12 @@ export default function NavBar() {
       top: 0,
       zIndex: 100,
     }}>
-      <div style={{ fontSize: '15px', fontWeight: '700', color: '#2E4057', letterSpacing: '-0.3px' }}>
-        Digital<span style={{ fontWeight: '400', color: '#1B6CA8' }}>WellbeingCoach</span>
+      <div style={{ fontSize: '15px', fontWeight: '700', color: '#1E293B', letterSpacing: '-0.3px' }}>
+        Digital<span style={{ fontWeight: '400', color: '#2563EB' }}>WellbeingCoach</span>
       </div>
       <div className="nav-badge" style={{
-        fontSize: '11px', color: '#6b7280', background: '#f3f4f6',
-        padding: '3px 10px', borderRadius: '20px', border: '1px solid #e5e7eb',
+        fontSize: '11px', color: '#64748B', background: '#F1F5F9',
+        padding: '3px 10px', borderRadius: '20px', border: '1px solid #E2E8F0',
         whiteSpace: 'nowrap',
       }}>
         This is not a medical tool
