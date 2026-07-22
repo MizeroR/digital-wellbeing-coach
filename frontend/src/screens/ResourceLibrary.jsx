@@ -49,10 +49,10 @@ export default function ResourceLibrary() {
               aria-label={tab.label}
             >
               <span style={{ fontSize: '22px' }}>{tab.label.split(' ')[0]}</span>
-              <span style={{ fontSize: '14px', fontWeight: '600', color: '#2E4057' }}>
+              <span style={{ fontSize: '14px', fontWeight: '600', color: '#1E293B' }}>
                 {tab.label.split(' ').slice(1).join(' ')}
               </span>
-              <span style={{ fontSize: '12px', color: '#1B6CA8', marginTop: 'auto' }}>Explore →</span>
+              <span style={{ fontSize: '12px', color: '#2563EB', marginTop: 'auto' }}>Explore →</span>
             </button>
           ))}
         </div>
@@ -77,19 +77,19 @@ export default function ResourceLibrary() {
 function SimpleCard({ rec }) {
   return (
     <div style={{
-      border: '1px solid #E8EAF0', borderRadius: '12px', padding: '14px',
+      border: '1px solid #E2E8F0', borderRadius: '12px', padding: '14px',
       background: '#fff', display: 'flex', flexDirection: 'column', gap: '6px',
     }}>
-      <div style={{ fontWeight: '700', fontSize: '14px', color: '#2E4057' }}>{rec.title}</div>
+      <div style={{ fontWeight: '700', fontSize: '14px', color: '#1E293B' }}>{rec.title}</div>
       <p style={{
-        fontSize: '13px', color: '#6b7280', lineHeight: '1.5', margin: 0,
+        fontSize: '13px', color: '#475569', lineHeight: '1.5', margin: 0,
         display: '-webkit-box', WebkitLineClamp: 2,
         WebkitBoxOrient: 'vertical', overflow: 'hidden',
       }}>
         {rec.description}
       </p>
       <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '2px' }}>
-        <span style={{ padding: '2px 8px', borderRadius: '10px', background: '#f3f4f6', color: '#6b7280', fontSize: '11px' }}>
+        <span style={{ padding: '2px 8px', borderRadius: '10px', background: '#F1F5F9', color: '#475569', fontSize: '11px' }}>
           {rec.type}
         </span>
       </div>
@@ -106,19 +106,19 @@ const s = {
   },
   card: { width: '100%', maxWidth: '720px', height: 'fit-content' },
   backBtn: {
-    background: 'none', border: 'none', color: '#9ca3af',
+    background: 'none', border: 'none', color: '#94A3B8',
     fontSize: '13px', cursor: 'pointer', padding: '0',
     marginBottom: '12px', fontFamily: 'inherit', display: 'block',
   },
-  title: { fontSize: '24px', fontWeight: '700', color: '#2E4057', marginBottom: '6px' },
-  subtitle: { fontSize: '13px', color: '#6b7280', marginBottom: '20px' },
+  title: { fontSize: '24px', fontWeight: '700', color: '#1E293B', marginBottom: '6px' },
+  subtitle: { fontSize: '13px', color: '#475569', marginBottom: '20px' },
   emergencyBanner: {
     padding: '12px 16px', background: '#fee2e2',
     border: '1px solid #fca5a5', borderRadius: '8px',
     display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px',
   },
   callBtn: {
-    padding: '6px 14px', background: '#C0392B', color: '#fff',
+    padding: '6px 14px', background: '#DC2626', color: '#FFFFFF',
     borderRadius: '20px', fontSize: '12px', fontWeight: '600',
     textDecoration: 'none', flexShrink: 0,
   },
@@ -128,14 +128,14 @@ const s = {
     gap: '12px',
   },
   guideCard: {
-    border: '1px solid #E8EAF0', borderRadius: '12px', padding: '20px 16px',
+    border: '1px solid #E2E8F0', borderRadius: '12px', padding: '20px 16px',
     background: '#fff', display: 'flex', flexDirection: 'column',
     alignItems: 'flex-start', gap: '6px', cursor: 'pointer',
     fontFamily: 'inherit', textAlign: 'left', minHeight: '110px',
     transition: 'box-shadow 0.15s', boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
   },
   sectionLabel: {
-    fontSize: '12px', fontWeight: '700', color: '#9ca3af',
+    fontSize: '12px', fontWeight: '700', color: '#94A3B8',
     textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '12px',
   },
   grid: {

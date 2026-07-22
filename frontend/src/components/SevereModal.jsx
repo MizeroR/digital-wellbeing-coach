@@ -11,7 +11,7 @@ export default function SevereModal({ onConfirm }) {
       padding: '20px',
     }}>
       <div style={{
-        background: '#fff',
+        background: '#FFFFFF',
         borderRadius: '12px',
         padding: '32px 28px',
         maxWidth: '420px',
@@ -21,7 +21,7 @@ export default function SevereModal({ onConfirm }) {
         <div style={{
           width: '52px',
           height: '52px',
-          background: '#fee2e2',
+          background: '#FEF2F2',
           borderRadius: '50%',
           display: 'flex',
           alignItems: 'center',
@@ -32,16 +32,16 @@ export default function SevereModal({ onConfirm }) {
           ⚠️
         </div>
 
-        <h2 style={{ fontSize: '18px', fontWeight: '700', color: '#991b1b', marginBottom: '12px' }}>
+        <h2 style={{ fontSize: '18px', fontWeight: '700', color: '#B91C1C', marginBottom: '12px' }}>
           Important notice
         </h2>
 
-        <p style={{ fontSize: '14px', color: '#374151', lineHeight: '1.65', marginBottom: '14px' }}>
+        <p style={{ fontSize: '14px', color: '#1E293B', lineHeight: '1.65', marginBottom: '14px' }}>
           Based on your answers, your usage pattern shows signs of{' '}
           <strong>severe dependency</strong>. This tool is not a substitute for professional help.
         </p>
 
-        <p style={{ fontSize: '14px', color: '#374151', lineHeight: '1.65', marginBottom: '24px' }}>
+        <p style={{ fontSize: '14px', color: '#1E293B', lineHeight: '1.65', marginBottom: '24px' }}>
           Please consider reaching out:<br />
           <strong>Rwanda Mental Health Help Line: 116</strong> (free, 24/7)<br />
           <strong>Ndera Hospital:</strong> +250 781 447 928
@@ -50,8 +50,8 @@ export default function SevereModal({ onConfirm }) {
         <button
           onClick={onConfirm}
           style={{
-            background: '#1B6CA8',
-            color: '#fff',
+            background: '#2563EB',
+            color: '#FFFFFF',
             border: 'none',
             borderRadius: '8px',
             padding: '11px 24px',
