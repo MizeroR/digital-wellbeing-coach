@@ -82,12 +82,12 @@ const grid = {
 }
 
 const sectionLabel = {
-  fontSize: '12px', fontWeight: '700', color: '#9ca3af',
+  fontSize: '12px', fontWeight: '700', color: '#94A3B8',
   textTransform: 'uppercase', letterSpacing: '0.5px',
   margin: '8px 0 12px',
 }
 
 const note = {
-  fontSize: '13px', color: '#6b7280',
+  fontSize: '13px', color: '#475569',
   fontStyle: 'italic', margin: '8px 0 0',
 }

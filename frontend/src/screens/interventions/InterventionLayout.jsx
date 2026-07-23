@@ -4,12 +4,12 @@ import { useNavigate } from 'react-router-dom'
 
 export function CostBadge({ cost }) {
   let bg, color, label
-  if (!cost)                          { bg = '#f3f4f6'; color = '#9ca3af'; label = '—' }
+  if (!cost)                          { bg = '#F1F5F9'; color = '#94A3B8'; label = '—' }
   else if (cost === 'Free')           { bg = '#dcfce7'; color = '#16a34a'; label = 'Free' }
   else if (cost === 'Low cost')       { bg = '#fef3c7'; color = '#d97706'; label = 'Low cost' }
-  else if (cost === 'Varies')         { bg = '#f3f4f6'; color = '#6b7280'; label = 'Varies' }
+  else if (cost === 'Varies')         { bg = '#F1F5F9'; color = '#475569'; label = 'Varies' }
   else if (cost.startsWith('Free /')) { bg = '#fef3c7'; color = '#d97706'; label = cost }
-  else                                { bg = '#f3f4f6'; color = '#6b7280'; label = cost }
+  else                                { bg = '#F1F5F9'; color = '#475569'; label = cost }
   return (
     <span style={{
       padding: '2px 8px', borderRadius: '10px', background: bg, color,
@@ -27,7 +27,7 @@ export function AccessText({ text }) {
   const igMatch   = text.match(/@([\w.]+)/)
 
   const linkStyle = {
-    fontSize: '12px', color: '#1B6CA8', textDecoration: 'underline',
+    fontSize: '12px', color: '#2563EB', textDecoration: 'underline',
     display: 'inline', wordBreak: 'break-word',
   }
 
@@ -55,22 +55,22 @@ export function AccessText({ text }) {
       </a>
     )
   }
-  return <span style={{ fontSize: '12px', color: '#6b7280' }}>{text}</span>
+  return <span style={{ fontSize: '12px', color: '#475569' }}>{text}</span>
 }
 
 export function ResCard({ title, description, cost, access, steps, link, linkLabel }) {
   return (
     <div style={{
-      border: '1px solid #E8EAF0', borderRadius: '12px', padding: '16px',
+      border: '1px solid #E2E8F0', borderRadius: '12px', padding: '16px',
       background: '#fff', display: 'flex', flexDirection: 'column', gap: '8px',
     }}>
-      <div style={{ fontWeight: '700', fontSize: '14px', color: '#2E4057' }}>{title}</div>
-      <p style={{ fontSize: '13px', color: '#6b7280', lineHeight: '1.5', margin: 0 }}>{description}</p>
+      <div style={{ fontWeight: '700', fontSize: '14px', color: '#1E293B' }}>{title}</div>
+      <p style={{ fontSize: '13px', color: '#475569', lineHeight: '1.5', margin: 0 }}>{description}</p>
       {cost && <div><CostBadge cost={cost} /></div>}
       {steps && (
         <ol style={{ margin: 0, paddingLeft: '18px', display: 'flex', flexDirection: 'column', gap: '3px' }}>
           {steps.map((step, i) => (
-            <li key={i} style={{ fontSize: '12px', color: '#6b7280', lineHeight: '1.45' }}>{step}</li>
+            <li key={i} style={{ fontSize: '12px', color: '#475569', lineHeight: '1.45' }}>{step}</li>
           ))}
         </ol>
       )}
@@ -86,9 +86,9 @@ export function ResCard({ title, description, cost, access, steps, link, linkLab
           rel="noopener noreferrer"
           style={{
             display: 'inline-block', alignSelf: 'flex-start', marginTop: '4px',
-            padding: '6px 14px', background: '#eff6ff',
-            border: '1px solid #bfdbfe', borderRadius: '6px',
-            fontSize: '12px', fontWeight: '600', color: '#1B6CA8',
+            padding: '6px 14px', background: '#EFF6FF',
+            border: '1px solid #BFDBFE', borderRadius: '6px',
+            fontSize: '12px', fontWeight: '600', color: '#2563EB',
             textDecoration: 'none',
           }}
         >
@@ -158,7 +158,7 @@ const s = {
   },
   backBtn: {
     background: 'none', border: 'none',
-    color: '#9ca3af', fontSize: '13px',
+    color: '#94A3B8', fontSize: '13px',
     cursor: 'pointer', fontFamily: 'inherit',
     padding: 0, marginBottom: '28px', display: 'block',
   },
@@ -166,17 +166,17 @@ const s = {
     textAlign: 'center',
     marginBottom: '32px',
     paddingBottom: '28px',
-    borderBottom: '1px solid #e5e7eb',
+    borderBottom: '1px solid #E2E8F0',
   },
   iconWrap: {
     fontSize: '48px', marginBottom: '14px', lineHeight: 1,
   },
   title: {
-    fontSize: '24px', fontWeight: '800', color: '#2E4057',
+    fontSize: '24px', fontWeight: '800', color: '#1E293B',
     margin: '0 0 14px', letterSpacing: '-0.3px',
   },
   why: {
-    fontSize: '14px', color: '#6b7280', lineHeight: '1.7',
+    fontSize: '14px', color: '#475569', lineHeight: '1.7',
     maxWidth: '560px', margin: '0 auto',
   },
 }

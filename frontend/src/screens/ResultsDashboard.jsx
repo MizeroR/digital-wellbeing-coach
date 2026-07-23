@@ -5,10 +5,10 @@ import SevereModal from '../components/SevereModal'
 // ── Constants ─────────────────────────────────────────────────────────────────
 
 const RISK_COLOR = {
-  Low:      '#27AE60',
-  Moderate: '#F4A261',
-  High:     '#E76F51',
-  Severe:   '#C0392B',
+  Low:      '#16A34A',
+  Moderate: '#D97706',
+  High:     '#EA580C',
+  Severe:   '#DC2626',
 }
 
 const RISK_DISPLAY = {
@@ -85,38 +85,38 @@ function SectionHeading({ children }) {
   return (
     <div style={{ marginBottom: '20px' }}>
       <h2 style={{
-        fontSize: '15px', fontWeight: '700', color: '#2E4057',
+        fontSize: '15px', fontWeight: '700', color: '#334155',
         margin: '0 0 10px', letterSpacing: '-0.1px',
       }}>
         {children}
       </h2>
-      <div style={{ height: '1px', background: '#e5e7eb' }} />
+      <div style={{ height: '1px', background: '#E2E8F0' }} />
     </div>
   )
 }
 
-function ShapCard({ number, text, importance, riskColor }) {
+function ShapCard({ number, text, importance }) {
   return (
     <div style={{
-      background: '#F8F9FA', borderRadius: '8px', padding: '12px 14px',
-      boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+      background: '#F8FAFC', borderRadius: '8px', padding: '12px 14px',
+      border: '1px solid #E2E8F0',
     }}>
       <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-start', marginBottom: '8px' }}>
         <div style={{
           width: '22px', height: '22px', borderRadius: '50%', flexShrink: 0,
-          background: riskColor, color: '#fff',
+          background: '#EFF6FF', color: '#2563EB',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontSize: '11px', fontWeight: '700',
         }}>
           {number}
         </div>
-        <p style={{ fontSize: '13px', color: '#374151', lineHeight: '1.5', margin: 0, flex: 1 }}>
+        <p style={{ fontSize: '13px', color: '#1E293B', lineHeight: '1.5', margin: 0, flex: 1 }}>
           {text}
         </p>
       </div>
-      <div style={{ height: '3px', background: '#e5e7eb', borderRadius: '2px', overflow: 'hidden' }}>
+      <div style={{ height: '3px', background: '#DBEAFE', borderRadius: '2px', overflow: 'hidden' }}>
         <div style={{
-          height: '100%', width: importance, background: riskColor,
+          height: '100%', width: importance, background: '#2563EB',
           borderRadius: '2px', transition: 'width 0.8s ease',
         }} />
       </div>
@@ -158,11 +158,11 @@ function FeedbackWidget({ riskLevel }) {
   const active  = hovered ?? selected
 
   return (
-    <div style={{ background: '#f8fafc', border: '1px solid #e5e7eb', borderRadius: '8px', padding: '20px' }}>
-      <p style={{ fontSize: '13px', fontWeight: '600', color: '#2E4057', margin: '0 0 4px' }}>
+    <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '8px', padding: '20px' }}>
+      <p style={{ fontSize: '13px', fontWeight: '600', color: '#1E293B', margin: '0 0 4px' }}>
         Help improve this tool
       </p>
-      <p style={{ fontSize: '12px', color: '#6b7280', margin: '0 0 16px' }}>
+      <p style={{ fontSize: '12px', color: '#475569', margin: '0 0 16px' }}>
         How useful did you find your results?
       </p>
       <div style={{ display: 'flex', gap: '6px', alignItems: 'center', marginBottom: '8px' }}>
@@ -185,7 +185,7 @@ function FeedbackWidget({ riskLevel }) {
           </button>
         ))}
         {active && (
-          <span style={{ fontSize: '12px', color: '#6b7280', marginLeft: '6px' }}>{LABELS[active]}</span>
+          <span style={{ fontSize: '12px', color: '#475569', marginLeft: '6px' }}>{LABELS[active]}</span>
         )}
       </div>
       {selected && (
@@ -193,8 +193,8 @@ function FeedbackWidget({ riskLevel }) {
           <textarea
             style={{
               width: '100%', boxSizing: 'border-box',
-              padding: '8px 12px', border: '1px solid #e5e7eb', borderRadius: '6px',
-              fontSize: '13px', fontFamily: 'inherit', color: '#374151',
+              padding: '8px 12px', border: '1px solid #E2E8F0', borderRadius: '6px',
+              fontSize: '13px', fontFamily: 'inherit', color: '#1E293B',
               resize: 'vertical', minHeight: '72px', marginTop: '8px', background: '#fff',
             }}
             placeholder="Any comments? (optional)"
@@ -205,8 +205,8 @@ function FeedbackWidget({ riskLevel }) {
             type="button"
             onClick={handleSubmit}
             style={{
-              marginTop: '10px', padding: '9px 20px', background: '#2E4057',
-              color: '#fff', border: 'none', borderRadius: '6px',
+              marginTop: '10px', padding: '9px 20px', background: '#2563EB',
+              color: '#FFFFFF', border: 'none', borderRadius: '6px',
               fontSize: '13px', fontWeight: '600', cursor: 'pointer', fontFamily: 'inherit',
             }}
           >
@@ -259,7 +259,7 @@ export default memo(function ResultsDashboard() {
       {toast && (
         <div style={{
           position: 'fixed', bottom: '24px', left: '50%', transform: 'translateX(-50%)',
-          background: '#2E4057', color: '#fff', padding: '10px 20px',
+          background: '#1E293B', color: '#FFFFFF', padding: '10px 20px',
           borderRadius: '8px', fontSize: '13px', fontWeight: '500',
           zIndex: 999, whiteSpace: 'nowrap', boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
         }}>
@@ -272,13 +272,13 @@ export default memo(function ResultsDashboard() {
 
           {/* Print-only header */}
           <div className="print-only" style={{ marginBottom: '24px' }}>
-            <div style={{ fontSize: '18px', fontWeight: '700', color: '#2E4057' }}>
+            <div style={{ fontSize: '18px', fontWeight: '700', color: '#1E293B' }}>
               Digital Wellbeing Coach — Assessment Report
             </div>
-            <div style={{ fontSize: '12px', color: '#6b7280', marginTop: '4px' }}>
+            <div style={{ fontSize: '12px', color: '#475569', marginTop: '4px' }}>
               {new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
             </div>
-            <div style={{ height: '1px', background: '#e5e7eb', marginTop: '16px' }} />
+            <div style={{ height: '1px', background: '#E2E8F0', marginTop: '16px' }} />
           </div>
 
           {/* Nav link */}
@@ -305,33 +305,34 @@ export default memo(function ResultsDashboard() {
 
             {/* Score */}
             <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-              <div style={{ fontSize: '56px', fontWeight: '800', color: '#2E4057', lineHeight: 1, letterSpacing: '-2px' }}>
+              <div style={{ fontSize: '56px', fontWeight: '800', color: '#1E293B', lineHeight: 1, letterSpacing: '-2px' }}>
                 {results.sas_total}
-                <span style={{ fontSize: '28px', fontWeight: '400', color: '#9ca3af' }}> / 60</span>
+                <span style={{ fontSize: '28px', fontWeight: '400', color: '#94A3B8' }}> / 60</span>
               </div>
               <div style={{
-                fontSize: '11px', color: '#9ca3af', marginTop: '6px',
+                fontSize: '11px', color: '#94A3B8', marginTop: '6px',
                 fontWeight: '600', letterSpacing: '0.6px', textTransform: 'uppercase',
               }}>
                 Your usage score
+
               </div>
             </div>
 
             {/* Context */}
             <p style={{
-              fontSize: '14px', color: '#374151', lineHeight: '1.65',
+              fontSize: '14px', color: '#1E293B', lineHeight: '1.65',
               textAlign: 'center', maxWidth: '500px', margin: '0 auto 24px',
             }}>
               {RISK_CONTEXT[results.risk_level]}
             </p>
 
             {/* What stood out */}
-            <p style={{ fontSize: '13px', color: '#6b7280', marginBottom: '12px', lineHeight: '1.5' }}>
+            <p style={{ fontSize: '13px', color: '#475569', marginBottom: '12px', lineHeight: '1.5' }}>
               Here is what stood out most in your answers:
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {(results.explanations || []).slice(0, 3).map((text, i) => (
-                <ShapCard key={i} number={i + 1} text={text} importance={IMPORTANCE_WIDTHS[i]} riskColor={riskColor} />
+                <ShapCard key={i} number={i + 1} text={text} importance={IMPORTANCE_WIDTHS[i]} />
               ))}
             </div>
           </section>
@@ -343,26 +344,26 @@ export default memo(function ResultsDashboard() {
             {/* Category */}
             <div style={{ marginBottom: '16px' }}>
               {results.addiction_category === 'None' ? (
-                <p style={{ fontSize: '13px', color: '#6b7280', lineHeight: '1.6', margin: 0 }}>
+                <p style={{ fontSize: '13px', color: '#475569', lineHeight: '1.6', margin: 0 }}>
                   Your usage across all app types is low. No dominant pattern was identified — this is consistent with your low overall score.
                 </p>
               ) : results.risk_level === 'Low' ? (
-                <p style={{ fontSize: '13px', color: '#6b7280', lineHeight: '1.6', margin: 0 }}>
+                <p style={{ fontSize: '13px', color: '#475569', lineHeight: '1.6', margin: 0 }}>
                   Your usage does not show a dominant problematic pattern at this time.
                 </p>
               ) : (
                 <div>
                   <p style={{
-                    fontSize: '11px', fontWeight: '700', color: '#9ca3af',
+                    fontSize: '11px', fontWeight: '700', color: '#94A3B8',
                     textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 8px',
                   }}>
                     Where most of your time goes
                   </p>
                   <div style={{
                     display: 'inline-flex', alignItems: 'center', gap: '8px',
-                    background: '#f0f9ff', border: '1px solid #bae6fd',
+                    background: '#EFF6FF', border: '1px solid #BFDBFE',
                     padding: '8px 20px', borderRadius: '24px',
-                    fontSize: '15px', color: '#0369a1', fontWeight: '600',
+                    fontSize: '15px', color: '#2563EB', fontWeight: '600',
                   }}>
                     <span>{CATEGORY_EMOJI[results.addiction_category] || '📊'}</span>
                     <span>{results.addiction_category}</span>
@@ -395,7 +396,7 @@ export default memo(function ResultsDashboard() {
           {/* ═══ SECTION 3 — TRACK YOUR SCREEN TIME (no-print) ═══ */}
           <section style={s.section} className="no-print">
             <SectionHeading>Track your screen time</SectionHeading>
-            <p style={{ fontSize: '13px', color: '#6b7280', lineHeight: '1.55', marginBottom: '16px' }}>
+            <p style={{ fontSize: '13px', color: '#475569', lineHeight: '1.55', marginBottom: '16px' }}>
               Both iPhone and Android have free built-in tools to track exactly how long you spend on each app.
             </p>
             <div style={s.twoCol}>
@@ -422,7 +423,7 @@ export default memo(function ResultsDashboard() {
           {confirmed && (
             <section style={s.section}>
               <SectionHeading>Things you could try</SectionHeading>
-              <p style={{ fontSize: '13px', color: '#6b7280', lineHeight: '1.55', marginBottom: '16px' }}>
+              <p style={{ fontSize: '13px', color: '#475569', lineHeight: '1.55', marginBottom: '16px' }}>
                 Four areas where small changes tend to make the biggest difference.
                 {recommended && ' The highlighted one is based on your usage pattern.'}
               </p>
@@ -434,7 +435,7 @@ export default memo(function ResultsDashboard() {
                       key={card.key}
                       style={{
                         position: 'relative',
-                        border: `${isHighlighted ? '2px' : '1px'} solid ${isHighlighted ? '#1B6CA8' : '#E8EAF0'}`,
+                        border: `${isHighlighted ? '2px' : '1px'} solid ${isHighlighted ? '#2563EB' : '#E2E8F0'}`,
                         borderRadius: '12px', padding: '20px',
                         background: '#fff',
                         boxShadow: isHighlighted ? '0 4px 16px rgba(27,108,168,0.12)' : '0 1px 3px rgba(0,0,0,0.04)',
@@ -446,7 +447,7 @@ export default memo(function ResultsDashboard() {
                       {isHighlighted && (
                         <div style={{
                           position: 'absolute', top: '12px', right: '12px',
-                          background: '#1B6CA8', color: '#fff',
+                          background: '#2563EB', color: '#fff',
                           fontSize: '10px', fontWeight: '700', padding: '3px 8px',
                           borderRadius: '10px', letterSpacing: '0.3px',
                         }}>
@@ -455,16 +456,16 @@ export default memo(function ResultsDashboard() {
                       )}
                       <div style={{ fontSize: '32px', lineHeight: 1 }}>{card.icon}</div>
                       <div>
-                        <div style={{ fontSize: '15px', fontWeight: '700', color: '#2E4057', marginBottom: '5px' }}>
+                        <div style={{ fontSize: '15px', fontWeight: '700', color: '#1E293B', marginBottom: '5px' }}>
                           {card.title}
                         </div>
-                        <p style={{ fontSize: '13px', color: '#6b7280', lineHeight: '1.5', margin: 0 }}>
+                        <p style={{ fontSize: '13px', color: '#475569', lineHeight: '1.5', margin: 0 }}>
                           {card.description}
                         </p>
                       </div>
                       <div style={{
                         marginTop: 'auto', fontSize: '13px', fontWeight: '600',
-                        color: '#1B6CA8', display: 'flex', alignItems: 'center', gap: '4px',
+                        color: '#2563EB', display: 'flex', alignItems: 'center', gap: '4px',
                       }}>
                         Explore →
                       </div>
@@ -496,7 +497,7 @@ export default memo(function ResultsDashboard() {
           {/* Print footer */}
           <div className="print-only" style={{
             marginTop: '40px', paddingTop: '14px',
-            borderTop: '1px solid #e5e7eb', fontSize: '11px', color: '#9ca3af',
+            borderTop: '1px solid #E2E8F0', fontSize: '11px', color: '#94A3B8',
           }}>
             Generated by Digital Wellbeing Coach | Not a medical tool | For support call 116 (Rwanda, free 24/7)
           </div>
@@ -510,24 +511,24 @@ export default memo(function ResultsDashboard() {
 function MonitorCard({ icon, title, body, steps, linkLabel, linkUrl }) {
   return (
     <div style={{
-      border: '1px solid #E8EAF0', borderRadius: '12px', padding: '16px',
+      border: '1px solid #E2E8F0', borderRadius: '12px', padding: '16px',
       background: '#fff', display: 'flex', flexDirection: 'column', gap: '10px',
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
         <span style={{ fontSize: '22px' }}>{icon}</span>
-        <span style={{ fontSize: '14px', fontWeight: '700', color: '#2E4057' }}>{title}</span>
+        <span style={{ fontSize: '14px', fontWeight: '700', color: '#1E293B' }}>{title}</span>
       </div>
-      <p style={{ fontSize: '13px', color: '#6b7280', lineHeight: '1.5', margin: 0 }}>{body}</p>
+      <p style={{ fontSize: '13px', color: '#475569', lineHeight: '1.5', margin: 0 }}>{body}</p>
       <ol style={{ margin: 0, paddingLeft: '18px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
         {steps.map((step, i) => (
-          <li key={i} style={{ fontSize: '12px', color: '#6b7280', lineHeight: '1.4' }}>{step}</li>
+          <li key={i} style={{ fontSize: '12px', color: '#475569', lineHeight: '1.4' }}>{step}</li>
         ))}
       </ol>
       <a href={linkUrl} target="_blank" rel="noopener noreferrer" style={{
         display: 'inline-block', alignSelf: 'flex-start',
-        padding: '6px 14px', background: '#eff6ff',
-        border: '1px solid #bfdbfe', borderRadius: '6px',
-        fontSize: '12px', fontWeight: '600', color: '#1B6CA8', textDecoration: 'none',
+        padding: '6px 14px', background: '#EFF6FF',
+        border: '1px solid #BFDBFE', borderRadius: '6px',
+        fontSize: '12px', fontWeight: '600', color: '#2563EB', textDecoration: 'none',
       }}>
         {linkLabel}
       </a>
@@ -544,7 +545,7 @@ const s = {
   },
   card: { width: '100%', maxWidth: '720px', height: 'fit-content' },
   navLink: {
-    background: 'none', border: 'none', color: '#9ca3af',
+    background: 'none', border: 'none', color: '#94A3B8',
     fontSize: '13px', cursor: 'pointer', fontFamily: 'inherit', padding: 0,
   },
   section: { marginBottom: '40px' },
@@ -561,13 +562,13 @@ const s = {
   reportBtns: { display: 'flex', gap: '10px', flexWrap: 'wrap' },
   primaryBtn: {
     flex: 1, minWidth: '140px', padding: '12px 24px',
-    background: '#2E4057', color: '#fff', border: 'none',
+    background: '#2563EB', color: '#FFFFFF', border: 'none',
     borderRadius: '8px', fontSize: '14px', fontWeight: '600',
     cursor: 'pointer', fontFamily: 'inherit',
   },
   outlineBtn: {
     flex: 1, minWidth: '140px', padding: '12px 24px',
-    background: '#fff', color: '#2E4057', border: '1.5px solid #2E4057',
+    background: '#F1F5F9', color: '#1E293B', border: '1px solid #E2E8F0',
     borderRadius: '8px', fontSize: '14px', fontWeight: '600',
     cursor: 'pointer', fontFamily: 'inherit',
   },
