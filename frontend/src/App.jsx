@@ -10,6 +10,7 @@ import EducationPage from './screens/interventions/EducationPage'
 import CreativePage from './screens/interventions/CreativePage'
 import RelaxationPage from './screens/interventions/RelaxationPage'
 import SocialPage from './screens/interventions/SocialPage'
+import PrivacyPolicy from './screens/PrivacyPolicy'
 
 export default function App() {
   return (
@@ -28,6 +29,7 @@ export default function App() {
             <Route path="/interventions/creative" element={<CreativePage />} />
             <Route path="/interventions/relaxation" element={<RelaxationPage />} />
             <Route path="/interventions/social" element={<SocialPage />} />
+            <Route path="/privacy" element={<PrivacyPolicy />} />
           </Routes>
         </main>
       </div>
