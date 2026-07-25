@@ -79,6 +79,24 @@ const INTERVENTION_CARDS = [
 
 const IMPORTANCE_WIDTHS = ['100%', '65%', '40%']
 
+const SUS_QUESTIONS = [
+  'I think that I would like to use this system frequently.',
+  'I found the system unnecessarily complex.',
+  'I thought the system was easy to use.',
+  'I think that I would need the support of a technical person to be able to use this system.',
+  'I found the various functions in this system were well integrated.',
+  'I thought there was too much inconsistency in this system.',
+  'I would imagine that most people would learn to use this system very quickly.',
+  'I found the system very cumbersome to use.',
+  'I felt very confident using the system.',
+  'I needed to learn a lot of things before I could get going with this system.',
+]
+
+const E1_OPTIONS = ['Yes, it felt accurate', 'Somewhat accurate', 'No, it did not feel accurate']
+const E2_OPTIONS = ['Yes, very relevant', 'Somewhat relevant', 'Not relevant']
+const E3_OPTIONS = ['Yes, it was clear', 'Somewhat clear', 'No, it was confusing']
+const E4_OPTIONS = ['Yes', 'Maybe', 'No']
+
 // ── Sub-components ────────────────────────────────────────────────────────────
 
 function SectionHeading({ children }) {
@@ -124,98 +142,242 @@ function ShapCard({ number, text, importance }) {
   )
 }
 
-function FeedbackWidget({ riskLevel }) {
-  const [hovered,   setHovered]   = useState(null)
-  const [selected,  setSelected]  = useState(null)
-  const [comment,   setComment]   = useState('')
-  const [submitted, setSubmitted] = useState(false)
+function SusFeedbackWidget({ sessionId, riskLevel, addictionCategory }) {
+  const [sus,        setSus]        = useState({})
+  const [e1,         setE1]         = useState('')
+  const [e1x,        setE1x]        = useState('')
+  const [e2,         setE2]         = useState('')
+  const [e3,         setE3]         = useState('')
+  const [e4,         setE4]         = useState('')
+  const [e5,         setE5]         = useState('')
+  const [submitted,  setSubmitted]  = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+
+  const allSusFilled = SUS_QUESTIONS.every((_, i) => sus[`D${i + 1}`] != null)
+  const canSubmit    = allSusFilled && e1 && e2 && e3 && e4
 
   async function handleSubmit() {
-    setSubmitted(true)
+    if (!canSubmit) return
+    setSubmitting(true)
+    const payload = {
+      sus_d1: sus.D1, sus_d2: sus.D2, sus_d3: sus.D3, sus_d4: sus.D4, sus_d5: sus.D5,
+      sus_d6: sus.D6, sus_d7: sus.D7, sus_d8: sus.D8, sus_d9: sus.D9, sus_d10: sus.D10,
+      e1_accurate: e1, e1_explanation: e1x || null,
+      e2_relevant: e2, e3_clear: e3, e4_recommend: e4, e5_suggestion: e5 || null,
+      session_id: sessionId || null, risk_level: riskLevel || null,
+      addiction_category: addictionCategory || null,
+    }
     try {
-      await fetch(`${import.meta.env.VITE_API_URL || 'https://digital-wellbeing-coach.onrender.com'}/feedback`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ rating: selected, comment, riskLevel }),
-      })
+      await fetch(
+        `${import.meta.env.VITE_API_URL || 'https://digital-wellbeing-coach.onrender.com'}/feedback`,
+        { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }
+      )
     } catch {}
+    setSubmitting(false)
+    setSubmitted(true)
   }
 
   if (submitted) {
     return (
       <div style={{
-        background: '#f0fdf4', border: '1px solid #bbf7d0',
-        borderRadius: '8px', padding: '20px', textAlign: 'center',
+        background: '#F0FDF4', border: '1px solid #BBF7D0',
+        borderRadius: '12px', padding: '28px 24px', textAlign: 'center',
       }}>
-        <p style={{ fontSize: '22px', margin: '0 0 8px' }}>🙏</p>
-        <p style={{ fontSize: '14px', fontWeight: '600', color: '#166534', margin: '0 0 4px' }}>Thank you!</p>
-        <p style={{ fontSize: '13px', color: '#16a34a', margin: 0 }}>Your response helps improve this tool for future students.</p>
+        <p style={{ fontSize: '32px', margin: '0 0 12px' }}>🙏</p>
+        <p style={{ fontSize: '15px', fontWeight: '700', color: '#166534', margin: '0 0 8px' }}>
+          Thank you for your participation.
+        </p>
+        <p style={{ fontSize: '13px', color: '#16A34A', lineHeight: '1.6', margin: '0 0 16px' }}>
+          Your feedback directly improves this tool for Kigali university students.
+        </p>
+        <p style={{ fontSize: '12px', color: '#4B7A5E', margin: 0 }}>
+          Questions: r.mizero@alustudent.com | +250 784 911 041
+        </p>
       </div>
     )
   }
 
-  const LABELS = { 1: 'Poor', 2: 'Fair', 3: 'Good', 4: 'Very good', 5: 'Excellent' }
-  const active  = hovered ?? selected
+  const startedFilling = Object.keys(sus).length > 0 || e1 || e2 || e3 || e4
 
   return (
-    <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '8px', padding: '20px' }}>
-      <p style={{ fontSize: '13px', fontWeight: '600', color: '#1E293B', margin: '0 0 4px' }}>
+    <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '24px' }}>
+      <h2 style={{ fontSize: '16px', fontWeight: '700', color: '#1E293B', margin: '0 0 6px' }}>
         Help improve this tool
+      </h2>
+      <p style={{ fontSize: '13px', color: '#475569', margin: '0 0 24px', lineHeight: '1.6' }}>
+        Takes 2 minutes. Your feedback directly improves the Digital Wellbeing Coach for students in Kigali.
       </p>
-      <p style={{ fontSize: '12px', color: '#475569', margin: '0 0 16px' }}>
-        How useful did you find your results?
+
+      {/* Scale header */}
+      <div style={{
+        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+        padding: '8px 12px', background: '#EFF6FF', borderRadius: '6px', marginBottom: '4px',
+        fontSize: '11px', fontWeight: '600', color: '#2563EB',
+      }}>
+        <span>1 = Strongly Disagree</span>
+        <span>3 = Neutral</span>
+        <span>5 = Strongly Agree</span>
+      </div>
+
+      {/* SUS questions */}
+      <div style={{ marginBottom: '28px' }}>
+        {SUS_QUESTIONS.map((q, i) => {
+          const key = `D${i + 1}`
+          return (
+            <div key={key} style={{
+              display: 'flex', alignItems: 'center', gap: '12px',
+              padding: '10px 0', borderBottom: '1px solid #F1F5F9', flexWrap: 'wrap',
+            }}>
+              <span style={{ flex: 1, minWidth: '180px', fontSize: '13px', color: '#1E293B', lineHeight: '1.5' }}>
+                <span style={{ fontWeight: '700', color: '#94A3B8', marginRight: '6px' }}>D{i + 1}.</span>
+                {q}
+              </span>
+              <div style={{ display: 'flex', gap: '6px', flexShrink: 0 }}>
+                {[1, 2, 3, 4, 5].map(n => {
+                  const isSelected = sus[key] === n
+                  return (
+                    <button
+                      key={n}
+                      type="button"
+                      onClick={() => setSus(prev => ({ ...prev, [key]: n }))}
+                      style={{
+                        width: '32px', height: '32px', borderRadius: '50%',
+                        border: isSelected ? 'none' : '1.5px solid #CBD5E1',
+                        background: isSelected ? '#2563EB' : '#FFFFFF',
+                        color: isSelected ? '#FFFFFF' : '#94A3B8',
+                        fontSize: '12px', fontWeight: '600',
+                        cursor: 'pointer', fontFamily: 'inherit', flexShrink: 0,
+                      }}
+                    >
+                      {n}
+                    </button>
+                  )
+                })}
+              </div>
+            </div>
+          )
+        })}
+      </div>
+
+      {/* Part E */}
+      <p style={{
+        fontSize: '12px', fontWeight: '700', color: '#94A3B8',
+        textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 20px',
+      }}>
+        Follow-up questions
       </p>
-      <div style={{ display: 'flex', gap: '6px', alignItems: 'center', marginBottom: '8px' }}>
-        {[1, 2, 3, 4, 5].map(n => (
-          <button
-            key={n}
-            type="button"
-            onClick={() => setSelected(n)}
-            onMouseEnter={() => setHovered(n)}
-            onMouseLeave={() => setHovered(null)}
-            style={{
-              background: 'none', border: 'none', cursor: 'pointer', padding: '2px',
-              fontSize: '28px', lineHeight: 1,
-              filter: n <= (active ?? 0) ? 'none' : 'grayscale(1) opacity(0.35)',
-              transform: n <= (active ?? 0) ? 'scale(1.1)' : 'scale(1)',
-              transition: 'transform 0.1s, filter 0.1s',
-            }}
-          >
-            ⭐
-          </button>
-        ))}
-        {active && (
-          <span style={{ fontSize: '12px', color: '#475569', marginLeft: '6px' }}>{LABELS[active]}</span>
+
+      <div style={{ marginBottom: '20px' }}>
+        <p style={{ fontSize: '13px', fontWeight: '600', color: '#1E293B', margin: '0 0 10px' }}>
+          E1. Did the risk score feel accurate?
+        </p>
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          {E1_OPTIONS.map(opt => (
+            <button key={opt} type="button" onClick={() => setE1(opt)} style={pillStyle(e1 === opt)}>{opt}</button>
+          ))}
+        </div>
+        {(e1 === 'Somewhat accurate' || e1 === 'No, it did not feel accurate') && (
+          <input
+            type="text"
+            placeholder="Please briefly explain:"
+            value={e1x}
+            onChange={ev => setE1x(ev.target.value)}
+            style={susInputStyle}
+          />
         )}
       </div>
-      {selected && (
-        <>
-          <textarea
-            style={{
-              width: '100%', boxSizing: 'border-box',
-              padding: '8px 12px', border: '1px solid #E2E8F0', borderRadius: '6px',
-              fontSize: '13px', fontFamily: 'inherit', color: '#1E293B',
-              resize: 'vertical', minHeight: '72px', marginTop: '8px', background: '#fff',
-            }}
-            placeholder="Any comments? (optional)"
-            value={comment}
-            onChange={e => setComment(e.target.value)}
-          />
-          <button
-            type="button"
-            onClick={handleSubmit}
-            style={{
-              marginTop: '10px', padding: '9px 20px', background: '#2563EB',
-              color: '#FFFFFF', border: 'none', borderRadius: '6px',
-              fontSize: '13px', fontWeight: '600', cursor: 'pointer', fontFamily: 'inherit',
-            }}
-          >
-            Submit feedback
-          </button>
-        </>
+
+      <div style={{ marginBottom: '20px' }}>
+        <p style={{ fontSize: '13px', fontWeight: '600', color: '#1E293B', margin: '0 0 10px' }}>
+          E2. Were the recommended activities relevant?
+        </p>
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          {E2_OPTIONS.map(opt => (
+            <button key={opt} type="button" onClick={() => setE2(opt)} style={pillStyle(e2 === opt)}>{opt}</button>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ marginBottom: '20px' }}>
+        <p style={{ fontSize: '13px', fontWeight: '600', color: '#1E293B', margin: '0 0 10px' }}>
+          E3. Did the explanation of your score make sense?
+        </p>
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          {E3_OPTIONS.map(opt => (
+            <button key={opt} type="button" onClick={() => setE3(opt)} style={pillStyle(e3 === opt)}>{opt}</button>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ marginBottom: '20px' }}>
+        <p style={{ fontSize: '13px', fontWeight: '600', color: '#1E293B', margin: '0 0 10px' }}>
+          E4. Would you use this tool again or recommend it?
+        </p>
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          {E4_OPTIONS.map(opt => (
+            <button key={opt} type="button" onClick={() => setE4(opt)} style={pillStyle(e4 === opt)}>{opt}</button>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ marginBottom: '24px' }}>
+        <p style={{ fontSize: '13px', fontWeight: '600', color: '#1E293B', margin: '0 0 10px' }}>
+          E5. Is there anything you would change or add?{' '}
+          <span style={{ fontWeight: '400', color: '#94A3B8' }}>(Optional)</span>
+        </p>
+        <textarea
+          placeholder="Your answer..."
+          value={e5}
+          onChange={ev => setE5(ev.target.value)}
+          rows={2}
+          style={{
+            width: '100%', boxSizing: 'border-box',
+            padding: '8px 12px', border: '1px solid #E2E8F0', borderRadius: '6px',
+            fontSize: '13px', fontFamily: 'inherit', color: '#1E293B',
+            resize: 'vertical', background: '#fff',
+          }}
+        />
+      </div>
+
+      <button
+        type="button"
+        onClick={handleSubmit}
+        disabled={!canSubmit || submitting}
+        style={{
+          padding: '11px 24px',
+          background: canSubmit ? '#2563EB' : '#CBD5E1',
+          color: '#FFFFFF', border: 'none', borderRadius: '8px',
+          fontSize: '14px', fontWeight: '600',
+          cursor: canSubmit ? 'pointer' : 'not-allowed',
+          fontFamily: 'inherit',
+        }}
+      >
+        {submitting ? 'Submitting…' : 'Submit feedback'}
+      </button>
+      {!canSubmit && startedFilling && (
+        <p style={{ fontSize: '12px', color: '#94A3B8', margin: '8px 0 0' }}>
+          Please complete all 10 SUS questions and follow-up questions E1–E4 to submit.
+        </p>
       )}
     </div>
   )
+}
+
+function pillStyle(selected) {
+  return {
+    padding: '8px 14px', borderRadius: '20px',
+    border: selected ? 'none' : '1.5px solid #E2E8F0',
+    background: selected ? '#2563EB' : '#FFFFFF',
+    color: selected ? '#FFFFFF' : '#475569',
+    fontSize: '13px', cursor: 'pointer',
+    fontFamily: 'inherit', fontWeight: selected ? '600' : '400',
+  }
+}
+
+const susInputStyle = {
+  width: '100%', boxSizing: 'border-box', marginTop: '10px',
+  padding: '8px 12px', border: '1px solid #E2E8F0', borderRadius: '6px',
+  fontSize: '13px', fontFamily: 'inherit', color: '#1E293B', background: '#fff',
 }
 
 // ── Main component ─────────────────────────────────────────────────────────────
@@ -491,7 +653,11 @@ export default memo(function ResultsDashboard() {
 
           {/* Feedback (no-print) */}
           <div style={{ paddingBottom: '48px' }} className="no-print">
-            <FeedbackWidget riskLevel={results.risk_level} />
+            <SusFeedbackWidget
+              sessionId={results.session_id}
+              riskLevel={results.risk_level}
+              addictionCategory={results.addiction_category}
+            />
           </div>
 
           {/* Print footer */}

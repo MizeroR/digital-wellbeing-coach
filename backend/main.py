@@ -129,9 +129,32 @@ class PredictRequest(BaseModel):
 
 
 class FeedbackRequest(BaseModel):
-    rating:    int = Field(..., ge=1, le=5)
-    comment:   str = ""
-    riskLevel: str = ""
+    # SUS (System Usability Scale) — D1 through D10, each 1–5
+    sus_d1:  Optional[int] = Field(None, ge=1, le=5)
+    sus_d2:  Optional[int] = Field(None, ge=1, le=5)
+    sus_d3:  Optional[int] = Field(None, ge=1, le=5)
+    sus_d4:  Optional[int] = Field(None, ge=1, le=5)
+    sus_d5:  Optional[int] = Field(None, ge=1, le=5)
+    sus_d6:  Optional[int] = Field(None, ge=1, le=5)
+    sus_d7:  Optional[int] = Field(None, ge=1, le=5)
+    sus_d8:  Optional[int] = Field(None, ge=1, le=5)
+    sus_d9:  Optional[int] = Field(None, ge=1, le=5)
+    sus_d10: Optional[int] = Field(None, ge=1, le=5)
+    # Follow-up questions
+    e1_accurate:    Optional[str] = None
+    e1_explanation: Optional[str] = None
+    e2_relevant:    Optional[str] = None
+    e3_clear:       Optional[str] = None
+    e4_recommend:   Optional[str] = None
+    e5_suggestion:  Optional[str] = None
+    # Session context
+    session_id:         Optional[str] = None
+    risk_level:         Optional[str] = None
+    addiction_category: Optional[str] = None
+    # Legacy fields kept for backwards compat
+    rating:    Optional[int] = None
+    comment:   Optional[str] = None
+    riskLevel: Optional[str] = None
 
 
 class PredictResponse(BaseModel):
@@ -141,6 +164,7 @@ class PredictResponse(BaseModel):
     addiction_category:  str
     explanations:        list[str]
     recommendations:     list[dict]
+    session_id:          str
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
@@ -224,6 +248,7 @@ def predict(req: PredictRequest) -> PredictResponse:
         addiction_category = display_category,
         explanations       = explanations,
         recommendations    = recommendations,
+        session_id         = session_id,
     )
 
     session_id = str(uuid.uuid4())
@@ -264,12 +289,25 @@ def predict(req: PredictRequest) -> PredictResponse:
 def submit_feedback(req: FeedbackRequest) -> dict:
     if _supabase:
         try:
-            _supabase.table("feedback").insert({
-                "rating":     req.rating,
-                "comment":    req.comment,
-                "risk_level": req.riskLevel,
-            }).execute()
-            print(f"Feedback saved: rating={req.rating}")
+            row = {
+                "sus_d1":  req.sus_d1,  "sus_d2":  req.sus_d2,
+                "sus_d3":  req.sus_d3,  "sus_d4":  req.sus_d4,
+                "sus_d5":  req.sus_d5,  "sus_d6":  req.sus_d6,
+                "sus_d7":  req.sus_d7,  "sus_d8":  req.sus_d8,
+                "sus_d9":  req.sus_d9,  "sus_d10": req.sus_d10,
+                "e1_accurate":    req.e1_accurate,
+                "e1_explanation": req.e1_explanation,
+                "e2_relevant":    req.e2_relevant,
+                "e3_clear":       req.e3_clear,
+                "e4_recommend":   req.e4_recommend,
+                "e5_suggestion":  req.e5_suggestion,
+                "session_id":         req.session_id,
+                "risk_level":         req.risk_level or req.riskLevel,
+                "addiction_category": req.addiction_category,
+            }
+            row = {k: v for k, v in row.items() if v is not None}
+            _supabase.table("feedback").insert(row).execute()
+            print(f"Feedback saved for session {req.session_id}")
         except Exception as e:
             import traceback
             print(f"Feedback write failed: {type(e).__name__}: {e}")
