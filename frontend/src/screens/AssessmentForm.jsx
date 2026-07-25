@@ -312,6 +312,9 @@ export default function AssessmentForm() {
           <p style={s.helper}>
             There are no right or wrong answers. Answer honestly based on the past two weeks.
           </p>
+          <p style={{ fontSize: '13px', color: '#94A3B8', lineHeight: '1.6', marginBottom: '16px' }}>
+            The following statements come from a globally validated research questionnaire. Rate how much each one applies to you over the past two weeks.
+          </p>
           <p style={{ fontSize: '12px', color: '#94A3B8', lineHeight: '1.55', marginBottom: '12px' }}>
             Rate each statement from <strong>1</strong> (strongly disagree) to <strong>6</strong> (strongly agree).
           </p>

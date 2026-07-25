@@ -32,6 +32,13 @@ const RISK_NEXT_STEP = {
   Severe:   "Please consider speaking to someone. Call 116 — it's free, 24/7, and confidential. The activities below can also help.",
 }
 
+const RISK_EXPLANATION = {
+  Low:      'Your usage pattern does not show signs of problematic dependency at this time.',
+  Moderate: 'Some patterns in your usage are worth paying attention to before they become harder to change.',
+  High:     'Your usage is affecting your daily life in measurable ways. The recommendations below can help.',
+  Severe:   'Your responses suggest significant impact on your wellbeing. Please consider reaching out — you do not have to figure this out alone.',
+}
+
 const CATEGORY_EMOJI = {
   'Social Media': '📱',
   'Gaming':       '🎮',
@@ -99,15 +106,20 @@ const E4_OPTIONS = ['Yes', 'Maybe', 'No']
 
 // ── Sub-components ────────────────────────────────────────────────────────────
 
-function SectionHeading({ children }) {
+function SectionHeading({ children, subtitle }) {
   return (
     <div style={{ marginBottom: '20px' }}>
       <h2 style={{
         fontSize: '15px', fontWeight: '700', color: '#334155',
-        margin: '0 0 10px', letterSpacing: '-0.1px',
+        margin: '0 0 6px', letterSpacing: '-0.1px',
       }}>
         {children}
       </h2>
+      {subtitle && (
+        <p style={{ fontSize: '13px', color: '#94A3B8', margin: '0 0 10px', lineHeight: '1.5' }}>
+          {subtitle}
+        </p>
+      )}
       <div style={{ height: '1px', background: '#E2E8F0' }} />
     </div>
   )
@@ -202,10 +214,11 @@ function SusFeedbackWidget({ sessionId, riskLevel, addictionCategory }) {
   return (
     <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '24px' }}>
       <h2 style={{ fontSize: '16px', fontWeight: '700', color: '#1E293B', margin: '0 0 6px' }}>
-        Help improve this tool
+        How was your experience?
       </h2>
       <p style={{ fontSize: '13px', color: '#475569', margin: '0 0 24px', lineHeight: '1.6' }}>
-        Takes 2 minutes. Your feedback directly improves the Digital Wellbeing Coach for students in Kigali.
+        You have just used the Digital Wellbeing Coach. Please rate the following statements — your feedback
+        helps us improve this tool for other students in Kigali. Takes about 2 minutes.
       </p>
 
       {/* Scale header */}
@@ -229,7 +242,7 @@ function SusFeedbackWidget({ sessionId, riskLevel, addictionCategory }) {
               padding: '10px 0', borderBottom: '1px solid #F1F5F9', flexWrap: 'wrap',
             }}>
               <span style={{ flex: 1, minWidth: '180px', fontSize: '13px', color: '#1E293B', lineHeight: '1.5' }}>
-                <span style={{ fontWeight: '700', color: '#94A3B8', marginRight: '6px' }}>D{i + 1}.</span>
+                <span style={{ fontWeight: '700', color: '#94A3B8', marginRight: '6px' }}>{i + 1}.</span>
                 {q}
               </span>
               <div style={{ display: 'flex', gap: '6px', flexShrink: 0 }}>
@@ -259,17 +272,16 @@ function SusFeedbackWidget({ sessionId, riskLevel, addictionCategory }) {
         })}
       </div>
 
-      {/* Part E */}
       <p style={{
         fontSize: '12px', fontWeight: '700', color: '#94A3B8',
         textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 20px',
       }}>
-        Follow-up questions
+        A few more questions
       </p>
 
       <div style={{ marginBottom: '20px' }}>
         <p style={{ fontSize: '13px', fontWeight: '600', color: '#1E293B', margin: '0 0 10px' }}>
-          E1. Did the risk score feel accurate?
+          1. Did the risk score feel accurate?
         </p>
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
           {E1_OPTIONS.map(opt => (
@@ -289,7 +301,7 @@ function SusFeedbackWidget({ sessionId, riskLevel, addictionCategory }) {
 
       <div style={{ marginBottom: '20px' }}>
         <p style={{ fontSize: '13px', fontWeight: '600', color: '#1E293B', margin: '0 0 10px' }}>
-          E2. Were the recommended activities relevant?
+          2. Were the recommended activities relevant?
         </p>
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
           {E2_OPTIONS.map(opt => (
@@ -300,7 +312,7 @@ function SusFeedbackWidget({ sessionId, riskLevel, addictionCategory }) {
 
       <div style={{ marginBottom: '20px' }}>
         <p style={{ fontSize: '13px', fontWeight: '600', color: '#1E293B', margin: '0 0 10px' }}>
-          E3. Did the explanation of your score make sense?
+          3. Did the explanation of your score make sense?
         </p>
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
           {E3_OPTIONS.map(opt => (
@@ -311,7 +323,7 @@ function SusFeedbackWidget({ sessionId, riskLevel, addictionCategory }) {
 
       <div style={{ marginBottom: '20px' }}>
         <p style={{ fontSize: '13px', fontWeight: '600', color: '#1E293B', margin: '0 0 10px' }}>
-          E4. Would you use this tool again or recommend it?
+          4. Would you use this tool again or recommend it?
         </p>
         <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
           {E4_OPTIONS.map(opt => (
@@ -322,7 +334,7 @@ function SusFeedbackWidget({ sessionId, riskLevel, addictionCategory }) {
 
       <div style={{ marginBottom: '24px' }}>
         <p style={{ fontSize: '13px', fontWeight: '600', color: '#1E293B', margin: '0 0 10px' }}>
-          E5. Is there anything you would change or add?{' '}
+          5. Is there anything you would change or add?{' '}
           <span style={{ fontWeight: '400', color: '#94A3B8' }}>(Optional)</span>
         </p>
         <textarea
@@ -452,9 +464,11 @@ export default memo(function ResultsDashboard() {
 
           {/* ═══ SECTION 1 — YOUR RESULTS ═══ */}
           <section style={s.section}>
-            <SectionHeading>Your results</SectionHeading>
+            <SectionHeading subtitle="Based on your answers, here is where your smartphone usage sits.">
+              Your results
+            </SectionHeading>
 
-            {/* Risk badge */}
+            {/* Risk badge + plain-language explanation */}
             <div style={{ textAlign: 'center', marginBottom: '20px' }}>
               <span style={{
                 display: 'inline-block', padding: '8px 32px', borderRadius: '30px',
@@ -463,6 +477,12 @@ export default memo(function ResultsDashboard() {
               }}>
                 {riskLabel}
               </span>
+              <p style={{
+                fontSize: '13px', fontStyle: 'italic', color: '#64748B',
+                margin: '10px auto 0', maxWidth: '420px', lineHeight: '1.6',
+              }}>
+                {RISK_EXPLANATION[results.risk_level]}
+              </p>
             </div>
 
             {/* Score */}
@@ -489,8 +509,14 @@ export default memo(function ResultsDashboard() {
             </p>
 
             {/* What stood out */}
-            <p style={{ fontSize: '13px', color: '#475569', marginBottom: '12px', lineHeight: '1.5' }}>
-              Here is what stood out most in your answers:
+            <p style={{
+              fontSize: '11px', fontWeight: '700', color: '#94A3B8',
+              textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 4px',
+            }}>
+              What's affecting your score
+            </p>
+            <p style={{ fontSize: '13px', color: '#94A3B8', lineHeight: '1.5', margin: '0 0 12px' }}>
+              These are the three specific habits that contributed most to your result.
             </p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               {(results.explanations || []).slice(0, 3).map((text, i) => (
@@ -517,9 +543,12 @@ export default memo(function ResultsDashboard() {
                 <div>
                   <p style={{
                     fontSize: '11px', fontWeight: '700', color: '#94A3B8',
-                    textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 8px',
+                    textTransform: 'uppercase', letterSpacing: '0.5px', margin: '0 0 4px',
                   }}>
                     Where most of your time goes
+                  </p>
+                  <p style={{ fontSize: '13px', color: '#94A3B8', lineHeight: '1.5', margin: '0 0 12px' }}>
+                    The app category where your usage is most concentrated.
                   </p>
                   <div style={{
                     display: 'inline-flex', alignItems: 'center', gap: '8px',
@@ -584,7 +613,9 @@ export default memo(function ResultsDashboard() {
           {/* ═══ SECTION 4 — THINGS YOU COULD TRY ═══ */}
           {confirmed && (
             <section style={s.section}>
-              <SectionHeading>Things you could try</SectionHeading>
+              <SectionHeading subtitle="Real activities in Kigali that can help redirect the time occupied by your dominant usage pattern.">
+              Things you could try
+            </SectionHeading>
               <p style={{ fontSize: '13px', color: '#475569', lineHeight: '1.55', marginBottom: '16px' }}>
                 Four areas where small changes tend to make the biggest difference.
                 {recommended && ' The highlighted one is based on your usage pattern.'}

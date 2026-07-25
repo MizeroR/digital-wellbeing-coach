@@ -1,4 +1,4 @@
-const STEPS = ['Consent', 'Your profile', 'Screen behaviour', 'SAS-SV questions', 'Results']
+const STEPS = ['Consent', 'Your profile', 'Screen behaviour', 'Habit questions', 'Results']
 
 export default function ProgressBar({ currentStep }) {
   return (
