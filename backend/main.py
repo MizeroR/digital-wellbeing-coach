@@ -241,6 +241,8 @@ def predict(req: PredictRequest) -> PredictResponse:
     else:
         display_category = raw_category
 
+    session_id = str(uuid.uuid4())
+
     response = PredictResponse(
         risk_level         = risk_level,
         confidence         = round(prob * 100, 1),
@@ -250,8 +252,6 @@ def predict(req: PredictRequest) -> PredictResponse:
         recommendations    = recommendations,
         session_id         = session_id,
     )
-
-    session_id = str(uuid.uuid4())
     if _supabase:
         try:
             print(f"Attempting database insert for session {session_id}...")
