@@ -109,9 +109,10 @@ export default function PrivacyPolicy() {
         <Eyebrow>Retention</Eyebrow>
         <h2 style={{ fontSize: 16, fontWeight: 700, color: 'var(--color-text-primary)', margin: '0 0 6px' }}>How long we keep it</h2>
         <p style={{ fontSize: 14, color: 'var(--color-text-secondary)', lineHeight: 1.6, margin: 0 }}>
-          {/* TODO: replace with your actual retention policy before recording the video */}
-          Data is retained for the duration of the capstone evaluation period, after which anonymised aggregate data
-          may be kept for academic reporting purposes.
+            Individual assessment records are retained only through the end of the REC approval period
+            (11 December 2026), after which they are deleted from the production database. Aggregate,
+            anonymised statistics derived from the pilot may be retained indefinitely for academic and
+            research reporting purposes.
         </p>
       </section>
 
@@ -129,9 +130,9 @@ export default function PrivacyPolicy() {
         <Eyebrow>Questions</Eyebrow>
         <h2 style={{ fontSize: 16, fontWeight: 700, color: 'var(--color-text-primary)', margin: '0 0 6px' }}>Contact</h2>
         <p style={{ fontSize: 14, color: 'var(--color-text-secondary)', lineHeight: 1.6, margin: 0 }}>
-          This project is supervised by Elvira Immaculate Khwatenge at African Leadership University under REC
+          This project is developed by Reine Mizero at African Leadership University under REC
           Approval Code M26-BSE-001. For questions about how your data is handled, contact
-          researchethics@alueducation.com.
+          r.mizero@alustudent.com.
         </p>
       </section>
     </div>

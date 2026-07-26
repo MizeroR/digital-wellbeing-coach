@@ -11,6 +11,7 @@ import CreativePage from './screens/interventions/CreativePage'
 import RelaxationPage from './screens/interventions/RelaxationPage'
 import SocialPage from './screens/interventions/SocialPage'
 import PrivacyPolicy from './screens/PrivacyPolicy'
+import Footer from './components/Footer'
 
 export default function App() {
   return (
@@ -32,6 +33,7 @@ export default function App() {
             <Route path="/privacy" element={<PrivacyPolicy />} />
           </Routes>
         </main>
+        <Footer/>
       </div>
     </BrowserRouter>
   )
