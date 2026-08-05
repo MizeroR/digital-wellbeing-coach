@@ -151,13 +151,13 @@ Beyond the three mockups above, the shipped app also includes a landing page (`/
 ![Consent Screen](demo/consent.png)
 
 ### Risk Level Results
-| Low (SAS 10/60) | Moderate (SAS 30/60) |
+| Low (SAS 17/60) | Moderate (SAS 28/60) |
 |---|---|
-| ![Low Risk](demo/low-risk.png) | ![Moderate Risk](demo/moderate-risk-social-media.png) |
+| ![Low Risk](demo/low-risk.png) | ![Moderate Risk](demo/moderate-risk-streaming.png) |
 
-| High (SAS 40/60) | Severe (SAS 50/60) |
+| High (SAS 34/60) | Severe (SAS 45/60) |
 |---|---|
-| ![High Risk](demo/high-risk-gaming.png) | ![Severe Risk](demo/severe-risk-streaming.png) |
+| ![High Risk](demo/high-risk-social-media.png) | ![Severe Risk](demo/severe-risk.png) |
 
 ### Edge Cases
 | Form Validation Error | Mobile View |
