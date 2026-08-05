@@ -15,13 +15,16 @@ The Digital Wellbeing Coach is a full-stack web application that uses supervised
 The system addresses a documented gap: no ML-based digital wellbeing tool has been developed using African behavioural data or evaluated on any African user population. It is the first tool of its kind designed specifically for this context.
 
 **How it works:**
-1. A user reads and agrees to a research consent screen before proceeding
+1. A user lands on the landing page and starts the assessment, then reads and agrees to a research consent screen before proceeding
 2. They fill in a structured self-report form — demographic information, daily app usage patterns, and 10 SAS-SV questions (scored 1–6)
 3. An XGBoost classifier runs on the submission; a rule-based function maps the SAS-SV total (out of 60) to a risk level — Low (≤26), Moderate (27–32), High (33–41), or Severe (42+)
 4. TreeSHAP identifies the top 3 behavioural drivers of their score and converts them to plain-language coaching feedback
 5. A rule-based category classifier identifies their dominant addiction pattern (Social Media, Gaming, Streaming, or General)
-6. 5–10 locally relevant Kigali activity recommendations are returned from a curated resource library
-7. All submissions are stored anonymously in a Supabase PostgreSQL database for research analysis
+6. 5–10 locally relevant Kigali activity recommendations are returned from a curated resource library, with dedicated guide pages (Learn, Create, Relax, Connect) users can browse for further activities
+7. The user can optionally complete a 10-item System Usability Scale (SUS) survey plus follow-up questions, rating their experience with the tool
+8. All submissions are stored anonymously in a Supabase PostgreSQL database for research analysis
+
+A privacy policy page explains what data is collected and how it is used.
 
 **Live Frontend:** https://digital-wellbeing-coach.vercel.app/
 **Live API:** https://digital-wellbeing-coach.onrender.com
@@ -72,7 +75,7 @@ Swagger UI (interactive API docs): [http://localhost:8000/docs](http://localhost
 | Method | Path | Description |
 |--------|------|-------------|
 | `POST` | `/predict` | Returns risk level, SAS score, SHAP explanations, and recommendations |
-| `POST` | `/feedback` | Stores user star rating and optional comment |
+| `POST` | `/feedback` | Stores the 10-item SUS usability survey plus follow-up answers |
 | `GET`  | `/health`  | Liveness check |
 
 **Example request:**
@@ -138,6 +141,8 @@ Three core screens designed for the web application:
 
 Figma link: [View mockups](https://www.figma.com/design/Dce7R22yKo8F3dLhGrn2pM/DWC---Mockup?node-id=12-2&t=myawWubnECRM7qqu-1)
 
+Beyond the three mockups above, the shipped app also includes a landing page (`/`), a Resource Library with four category guide pages — Learn, Create, Relax, Connect (`/resources`, `/interventions/*`), and a Privacy Policy page (`/privacy`), added during implementation.
+
 ---
 
 ## Screenshots
@@ -152,7 +157,7 @@ Figma link: [View mockups](https://www.figma.com/design/Dce7R22yKo8F3dLhGrn2pM/D
 
 | High (SAS 40/60) | Severe (SAS 50/60) |
 |---|---|
-| ![High Risk](demo/high-risk-gaming.png) | ![Severe Risk](demo/severe-risk-gaming.png) |
+| ![High Risk](demo/high-risk-gaming.png) | ![Severe Risk](demo/severe-risk-streaming.png) |
 
 ### Edge Cases
 | Form Validation Error | Mobile View |
@@ -171,9 +176,9 @@ All core functionalities defined in the project proposal were successfully imple
 - Structured self-report form collecting demographics, app usage patterns, and the validated SAS-SV questionnaire
 - XGBoost classifier producing risk predictions with TreeSHAP explanations
 - Rule-based addiction category classifier (Social Media, Gaming, Streaming, General)
-- Curated resource library of locally relevant Kigali activity recommendations filtered by addiction category
+- Curated resource library of locally relevant Kigali activity recommendations filtered by addiction category, with dedicated guide pages for each category
 - Anonymous data storage to Supabase PostgreSQL for research analysis
-- User feedback collection (star ratings and comments)
+- User feedback collection via a 10-item SUS usability survey with follow-up questions
 - Full deployment: React frontend on Vercel, FastAPI backend on Render, database on Supabase
 
 ### What changed from the proposal
@@ -220,7 +225,7 @@ curl -X POST https://digital-wellbeing-coach.onrender.com/predict \
 
 ### Database verification
 
-All submissions are stored in the Supabase `assessment` table with the following fields: session ID, age, gender, university, usage patterns, Q1–Q10 responses, SAS total, risk level, ML confidence, and addiction category. User feedback (star ratings) is stored in the `feedback` table.
+All submissions are stored in the Supabase `assessment` table with the following fields: session ID, age, gender, university, usage patterns, Q1–Q10 responses, SAS total, risk level, ML confidence, and addiction category. User feedback (SUS survey scores D1–D10 and follow-up answers E1–E5) is stored in the `feedback` table.
 
 ---
 
