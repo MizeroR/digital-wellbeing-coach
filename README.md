@@ -21,7 +21,7 @@ The system addresses a documented gap: no ML-based digital wellbeing tool has be
 4. TreeSHAP identifies the top 3 behavioural drivers of their score and converts them to plain-language coaching feedback
 5. A rule-based category classifier identifies their dominant addiction pattern (Social Media, Gaming, Streaming, or General)
 6. 5–10 locally relevant Kigali activity recommendations are returned from a curated resource library, with dedicated guide pages (Learn, Create, Relax, Connect) users can browse for further activities
-7. The user can optionally complete a 10-item System Usability Scale (SUS) survey plus follow-up questions, rating their experience with the tool
+7. The user can optionally complete a 10-item System Usability Scale (SUS) survey plus 5 follow-up questions, embedded directly in the results dashboard
 8. All submissions are stored anonymously in a Supabase PostgreSQL database for research analysis
 
 A privacy policy page explains what data is collected and how it is used.
@@ -75,7 +75,7 @@ Swagger UI (interactive API docs): [http://localhost:8000/docs](http://localhost
 | Method | Path | Description |
 |--------|------|-------------|
 | `POST` | `/predict` | Returns risk level, SAS score, SHAP explanations, and recommendations |
-| `POST` | `/feedback` | Stores the 10-item SUS usability survey plus follow-up answers |
+| `POST` | `/feedback` | Stores the 10-item SUS survey (D1–D10) plus 5 follow-up answers (E1–E5) |
 | `GET`  | `/health`  | Liveness check |
 
 **Example request:**
@@ -178,7 +178,7 @@ All core functionalities defined in the project proposal were successfully imple
 - Rule-based addiction category classifier (Social Media, Gaming, Streaming, General)
 - Curated resource library of locally relevant Kigali activity recommendations filtered by addiction category, with dedicated guide pages for each category
 - Anonymous data storage to Supabase PostgreSQL for research analysis
-- User feedback collection via a 10-item SUS usability survey with follow-up questions
+- User feedback collection via a 10-item SUS survey plus 5 follow-up questions, embedded in the results dashboard (replaced an earlier star-rating widget after the pilot)
 - Full deployment: React frontend on Vercel, FastAPI backend on Render, database on Supabase
 
 ### What changed from the proposal
